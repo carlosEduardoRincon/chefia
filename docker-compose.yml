@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    container_name: chefia_app
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      SPRING_PROFILES_ACTIVE: default
+    networks:
+      - rede
+  db:
+    image: postgres:15
+    container_name: chefia_db
+    environment:
+      POSTGRES_DB: chefia
+      POSTGRES_USER: chefia
+      POSTGRES_PASSWORD: chefia123
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - rede
+
+volumes:
+  postgres_data:
+
+networks:
+  rede:
+    driver: bridge
