@@ -1,6 +1,6 @@
 package com.chefia.entities;
 
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 

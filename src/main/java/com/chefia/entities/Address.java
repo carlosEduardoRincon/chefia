@@ -1,5 +1,7 @@
 package com.chefia.entities;
 
+import lombok.*;
+
 @Getter
 @Setter
 @NoArgsConstructor
