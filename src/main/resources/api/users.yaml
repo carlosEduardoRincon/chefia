@@ -82,8 +82,8 @@ paths:
           description: ID of the user to return
           required: true
           schema:
-            type: string
-            format: uuid
+            type: integer
+            format: int64
       responses:
         "200":
           description: User found
@@ -106,8 +106,8 @@ paths:
           description: ID of the user to update
           required: true
           schema:
-            type: string
-            format: uuid
+            type: integer
+            format: int64
       requestBody:
         required: true
         content:
@@ -134,8 +134,8 @@ paths:
           description: ID of the user to delete
           required: true
           schema:
-            type: string
-            format: uuid
+            type: integer
+            format: int64
       responses:
         "204":
           description: User deleted
@@ -193,10 +193,9 @@ components:
           maxLength: 100
           example: Carlos
         address:
-          type: string
-          description: Address of the user
-          maxLength: 200
-          example: Street 10, New York
+          type: array
+          items:
+            $ref: "#/components/schemas/Address"
     PaginatedUsers:
       type: object
       properties:
@@ -232,13 +231,10 @@ components:
           description: Login of the user
           maxLength: 30
           example: rincon123
-        password:
-          type: string
-          description: Password of the user
-          maxLength: 30
-          example: strongPassword123
         address:
-          $ref: "#/components/schemas/Address"
+          type: array
+          items:
+            $ref: "#/components/schemas/Address"
         active:
           type: boolean
           description: Indicates if the user is active

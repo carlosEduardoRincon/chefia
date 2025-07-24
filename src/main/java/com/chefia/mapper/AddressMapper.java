@@ -25,4 +25,22 @@ public class AddressMapper {
         }
         return addressEntityList;
     }
+
+    private AddressDTO toDTO(Address address) {
+        var addressDTO = new AddressDTO();
+        addressDTO.setStreet(address.getStreet());
+        addressDTO.setNumber(address.getNumber());
+        addressDTO.setCity(address.getCity());
+        addressDTO.setState(address.getState());
+        addressDTO.setCountry(address.getCountry());
+        return addressDTO;
+    }
+
+    public List<AddressDTO> toDTOList(List<Address> address) {
+        var addressDTOList = new ArrayList<AddressDTO>();
+        for (var addressEntity : address) {
+            addressDTOList.add(this.toDTO(addressEntity));
+        }
+        return addressDTOList;
+    }
 }

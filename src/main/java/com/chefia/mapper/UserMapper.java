@@ -4,9 +4,11 @@ import com.chefia.dtos.UserResponseDTO;
 import com.chefia.entities.User;
 import com.chefia.entities.enums.ProfileType;
 import com.chefia.users.model.CreateUserDTO;
+import com.chefia.users.model.UserDTO;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,23 +32,23 @@ public class UserMapper {
                 ProfileType.valueOf(createUserDTO.getProfileType().name()));
     }
 
-    public UserResponseDTO toResponseDTO(User user) {
-        return new UserResponseDTO(user.getName(),
-                user.getEmail(),
-                user.getLogin(),
-                user.getAddress(),
-                user.isActive(),
-                user.getCreatedAt(),
-                user.getUpdatedAt(),
-                user.getDeletedAt(),
-                user.getProfileType()
-        );
+    public UserDTO toResponseDTO(User user) {
+        var userDTO = new UserDTO();
+        userDTO.setName(user.getName());
+        userDTO.setEmail(user.getEmail());
+        userDTO.setLogin(user.getLogin());
+        userDTO.setAddress(this.addressMapper.toDTOList(user.getAddress()));
+        userDTO.setActive(user.isActive());
+        userDTO.setCreatedAt(OffsetDateTime.from(user.getCreatedAt()));
+        userDTO.setUpdatedAt(OffsetDateTime.from(user.getUpdatedAt()));
+        userDTO.setDeletedAt(OffsetDateTime.from(user.getDeletedAt()));
+        return userDTO;
     }
 
-    public List<UserResponseDTO> toResponseListDTO(List<User> userList) {
-        var usersResponse = new ArrayList<UserResponseDTO>();
+    public List<UserDTO> toResponseListDTO(List<User> userList) {
+        var usersResponse = new ArrayList<UserDTO>();
         for (var user : userList) {
-            usersResponse.add(toResponseDTO(user));
+            usersResponse.add(this.toResponseDTO(user));
         }
         return usersResponse;
     }
