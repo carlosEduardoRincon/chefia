@@ -1,7 +1,7 @@
 package com.chefia.entities;
 
 import com.chefia.entities.enums.ProfileType;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -13,13 +13,15 @@ import java.util.List;
 @AllArgsConstructor
 @EqualsAndHashCode
 @ToString
+@Entity
 public class User {
+    @Id
     private Long id;
     private String name;
     private String email;
     private String login;
     private String password;
-    @ManyToOne
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Address> address;
     private boolean active;
     private LocalDate createdAt;
