@@ -174,7 +174,16 @@ components:
           maxLength: 30
           example: strongPassword123
         address:
-          $ref: "#/components/schemas/Address"
+          type: array
+          items:
+            $ref: "#/components/schemas/Address"
+        profileType:
+          type: string
+          description: OWNER or CLIENT
+          enum:
+            - CLIENT
+            - DONO
+          example: CLIENT
     UpdateUser:
       type: object
       properties:

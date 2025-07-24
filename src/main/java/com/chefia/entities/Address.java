@@ -10,7 +10,7 @@ import lombok.*;
 @ToString
 public class Address {
     private String street;
-    private String number;
+    private Integer number;
     private String city;
     private String state;
     private String country;
