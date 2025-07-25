@@ -16,7 +16,7 @@ services:
     networks:
       - rede
   db:
-    image: postgres:15
+    image: postgres:16
     container_name: chefia_db
     environment:
       POSTGRES_DB: chefia
@@ -24,9 +24,14 @@ services:
       POSTGRES_PASSWORD: chefia123
     ports:
       - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
     networks:
       - rede
 
 networks:
   rede:
     driver: bridge
+
+volumes:
+  pgdata:
