@@ -6,7 +6,6 @@ import com.chefia.users.model.UserDTO;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +31,7 @@ public class UserMapper {
 
     public UserDTO toResponseDTO(User user) {
         var userDTO = new UserDTO();
+        userDTO.setId(user.getNrSeqUser());
         userDTO.setName(user.getName());
         userDTO.setEmail(user.getEmail());
         userDTO.setLogin(user.getLogin());

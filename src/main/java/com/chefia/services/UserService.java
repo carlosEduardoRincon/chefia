@@ -56,7 +56,7 @@ public class UserService {
         // Adicionar classe de validação: validar e-mail existente
         var userToInsert = this.userMapper.toEntity(createUserDTO);
         for (var address : createUserDTO.getAddress()) {
-            var mappedAddress = this.addressMapper.toEntity(address);
+            var mappedAddress = this.addressMapper.toCreateAddressEntity(address);
             mappedAddress.setUser(userToInsert);
             userToInsert.getAddress().add(mappedAddress);
         }

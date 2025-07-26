@@ -176,7 +176,7 @@ components:
         address:
           type: array
           items:
-            $ref: "#/components/schemas/Address"
+            $ref: "#/components/schemas/CreateAddress"
         profileType:
           type: string
           description: OWNER or CLIENT
@@ -222,6 +222,12 @@ components:
     User:
       type: object
       properties:
+        id:
+          type: integer
+          format: int64
+          description: Id of the user
+          maxLength: 10
+          example: 15
         name:
           type: string
           description: Name of the user
@@ -261,6 +267,40 @@ components:
           description: Date and time when the user was inactivated
           example: 2025-07-17T21:00:00
     Address:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: Id of the address
+          maxLength: 10
+          example: 15
+        street:
+          type: string
+          description: Street of the user
+          maxLength: 50
+          example: Street 01
+        number:
+          type: integer
+          description: Street number of the user
+          maxLength: 5
+          example: 1001
+        city:
+          type: string
+          description: City of the user
+          maxLength: 50
+          example: Jundiaí
+        state:
+          type: string
+          description: State of the user
+          maxLength: 50
+          example: São Paulo
+        country:
+          type: string
+          description: Country of the user
+          maxLength: 50
+          example: Brazil
+    CreateAddress:
       type: object
       properties:
         street:

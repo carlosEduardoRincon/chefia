@@ -3,6 +3,7 @@ package com.chefia.mapper;
 import com.chefia.entities.Address;
 import com.chefia.entities.User;
 import com.chefia.users.model.AddressDTO;
+import com.chefia.users.model.CreateAddressDTO;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -10,27 +11,18 @@ import java.util.List;
 
 @Component
 public class AddressMapper {
-    public Address toEntity(AddressDTO addressDTO) {
-        return new Address(addressDTO.getStreet(),
-                addressDTO.getNumber(),
-                addressDTO.getCity(),
-                addressDTO.getState(),
-                addressDTO.getCountry()
+    public Address toCreateAddressEntity(CreateAddressDTO createAddressDTO) {
+        return new Address(createAddressDTO.getStreet(),
+                createAddressDTO.getNumber(),
+                createAddressDTO.getCity(),
+                createAddressDTO.getState(),
+                createAddressDTO.getCountry()
         );
-    }
-
-    public List<Address> toEntityList(List<AddressDTO> addressDTOList, User userEntity) {
-        var addressEntityList = new ArrayList<Address>();
-        for (var addressDTO : addressDTOList) {
-            var addressEntity = toEntity(addressDTO);
-            addressEntity.setUser(userEntity);
-            addressEntityList.add(addressEntity);
-        }
-        return addressEntityList;
     }
 
     public com.chefia.addresses.model.AddressDTO toAddressResponseDTO(Address address) {
         var addressDTO = new com.chefia.addresses.model.AddressDTO();
+        addressDTO.setId(address.getNrSeqAddress());
         addressDTO.setStreet(address.getStreet());
         addressDTO.setNumber(address.getNumber());
         addressDTO.setCity(address.getCity());
@@ -41,6 +33,7 @@ public class AddressMapper {
 
     public AddressDTO toResponseDTO(Address address) {
         var addressDTO = new AddressDTO();
+        addressDTO.setId(address.getNrSeqAddress());
         addressDTO.setStreet(address.getStreet());
         addressDTO.setNumber(address.getNumber());
         addressDTO.setCity(address.getCity());

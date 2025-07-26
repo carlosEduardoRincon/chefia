@@ -36,6 +36,7 @@ public class AddressService {
                 .findById(id)
                 .orElseThrow(() -> new AddressNotFoundException("Address not found with id: " + id));
 
+        addressEntity.setStreet(updateAddressDTO.getStreet());
         addressEntity.setCity(updateAddressDTO.getCity());
         addressEntity.setNumber(updateAddressDTO.getNumber());
         addressEntity.setState(updateAddressDTO.getState());
