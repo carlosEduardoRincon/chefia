@@ -1,9 +1,6 @@
 package com.chefia.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
@@ -14,18 +11,20 @@ import lombok.*;
 @AllArgsConstructor
 @EqualsAndHashCode
 @ToString
-@Entity
+@Entity(name="addresses")
 public class Address {
     @Id
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "nr_seq_address")
+    private Long nrSeqAddress;
     private String street;
     private Integer number;
     private String city;
     private String state;
     private String country;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "nr_seq_user", nullable = false)
     private User user;
 
     public Address(String street,

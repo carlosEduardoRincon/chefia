@@ -3,7 +3,6 @@ package com.chefia.services;
 import com.chefia.entities.User;
 import com.chefia.mapper.AddressMapper;
 import com.chefia.mapper.UserMapper;
-import com.chefia.dtos.UserResponseDTO;
 import com.chefia.repositories.UserRepository;
 import com.chefia.services.exceptions.UserNotFoundException;
 import com.chefia.users.model.CreateUserDTO;
@@ -15,7 +14,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -56,7 +54,13 @@ public class UserService {
     }
 
     public UserDTO saveUser(CreateUserDTO createUserDTO) {
+        // Adicionar classe de validação: validar e-mail existente
         var userToInsert = this.userMapper.toEntity(createUserDTO);
+        for (var address : createUserDTO.getAddress()) {
+            var mappedAddress = this.addressMapper.toEntity(address);
+            mappedAddress.setUser(userToInsert);
+            userToInsert.getAddress().add(mappedAddress);
+        }
         this.userRepository.save(userToInsert);
         return this.userMapper.toResponseDTO(userToInsert);
     }

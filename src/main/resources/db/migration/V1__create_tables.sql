@@ -1,6 +1,6 @@
 CREATE TABLE users
 (
-    id           BIGSERIAL PRIMARY KEY,
+    nr_seq_user  BIGSERIAL PRIMARY KEY,
     name         VARCHAR(255)        NOT NULL,
     email        VARCHAR(255) UNIQUE NOT NULL,
     login        VARCHAR(100)        NOT NULL,
@@ -10,17 +10,17 @@ CREATE TABLE users
     updated_at   DATE,
     deleted_at   DATE,
     profile_type VARCHAR(30),
-    CONSTRAINT chk_profile_type CHECK (profile_type IN ('CLIENT', 'DONO'))
+    CONSTRAINT chk_profile_type CHECK (profile_type IN ('CLIENT', 'OWNER'))
 );
 
-CREATE TABLE address
+CREATE TABLE addresses
 (
-    id       BIGSERIAL PRIMARY KEY,
+    nr_seq_address BIGSERIAL PRIMARY KEY,
     street   VARCHAR(255) NOT NULL,
     number   INT,
     city     VARCHAR(100),
     state    VARCHAR(100),
     country  VARCHAR(100),
-    user_id  BIGINT NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES users (id)
+    nr_seq_user  BIGINT NOT NULL,
+    FOREIGN KEY (nr_seq_user) REFERENCES users (nr_seq_user)
 );

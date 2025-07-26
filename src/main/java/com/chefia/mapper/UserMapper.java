@@ -1,14 +1,13 @@
 package com.chefia.mapper;
 
-import com.chefia.dtos.UserResponseDTO;
 import com.chefia.entities.User;
-import com.chefia.entities.enums.ProfileType;
 import com.chefia.users.model.CreateUserDTO;
 import com.chefia.users.model.UserDTO;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,10 +25,9 @@ public class UserMapper {
                 createUserDTO.getEmail(),
                 createUserDTO.getLogin(),
                 createUserDTO.getPassword(),
-                this.addressMapper.toEntityList(createUserDTO.getAddress()),
                 Boolean.TRUE,
-                LocalDate.now(),
-                ProfileType.valueOf(createUserDTO.getProfileType().name()));
+                LocalDateTime.now(),
+                createUserDTO.getProfileType().name());
     }
 
     public UserDTO toResponseDTO(User user) {
@@ -39,9 +37,9 @@ public class UserMapper {
         userDTO.setLogin(user.getLogin());
         userDTO.setAddress(this.addressMapper.toDTOList(user.getAddress()));
         userDTO.setActive(user.isActive());
-        userDTO.setCreatedAt(OffsetDateTime.from(user.getCreatedAt()));
-        userDTO.setUpdatedAt(OffsetDateTime.from(user.getUpdatedAt()));
-        userDTO.setDeletedAt(OffsetDateTime.from(user.getDeletedAt()));
+        userDTO.setCreatedAt(user.getCreatedAt().atOffset(ZoneOffset.ofHours(-3)));
+        userDTO.setUpdatedAt(user.getUpdatedAt() != null? OffsetDateTime.from(user.getUpdatedAt()) : null);
+        userDTO.setDeletedAt(user.getDeletedAt() != null? OffsetDateTime.from(user.getDeletedAt()) : null);
         return userDTO;
     }
 
