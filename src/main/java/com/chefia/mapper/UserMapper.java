@@ -38,8 +38,8 @@ public class UserMapper {
         userDTO.setAddress(this.addressMapper.toDTOList(user.getAddress()));
         userDTO.setActive(user.isActive());
         userDTO.setCreatedAt(user.getCreatedAt().atOffset(ZoneOffset.ofHours(-3)));
-        userDTO.setUpdatedAt(user.getUpdatedAt() != null? OffsetDateTime.from(user.getUpdatedAt()) : null);
-        userDTO.setDeletedAt(user.getDeletedAt() != null? OffsetDateTime.from(user.getDeletedAt()) : null);
+        userDTO.setUpdatedAt(user.getUpdatedAt() != null? user.getUpdatedAt().atOffset(ZoneOffset.ofHours(-3)) : null);
+        userDTO.setDeletedAt(user.getDeletedAt() != null? user.getDeletedAt().atOffset(ZoneOffset.ofHours(-3)) : null);
         return userDTO;
     }
 

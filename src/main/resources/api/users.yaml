@@ -192,10 +192,16 @@ components:
           description: Name of the user
           maxLength: 100
           example: Carlos
-        address:
-          type: array
-          items:
-            $ref: "#/components/schemas/Address"
+        email:
+          type: string
+          description: E-mail of the user
+          maxLength: 50
+          example: example@email.com.br
+        login:
+          type: string
+          description: Login of the user
+          maxLength: 30
+          example: rincon123
     PaginatedUsers:
       type: object
       properties:

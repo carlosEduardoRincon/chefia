@@ -5,15 +5,13 @@ import com.chefia.mapper.AddressMapper;
 import com.chefia.mapper.UserMapper;
 import com.chefia.repositories.UserRepository;
 import com.chefia.services.exceptions.UserNotFoundException;
-import com.chefia.users.model.CreateUserDTO;
-import com.chefia.users.model.PaginatedUsersDTO;
-import com.chefia.users.model.UpdateUserDTO;
-import com.chefia.users.model.UserDTO;
+import com.chefia.users.model.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
@@ -26,6 +24,7 @@ public class UserService {
             UserRepository userRepository,
             UserMapper userMapper,
             AddressMapper addressMapper
+
     ) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
@@ -61,6 +60,7 @@ public class UserService {
             mappedAddress.setUser(userToInsert);
             userToInsert.getAddress().add(mappedAddress);
         }
+
         this.userRepository.save(userToInsert);
         return this.userMapper.toResponseDTO(userToInsert);
     }
@@ -69,9 +69,14 @@ public class UserService {
         var userEntity = this.userRepository
                 .findById(id)
                 .orElseThrow(() -> new UserNotFoundException("User not found with id: " + id));
+
         userEntity.setName(updateUserDTO.getName());
-        userEntity.setAddress(this.addressMapper.toEntityList(updateUserDTO.getAddress()));
-        return this.userMapper.toResponseDTO(this.userRepository.save(userEntity));
+        userEntity.setEmail(updateUserDTO.getEmail());
+        userEntity.setLogin(updateUserDTO.getLogin());
+        userEntity.setUpdatedAt(LocalDateTime.now());
+
+        userRepository.flush();
+        return userMapper.toResponseDTO(userEntity);
     }
 
     public void deleteUser(Long id) {
