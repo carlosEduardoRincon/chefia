@@ -4,6 +4,7 @@ import com.chefia.addresses.api.AddressApi;
 import com.chefia.addresses.model.AddressDTO;
 import com.chefia.addresses.model.UpdateAddressDTO;
 import com.chefia.services.AddressService;
+import com.chefia.addresses.model.CreateAddressDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,14 @@ public class AddressController implements AddressApi {
 
     public AddressController(AddressService addressService) {
         this.addressService = addressService;
+    }
+
+    @Override
+    public ResponseEntity<AddressDTO> createAddressForUser(Long userId, CreateAddressDTO createAddressDTO)
+    {
+        log.info("[POST] - Create Address");
+        var createdAddress = this.addressService.createAddressForUser(userId, createAddressDTO);
+        return ResponseEntity.status(201).body(createdAddress);
     }
 
     @Override

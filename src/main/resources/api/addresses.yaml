@@ -16,6 +16,39 @@ tags:
   - name: Addresses
     description: Operations related to restaurant addresses
 paths:
+  /address/for-user/{userId}:
+    post:
+      tags:
+        - Addresses
+      parameters:
+        - name: userId
+          in: path
+          description: ID of the user to create address
+          required: true
+          schema:
+            type: integer
+            format: int64
+      summary: Create a new address for a user
+      operationId: createAddressForUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateAddress"
+      responses:
+        "201":
+          description: Address created
+          headers:
+            Location:
+              schema:
+                type: string
+                format: uri
+                example: /user/123e4567-e89b-12d3-a456-426614174000
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Address"
   /address/{addressId}:
     get:
       tags:
@@ -143,6 +176,34 @@ components:
           description: Id of the address
           maxLength: 10
           example: 15
+        street:
+          type: string
+          description: Street of the user
+          maxLength: 50
+          example: Street 01
+        number:
+          type: integer
+          description: Street number of the user
+          maxLength: 5
+          example: 1001
+        city:
+          type: string
+          description: City of the user
+          maxLength: 50
+          example: Jundiaí
+        state:
+          type: string
+          description: State of the user
+          maxLength: 50
+          example: São Paulo
+        country:
+          type: string
+          description: Country of the user
+          maxLength: 50
+          example: Brazil
+    CreateAddress:
+      type: object
+      properties:
         street:
           type: string
           description: Street of the user

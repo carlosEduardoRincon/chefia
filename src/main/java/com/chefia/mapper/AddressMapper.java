@@ -20,6 +20,15 @@ public class AddressMapper {
         );
     }
 
+    public Address toCreateAddressEntity(com.chefia.addresses.model.CreateAddressDTO createAddressDTO) {
+        return new Address(createAddressDTO.getStreet(),
+                createAddressDTO.getNumber(),
+                createAddressDTO.getCity(),
+                createAddressDTO.getState(),
+                createAddressDTO.getCountry()
+        );
+    }
+
     public com.chefia.addresses.model.AddressDTO toAddressResponseDTO(Address address) {
         var addressDTO = new com.chefia.addresses.model.AddressDTO();
         addressDTO.setId(address.getNrSeqAddress());
