@@ -9,6 +9,7 @@ import com.chefia.users.model.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -19,20 +20,23 @@ public class UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final AddressMapper addressMapper;
+    private final PasswordEncoder passwordEncoder;
 
     public UserService(
             UserRepository userRepository,
             UserMapper userMapper,
-            AddressMapper addressMapper
-
+            AddressMapper addressMapper,
+            PasswordEncoder passwordEncoder
     ) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
         this.addressMapper = addressMapper;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public UserDTO saveUser(CreateUserDTO createUserDTO) {
         var userToInsert = this.userMapper.toEntity(createUserDTO);
+        userToInsert.setPassword(passwordEncoder.encode(userToInsert.getPassword()));
         handleUserAddress(createUserDTO, userToInsert);
 
         this.userRepository.save(userToInsert);
@@ -47,6 +51,7 @@ public class UserService {
         return this.userMapper.toResponseDTO(user.get());
     }
 
+    // todo - está retornando sem o time, apenas a date
     public PaginatedUsersDTO findAll(Integer page, Integer perPage) {
         Pageable pageable = PageRequest.of(page, perPage);
         Page<User> userPage = userRepository.findAll(pageable);
