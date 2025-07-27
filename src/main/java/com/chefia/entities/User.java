@@ -1,6 +1,8 @@
 package com.chefia.entities;
 
+import com.chefia.validation.annotation.StrongPassword;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -20,8 +22,12 @@ public class User {
     @Column(name = "nr_seq_user")
     private Long nrSeqUser;
     private String name;
+    @Email
+    @Column(unique = true)
     private String email;
+    @Column(unique = true)
     private String login;
+    @StrongPassword
     private String password;
     private boolean active;
     @Column(name = "created_at")

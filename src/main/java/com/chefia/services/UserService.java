@@ -6,7 +6,6 @@ import com.chefia.mapper.UserMapper;
 import com.chefia.repositories.UserRepository;
 import com.chefia.services.exceptions.UserNotFoundException;
 import com.chefia.users.model.*;
-import com.chefia.validation.UserValidator;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -19,26 +18,21 @@ import java.util.Optional;
 public class UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
-    private final UserValidator userValidator;
-
     private final AddressMapper addressMapper;
 
     public UserService(
             UserRepository userRepository,
             UserMapper userMapper,
-            UserValidator userValidator,
             AddressMapper addressMapper
 
     ) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
-        this.userValidator = userValidator;
         this.addressMapper = addressMapper;
     }
 
     public UserDTO saveUser(CreateUserDTO createUserDTO) {
         var userToInsert = this.userMapper.toEntity(createUserDTO);
-        handleUserValidation(userToInsert);
         handleUserAddress(createUserDTO, userToInsert);
 
         this.userRepository.save(userToInsert);
@@ -92,10 +86,6 @@ public class UserService {
         userEntity.setActive(status);
         userEntity.setUpdatedAt(LocalDateTime.now());
         userRepository.flush();
-    }
-
-    private void handleUserValidation(User userToInsert) {
-        this.userValidator.validateUser(userToInsert);
     }
 
     private void handleUserAddress(CreateUserDTO createUserDTO, User userToInsert) {
