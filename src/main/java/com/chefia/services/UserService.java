@@ -31,6 +31,19 @@ public class UserService {
         this.addressMapper = addressMapper;
     }
 
+    public UserDTO saveUser(CreateUserDTO createUserDTO) {
+        // Adicionar classe de validação: validar e-mail existente
+        var userToInsert = this.userMapper.toEntity(createUserDTO);
+        for (var address : createUserDTO.getAddress()) {
+            var mappedAddress = this.addressMapper.toCreateAddressEntity(address);
+            mappedAddress.setUser(userToInsert);
+            userToInsert.getAddress().add(mappedAddress);
+        }
+
+        this.userRepository.save(userToInsert);
+        return this.userMapper.toResponseDTO(userToInsert);
+    }
+
     public UserDTO findById(Long id) {
         var user = Optional.ofNullable(this.userRepository
                 .findById(id)
@@ -52,19 +65,6 @@ public class UserService {
                 .items(userDTOs);
     }
 
-    public UserDTO saveUser(CreateUserDTO createUserDTO) {
-        // Adicionar classe de validação: validar e-mail existente
-        var userToInsert = this.userMapper.toEntity(createUserDTO);
-        for (var address : createUserDTO.getAddress()) {
-            var mappedAddress = this.addressMapper.toCreateAddressEntity(address);
-            mappedAddress.setUser(userToInsert);
-            userToInsert.getAddress().add(mappedAddress);
-        }
-
-        this.userRepository.save(userToInsert);
-        return this.userMapper.toResponseDTO(userToInsert);
-    }
-
     public UserDTO updateUser(Long id, UpdateUserDTO updateUserDTO) {
         var userEntity = this.userRepository
                 .findById(id)
@@ -81,5 +81,14 @@ public class UserService {
 
     public void deleteUser(Long id) {
         this.userRepository.deleteById(id);
+    }
+
+    public void changeUserStatus(Long id, Boolean status) {
+        var userEntity = this.userRepository
+                .findById(id)
+                .orElseThrow(() -> new UserNotFoundException("User not found with id: " + id));
+
+        userEntity.setActive(status);
+        userRepository.flush();
     }
 }

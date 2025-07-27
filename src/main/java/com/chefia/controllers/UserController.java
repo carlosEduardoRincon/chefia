@@ -61,4 +61,22 @@ public class UserController implements UserApi {
         this.userService.deleteUser(userId);
         return ResponseEntity.ok().build();
     }
+
+    @Override
+    public ResponseEntity<Void> enableUser(Long userId)
+    {
+        log.info("[PATCH] - Enable User");
+        this.userService.changeUserStatus(userId, Boolean.TRUE);
+        var status = HttpStatus.NO_CONTENT;
+        return ResponseEntity.status(status).build();
+    }
+
+    @Override
+    public ResponseEntity<Void> disableUser(Long userId)
+    {
+        log.info("[PATCH] - Disable User");
+        this.userService.changeUserStatus(userId, Boolean.FALSE);
+        var status = HttpStatus.NO_CONTENT;
+        return ResponseEntity.status(status).build();
+    }
 }
