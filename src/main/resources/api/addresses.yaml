@@ -128,26 +128,31 @@ components:
         street:
           type: string
           description: Street of the user
+          minLength: 5
           maxLength: 50
           example: Street 01
         number:
           type: integer
           description: Street number of the user
+          minLength: 1
           maxLength: 5
           example: 1001
         city:
           type: string
           description: City of the user
+          minLength: 3
           maxLength: 50
           example: Jundiaí
         state:
           type: string
           description: State of the user
+          minLength: 2
           maxLength: 50
           example: São Paulo
         country:
           type: string
           description: Country of the user
+          minLength: 2
           maxLength: 50
           example: Brazil
     PaginatedAddresses:
@@ -207,25 +212,30 @@ components:
         street:
           type: string
           description: Street of the user
+          minLength: 5
           maxLength: 50
           example: Street 01
         number:
           type: integer
           description: Street number of the user
+          minLength: 1
           maxLength: 5
           example: 1001
         city:
           type: string
           description: City of the user
+          minLength: 3
           maxLength: 50
           example: Jundiaí
         state:
           type: string
           description: State of the user
+          minLength: 2
           maxLength: 50
           example: São Paulo
         country:
           type: string
           description: Country of the user
+          minLength: 2
           maxLength: 50
           example: Brazil

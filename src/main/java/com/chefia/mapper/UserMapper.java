@@ -31,6 +31,7 @@ public class UserMapper {
 
     public UserDTO toResponseDTO(User user) {
         var userDTO = new UserDTO();
+
         userDTO.setId(user.getNrSeqUser());
         userDTO.setName(user.getName());
         userDTO.setEmail(user.getEmail());
@@ -39,7 +40,7 @@ public class UserMapper {
         userDTO.setActive(user.isActive());
         userDTO.setCreatedAt(user.getCreatedAt().atOffset(ZoneOffset.ofHours(-3)));
         userDTO.setUpdatedAt(user.getUpdatedAt() != null? user.getUpdatedAt().atOffset(ZoneOffset.ofHours(-3)) : null);
-        userDTO.setDeletedAt(user.getDeletedAt() != null? user.getDeletedAt().atOffset(ZoneOffset.ofHours(-3)) : null);
+
         return userDTO;
     }
 

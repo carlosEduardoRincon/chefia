@@ -194,21 +194,26 @@ components:
         name:
           type: string
           description: Name of the user
+          minLength: 5
           maxLength: 100
           example: Carlos
         email:
           type: string
+          format: email
           description: E-mail of the user
+          minLength: 5
           maxLength: 50
           example: example@email.com.br
         login:
           type: string
           description: Login of the user
+          minLength: 5
           maxLength: 30
           example: rincon123
         password:
           type: string
           description: Password of the user
+          minLength: 5
           maxLength: 30
           example: strongPassword123
         address:
@@ -228,16 +233,19 @@ components:
         name:
           type: string
           description: Name of the user
+          minLength: 5
           maxLength: 100
           example: Carlos
         email:
           type: string
           description: E-mail of the user
+          minLength: 5
           maxLength: 50
           example: example@email.com.br
         login:
           type: string
           description: Login of the user
+          minLength: 5
           maxLength: 30
           example: rincon123
     PaginatedUsers:
@@ -299,11 +307,6 @@ components:
           format: date-time
           description: Date and time when the user was updated
           example: 2025-07-17T21:00:00
-        deletedAt:
-          type: string
-          format: date-time
-          description: Date and time when the user was inactivated
-          example: 2025-07-17T21:00:00
     Address:
       type: object
       properties:
@@ -311,11 +314,13 @@ components:
           type: integer
           format: int64
           description: Id of the address
+          minLength: 1
           maxLength: 10
           example: 15
         street:
           type: string
           description: Street of the user
+          minLength: 5
           maxLength: 50
           example: Street 01
         number:
@@ -326,16 +331,19 @@ components:
         city:
           type: string
           description: City of the user
+          minLength: 3
           maxLength: 50
           example: Jundiaí
         state:
           type: string
           description: State of the user
+          minLength: 2
           maxLength: 50
           example: São Paulo
         country:
           type: string
           description: Country of the user
+          minLength: 2
           maxLength: 50
           example: Brazil
     CreateAddress:
@@ -344,25 +352,30 @@ components:
         street:
           type: string
           description: Street of the user
+          minLength: 5
           maxLength: 50
           example: Street 01
         number:
           type: integer
           description: Street number of the user
+          minLength: 1
           maxLength: 5
           example: 1001
         city:
           type: string
           description: City of the user
+          minLength: 3
           maxLength: 50
           example: Jundiaí
         state:
           type: string
           description: State of the user
+          minLength: 2
           maxLength: 50
           example: São Paulo
         country:
           type: string
           description: Country of the user
+          minLength: 2
           maxLength: 50
           example: Brazil

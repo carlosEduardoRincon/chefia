@@ -6,6 +6,7 @@ import com.chefia.mapper.UserMapper;
 import com.chefia.repositories.UserRepository;
 import com.chefia.services.exceptions.UserNotFoundException;
 import com.chefia.users.model.*;
+import com.chefia.validation.UserValidator;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -18,27 +19,27 @@ import java.util.Optional;
 public class UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final UserValidator userValidator;
+
     private final AddressMapper addressMapper;
 
     public UserService(
             UserRepository userRepository,
             UserMapper userMapper,
+            UserValidator userValidator,
             AddressMapper addressMapper
 
     ) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
+        this.userValidator = userValidator;
         this.addressMapper = addressMapper;
     }
 
     public UserDTO saveUser(CreateUserDTO createUserDTO) {
-        // Adicionar classe de validação: validar e-mail existente
         var userToInsert = this.userMapper.toEntity(createUserDTO);
-        for (var address : createUserDTO.getAddress()) {
-            var mappedAddress = this.addressMapper.toCreateAddressEntity(address);
-            mappedAddress.setUser(userToInsert);
-            userToInsert.getAddress().add(mappedAddress);
-        }
+        handleUserValidation(userToInsert);
+        handleUserAddress(createUserDTO, userToInsert);
 
         this.userRepository.save(userToInsert);
         return this.userMapper.toResponseDTO(userToInsert);
@@ -89,6 +90,19 @@ public class UserService {
                 .orElseThrow(() -> new UserNotFoundException("User not found with id: " + id));
 
         userEntity.setActive(status);
+        userEntity.setUpdatedAt(LocalDateTime.now());
         userRepository.flush();
+    }
+
+    private void handleUserValidation(User userToInsert) {
+        this.userValidator.validateUser(userToInsert);
+    }
+
+    private void handleUserAddress(CreateUserDTO createUserDTO, User userToInsert) {
+        for (var address : createUserDTO.getAddress()) {
+            var mappedAddress = this.addressMapper.toCreateAddressEntity(address);
+            mappedAddress.setUser(userToInsert);
+            userToInsert.getAddress().add(mappedAddress);
+        }
     }
 }
