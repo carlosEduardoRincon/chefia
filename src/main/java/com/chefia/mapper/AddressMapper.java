@@ -1,7 +1,7 @@
 package com.chefia.mapper;
 
+import com.chefia.addresses.model.UpdateAddressDTO;
 import com.chefia.entities.Address;
-import com.chefia.entities.User;
 import com.chefia.users.model.AddressDTO;
 import com.chefia.users.model.CreateAddressDTO;
 import org.springframework.stereotype.Component;
@@ -57,5 +57,16 @@ public class AddressMapper {
             addressDTOList.add(this.toResponseDTO(addressEntity));
         }
         return addressDTOList;
+    }
+
+    public Address toUpdateAddressEntity(Address address, UpdateAddressDTO updateAddressDTO) {
+        return new Address(address.getNrSeqAddress(),
+                updateAddressDTO.getStreet(),
+                updateAddressDTO.getNumber(),
+                updateAddressDTO.getCity(),
+                updateAddressDTO.getState(),
+                updateAddressDTO.getCountry(),
+                address.getUser()
+        );
     }
 }

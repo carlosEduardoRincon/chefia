@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
@@ -35,5 +34,9 @@ public class Address {
         this.city = city;
         this.state = state;
         this.country = country;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

@@ -50,8 +50,7 @@ public class UserController implements UserApi {
     {
         log.info("[PUT] - Update User");
         var updatedUser = this.userService.updateUser(userId, body);
-        var status = HttpStatus.NO_CONTENT;
-        return ResponseEntity.status(status).body(updatedUser);
+        return ResponseEntity.ok().body(updatedUser);
     }
 
     @Override

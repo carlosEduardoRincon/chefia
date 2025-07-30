@@ -2,7 +2,9 @@ package com.chefia.mapper;
 
 import com.chefia.entities.User;
 import com.chefia.users.model.CreateUserDTO;
+import com.chefia.users.model.UpdateUserDTO;
 import com.chefia.users.model.UserDTO;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -13,9 +15,11 @@ import java.util.List;
 @Component
 public class UserMapper {
 
+    private final PasswordEncoder passwordEncoder;
     private final AddressMapper addressMapper;
 
-    public UserMapper(AddressMapper addressMapper) {
+    public UserMapper(PasswordEncoder passwordEncoder, AddressMapper addressMapper) {
+        this.passwordEncoder = passwordEncoder;
         this.addressMapper = addressMapper;
     }
 
@@ -23,7 +27,7 @@ public class UserMapper {
         return new User(createUserDTO.getName(),
                 createUserDTO.getEmail(),
                 createUserDTO.getLogin(),
-                createUserDTO.getPassword(),
+                passwordEncoder.encode(createUserDTO.getPassword()),
                 Boolean.TRUE,
                 LocalDateTime.now(),
                 createUserDTO.getProfileType().name());
@@ -50,5 +54,19 @@ public class UserMapper {
             usersResponse.add(this.toResponseDTO(user));
         }
         return usersResponse;
+    }
+
+    public User toUpdateEntity(User userEntity, UpdateUserDTO updateUserDTO) {
+        return new User(userEntity.getNrSeqUser(),
+                updateUserDTO.getName(),
+                updateUserDTO.getEmail(),
+                updateUserDTO.getLogin(),
+                userEntity.getPassword(),
+                Boolean.TRUE,
+                userEntity.getCreatedAt(),
+                LocalDateTime.now(),
+                userEntity.getProfileType(),
+                userEntity.getAddress()
+        );
     }
 }

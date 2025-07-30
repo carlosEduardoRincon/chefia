@@ -20,23 +20,19 @@ public class UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final AddressMapper addressMapper;
-    private final PasswordEncoder passwordEncoder;
 
     public UserService(
             UserRepository userRepository,
             UserMapper userMapper,
-            AddressMapper addressMapper,
-            PasswordEncoder passwordEncoder
+            AddressMapper addressMapper
     ) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
         this.addressMapper = addressMapper;
-        this.passwordEncoder = passwordEncoder;
     }
 
     public UserDTO saveUser(CreateUserDTO createUserDTO) {
         var userToInsert = this.userMapper.toEntity(createUserDTO);
-        userToInsert.setPassword(passwordEncoder.encode(userToInsert.getPassword()));
         handleUserAddress(createUserDTO, userToInsert);
 
         this.userRepository.save(userToInsert);
@@ -54,9 +50,9 @@ public class UserService {
     // todo - está retornando sem o time, apenas a date
     public PaginatedUsersDTO findAll(Integer page, Integer perPage) {
         Pageable pageable = PageRequest.of(page, perPage);
-        Page<User> userPage = userRepository.findAll(pageable);
+        Page<User> userPage = this.userRepository.findAll(pageable);
 
-        var userDTOs = userMapper.toResponseListDTO(userPage.getContent());
+        var userDTOs = this.userMapper.toResponseListDTO(userPage.getContent());
 
         return new PaginatedUsersDTO()
                 .page(page)
@@ -70,10 +66,7 @@ public class UserService {
                 .findById(id)
                 .orElseThrow(() -> new UserNotFoundException("User not found with id: " + id));
 
-        userEntity.setName(updateUserDTO.getName());
-        userEntity.setEmail(updateUserDTO.getEmail());
-        userEntity.setLogin(updateUserDTO.getLogin());
-        userEntity.setUpdatedAt(LocalDateTime.now());
+        userEntity = this.userMapper.toUpdateEntity(userEntity, updateUserDTO);
 
         userRepository.flush();
         return userMapper.toResponseDTO(userEntity);
@@ -89,7 +82,7 @@ public class UserService {
                 .orElseThrow(() -> new UserNotFoundException("User not found with id: " + id));
 
         userEntity.setActive(status);
-        userEntity.setUpdatedAt(LocalDateTime.now());
+        userEntity.updatedAt();
         userRepository.flush();
     }
 

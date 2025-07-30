@@ -41,8 +41,7 @@ public class AddressController implements AddressApi {
     {
         log.info("[PUT] - Update Address");
         var updatedAddress = this.addressService.updateAddress(addressId, body);
-        var status = HttpStatus.NO_CONTENT;
-        return ResponseEntity.status(status).body(updatedAddress);
+        return ResponseEntity.ok().body(updatedAddress);
     }
 
     @Override

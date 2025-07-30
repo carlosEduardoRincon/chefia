@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
@@ -55,5 +54,13 @@ public class User {
         this.createdAt = createdAt;
         this.profileType = profileType;
         this.address = new ArrayList<>();
+    }
+
+    public void setActive(Boolean status) {
+        this.active = status;
+    }
+
+    public void updatedAt() {
+        this.updatedAt = LocalDateTime.now();
     }
 }
