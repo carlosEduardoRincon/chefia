@@ -6,8 +6,8 @@ CREATE TABLE users
     login        VARCHAR(30) UNIQUE NOT NULL,
     password     VARCHAR(255)        NOT NULL,
     active       BOOLEAN            NOT NULL DEFAULT TRUE,
-    created_at   DATE,
-    updated_at   DATE,
+    created_at   TIMESTAMP,
+    updated_at   TIMESTAMP,
     profile_type VARCHAR(30),
     CONSTRAINT chk_profile_type CHECK (profile_type IN ('CLIENT', 'OWNER'))
 );
