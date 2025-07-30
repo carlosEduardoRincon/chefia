@@ -59,7 +59,7 @@ public class UserController implements UserApi {
     {
         log.info("[DELETE] - Remove User");
         this.userService.deleteUser(userId);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
     @Override
