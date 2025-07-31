@@ -47,7 +47,6 @@ public class UserService {
         return this.userMapper.toResponseDTO(user.get());
     }
 
-    // todo - está retornando sem o time, apenas a date
     public PaginatedUsersDTO findAll(Integer page, Integer perPage) {
         Pageable pageable = PageRequest.of(page, perPage);
         Page<User> userPage = this.userRepository.findAll(pageable);

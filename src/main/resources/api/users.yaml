@@ -16,6 +16,25 @@ tags:
   - name: Users
     description: Operations related to restaurant users
 paths:
+  /login:
+    post:
+      tags:
+        - Users
+      summary: Login user
+      operationId: login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginUser"
+      responses:
+        "200":
+          description: Login successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LoginResponse"
   /user:
     get:
       tags:
@@ -379,3 +398,27 @@ components:
           minLength: 2
           maxLength: 50
           example: Brazil
+    LoginUser:
+      type: object
+      required:
+        - login
+        - password
+      properties:
+        login:
+          type: string
+          description: Login of the user
+          minLength: 5
+          maxLength: 30
+          example: rincon123
+        password:
+          type: string
+          description: Password of the user
+          minLength: 5
+          maxLength: 30
+          example: strongPassword123
+    LoginResponse:
+      type: object
+      properties:
+        token:
+          type: string
+          description: JWT token
