@@ -2,10 +2,7 @@ package com.chefia.controllers;
 
 import com.chefia.services.UserService;
 import com.chefia.users.api.UserApi;
-import com.chefia.users.model.CreateUserDTO;
-import com.chefia.users.model.PaginatedUsersDTO;
-import com.chefia.users.model.UpdateUserDTO;
-import com.chefia.users.model.UserDTO;
+import com.chefia.users.model.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -75,6 +72,15 @@ public class UserController implements UserApi {
     {
         log.info("[PATCH] - Disable User");
         this.userService.changeUserStatus(userId, Boolean.FALSE);
+        var status = HttpStatus.NO_CONTENT;
+        return ResponseEntity.status(status).build();
+    }
+
+    @Override
+    public ResponseEntity<Void> changePassword(Long userId, ChangePasswordDTO changePasswordDTO)
+    {
+        log.info("[PATCH] - Change Password");
+        this.userService.changePassword(userId, changePasswordDTO);
         var status = HttpStatus.NO_CONTENT;
         return ResponseEntity.status(status).build();
     }

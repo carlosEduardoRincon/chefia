@@ -1,4 +1,4 @@
-package com.chefia.services.exceptions;
+package com.chefia.exceptions;
 
 public class AddressNotFoundException extends RuntimeException{
     public AddressNotFoundException(String message){

@@ -4,6 +4,7 @@ import com.chefia.entities.User;
 import com.chefia.users.model.CreateUserDTO;
 import com.chefia.users.model.UpdateUserDTO;
 import com.chefia.users.model.UserDTO;
+import com.chefia.validation.annotation.StrongPassword;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -67,6 +68,20 @@ public class UserMapper {
                 LocalDateTime.now(),
                 userEntity.getProfileType(),
                 userEntity.getAddress()
+        );
+    }
+
+    public User toUpdatePasswordEntity(User user, String newPassword) {
+        return new User(user.getNrSeqUser(),
+                user.getName(),
+                user.getEmail(),
+                user.getLogin(),
+                newPassword,
+                user.isActive(),
+                user.getCreatedAt(),
+                LocalDateTime.now(),
+                user.getProfileType(),
+                user.getAddress()
         );
     }
 }

@@ -5,8 +5,8 @@ import com.chefia.addresses.model.UpdateAddressDTO;
 import com.chefia.mapper.AddressMapper;
 import com.chefia.repositories.AddressRepository;
 import com.chefia.repositories.UserRepository;
-import com.chefia.services.exceptions.AddressNotFoundException;
-import com.chefia.services.exceptions.UserNotFoundException;
+import com.chefia.exceptions.AddressNotFoundException;
+import com.chefia.exceptions.UserNotFoundException;
 import com.chefia.addresses.model.CreateAddressDTO;
 import org.springframework.stereotype.Service;
 

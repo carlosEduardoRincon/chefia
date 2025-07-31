@@ -1,10 +1,13 @@
 package com.chefia.services;
 
 import com.chefia.entities.User;
+import com.chefia.exceptions.PasswordAlreadyUsed;
+import com.chefia.exceptions.PasswordNotMatch;
+import com.chefia.exceptions.UserNotStrongPassword;
 import com.chefia.mapper.AddressMapper;
 import com.chefia.mapper.UserMapper;
 import com.chefia.repositories.UserRepository;
-import com.chefia.services.exceptions.UserNotFoundException;
+import com.chefia.exceptions.UserNotFoundException;
 import com.chefia.users.model.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -12,23 +15,27 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.Optional;
+
+import static com.chefia.validation.StrongPasswordValidator.isValid;
 
 @Service
 public class UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final AddressMapper addressMapper;
+    private final PasswordEncoder passwordEncoder;
 
     public UserService(
             UserRepository userRepository,
             UserMapper userMapper,
-            AddressMapper addressMapper
+            AddressMapper addressMapper,
+            PasswordEncoder passwordEncoder
     ) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
         this.addressMapper = addressMapper;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public UserDTO saveUser(CreateUserDTO createUserDTO) {
@@ -91,5 +98,26 @@ public class UserService {
             mappedAddress.setUser(userToInsert);
             userToInsert.getAddress().add(mappedAddress);
         }
+    }
+
+    public void changePassword(Long id, ChangePasswordDTO changePasswordDTO) {
+        var userEntity = this.userRepository
+                .findById(id)
+                .orElseThrow(() -> new UserNotFoundException("User not found with id: " + id));
+
+        boolean passwordMatches = this.passwordEncoder.matches(changePasswordDTO.getOldPassword(), userEntity.getPassword());
+        boolean newPasswordIsEqualToOld = changePasswordDTO.getOldPassword().equals(changePasswordDTO.getNewPassword());
+
+        if (!passwordMatches) {
+            throw new PasswordNotMatch("Wrong password");
+        } else if (newPasswordIsEqualToOld) {
+            throw new PasswordAlreadyUsed("The passwords are equals");
+        } else if (!isValid(changePasswordDTO.getNewPassword())) {
+            throw new UserNotStrongPassword("New password not strong");
+        }
+
+        userEntity = this.userMapper.toUpdatePasswordEntity(userEntity, this.passwordEncoder.encode(changePasswordDTO.getNewPassword()));
+        this.userRepository.save(userEntity);
+        this.userRepository.flush();
     }
 }

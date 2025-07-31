@@ -1,4 +1,4 @@
-package com.chefia.services.exceptions;
+package com.chefia.exceptions;
 
 public class UserNotFoundException extends RuntimeException {
     public UserNotFoundException(String message){

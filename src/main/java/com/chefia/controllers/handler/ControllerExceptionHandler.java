@@ -2,10 +2,7 @@ package com.chefia.controllers.handler;
 
 import com.chefia.dtos.DefaultExceptionDTO;
 import com.chefia.dtos.ValidationErrorDTO;
-import com.chefia.services.exceptions.AddressNotFoundException;
-import com.chefia.services.exceptions.UserEmailAlreadyExist;
-import com.chefia.services.exceptions.UserNotFoundException;
-import com.chefia.services.exceptions.UserNotStrongPassword;
+import com.chefia.exceptions.*;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -15,15 +12,12 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @ControllerAdvice
 public class ControllerExceptionHandler {
 
-    // todo: evolução trocar por uma enum para conseguir definir o campo e assim padronizar a resposta
     private static final Map<String, String> CONSTRAINT_MESSAGES = Map.of(
             "users_email_key", "E-mail already exists",
             "users_login_key", "Login already exists"
@@ -91,5 +85,17 @@ public class ControllerExceptionHandler {
         }
 
         return ResponseEntity.status(status.value()).body(new ValidationErrorDTO(errors, status.value()));
+    }
+
+    @ExceptionHandler(PasswordNotMatch.class)
+    public ResponseEntity<DefaultExceptionDTO> handlerPasswordNotMatch(PasswordNotMatch passwordNotMatch) {
+        var status = HttpStatus.NOT_FOUND;
+        return ResponseEntity.status(status.value()).body(new DefaultExceptionDTO(passwordNotMatch.getMessage(), status.value()));
+    }
+
+    @ExceptionHandler(PasswordAlreadyUsed.class)
+    public ResponseEntity<DefaultExceptionDTO> handlerPasswordAlreadyUsed(PasswordAlreadyUsed passwordAlreadyUsed) {
+        var status = HttpStatus.NOT_FOUND;
+        return ResponseEntity.status(status.value()).body(new DefaultExceptionDTO(passwordAlreadyUsed.getMessage(), status.value()));
     }
 }

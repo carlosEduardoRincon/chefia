@@ -160,6 +160,31 @@ paths:
           description: User deleted
         "400":
           description: Bad request
+  /user/{userId}/password:
+    patch:
+      tags:
+        - Users
+      summary: Change user password
+      operationId: changePassword
+      parameters:
+        - name: userId
+          in: path
+          description: ID of the user to update
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ChangePassword"
+      responses:
+        "204":
+          description: Password updated
+        "404":
+          description: User not found
   /user/enable/{userId}:
     patch:
       tags:
@@ -422,3 +447,10 @@ components:
         token:
           type: string
           description: JWT token
+    ChangePassword:
+      type: object
+      properties:
+        old-password:
+          type: string
+        new-password:
+          type: string
