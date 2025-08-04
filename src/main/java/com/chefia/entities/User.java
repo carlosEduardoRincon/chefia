@@ -67,6 +67,14 @@ public class User implements UserDetails {
         this.updatedAt = LocalDateTime.now();
     }
 
+    public void setAddress(List<Address> address) {
+        this.address = address;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of();
