@@ -26,6 +26,10 @@ logging:
         jdbc:
           datasource: DEBUG
 
+springdoc:
+  swagger-ui:
+    url: /api/users.yaml
+
 api:
   security:
     token:
