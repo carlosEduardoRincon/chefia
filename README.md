@@ -4,7 +4,7 @@ O Chefia é uma aplicação web desenvolvida para atender restaurante da região
 
 ## 🚀 Tecnologias Utilizadas
 
-- ✅ Java 17+
+- ✅ Java 21
 - ✅ Spring Boot
 - ✅ Spring Security
 - ✅ JPA 
