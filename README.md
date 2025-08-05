@@ -32,7 +32,7 @@ O sistema estará disponível em: http://localhost:8080
 Este sistema utiliza autenticação baseada em JWT (JSON Web Token) para proteger seus endpoints. Após realizar login, será gerado um token que deverá ser enviado no cabeçalho das requisições autenticadas:
 
 Authorization: Bearer <seu_token_jwt>
-Garanta que o token seja incluído corretamente em todas as requisições às rotas protegidas.
+- Garanta que o token seja incluído corretamente em todas as requisições às rotas protegidas.
 
 ## 📚 Documentação da API
   - Swagger UI - A documentação interativa da API pode ser acessada diretamente no navegador:
