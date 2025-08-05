@@ -1,6 +1,6 @@
 # 🍽️ Chefia - Sistema de Gestão para Restaurantes
 
-O Chefia é uma aplicação web desenvolvida para atender restaurante da região. A aplicação permite o gerenciamento de usuários e seus respectivos endereços. O objetivo central é proporcionar uma solução acessível, escalável e segura, que substitua sistemas caros e isolados por uma plataforma compartilhada, moderna e fácil de usar.
+O Chefia é uma microsserviço backend desenvolvido para atender a gestão de restaurantes. A aplicação permite o gerenciamento de usuários e seus respectivos endereços. O objetivo central é proporcionar uma solução acessível, escalável e segura. 
 
 ## 🚀 Tecnologias Utilizadas
 
