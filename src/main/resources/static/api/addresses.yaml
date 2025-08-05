@@ -1,0 +1,241 @@
+openapi: 3.0.3
+info:
+  title: Users API
+  version: 1.0.0
+  description: API for managing restaurant addresses
+  contact:
+    name: Carlos Eduardo Rincon Junior
+    email: carlos.rincon.junior@aluno.ifsp.edu.br
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+servers:
+  - url: http://localhost:8080/
+    description: Local server
+tags:
+  - name: Addresses
+    description: Operations related to restaurant addresses
+paths:
+  /address/for-user/{userId}:
+    post:
+      tags:
+        - Addresses
+      parameters:
+        - name: userId
+          in: path
+          description: ID of the user to create address
+          required: true
+          schema:
+            type: integer
+            format: int64
+      summary: Create a new address for a user
+      operationId: createAddressForUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateAddress"
+      responses:
+        "201":
+          description: Address created
+          headers:
+            Location:
+              schema:
+                type: string
+                format: uri
+                example: /user/123e4567-e89b-12d3-a456-426614174000
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Address"
+  /address/{addressId}:
+    get:
+      tags:
+        - Addresses
+      summary: Get a address by ID
+      operationId: getAddress
+      parameters:
+        - name: addressId
+          in: path
+          description: ID of the address to return
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: Address found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Address"
+        "400":
+          description: Bad request
+        "404":
+          description: User not found
+    put:
+      tags:
+        - Addresses
+      summary: Update a address
+      operationId: updateAddress
+      parameters:
+        - name: addressId
+          in: path
+          description: ID of the address to update
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateAddress"
+      responses:
+        "200":
+          description: Address updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Address"
+        "404":
+          description: Address not found
+    delete:
+      tags:
+        - Addresses
+      summary: Delete a address
+      operationId: deleteAddress
+      parameters:
+        - name: addressId
+          in: path
+          description: ID of the address to delete
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "204":
+          description: Address deleted
+        "400":
+          description: Bad request
+components:
+  schemas:
+    UpdateAddress:
+      type: object
+      properties:
+        street:
+          type: string
+          description: Street of the user
+          minLength: 5
+          maxLength: 50
+          example: Street 01
+        number:
+          type: integer
+          description: Street number of the user
+          minLength: 1
+          maxLength: 5
+          example: 1001
+        city:
+          type: string
+          description: City of the user
+          minLength: 3
+          maxLength: 50
+          example: Jundiaí
+        state:
+          type: string
+          description: State of the user
+          minLength: 2
+          maxLength: 50
+          example: São Paulo
+        country:
+          type: string
+          description: Country of the user
+          minLength: 2
+          maxLength: 50
+          example: Brazil
+    PaginatedAddresses:
+      type: object
+      properties:
+        page:
+          type: integer
+          example: 1
+        perPage:
+          type: integer
+          example: 10
+        total:
+          type: integer
+          format: int64
+          example: 100
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/Address"
+    Address:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: Id of the address
+          maxLength: 10
+          example: 15
+        street:
+          type: string
+          description: Street of the user
+          maxLength: 50
+          example: Street 01
+        number:
+          type: integer
+          description: Street number of the user
+          maxLength: 5
+          example: 1001
+        city:
+          type: string
+          description: City of the user
+          maxLength: 50
+          example: Jundiaí
+        state:
+          type: string
+          description: State of the user
+          maxLength: 50
+          example: São Paulo
+        country:
+          type: string
+          description: Country of the user
+          maxLength: 50
+          example: Brazil
+    CreateAddress:
+      type: object
+      properties:
+        street:
+          type: string
+          description: Street of the user
+          minLength: 5
+          maxLength: 50
+          example: Street 01
+        number:
+          type: integer
+          description: Street number of the user
+          minLength: 1
+          maxLength: 5
+          example: 1001
+        city:
+          type: string
+          description: City of the user
+          minLength: 3
+          maxLength: 50
+          example: Jundiaí
+        state:
+          type: string
+          description: State of the user
+          minLength: 2
+          maxLength: 50
+          example: São Paulo
+        country:
+          type: string
+          description: Country of the user
+          minLength: 2
+          maxLength: 50
+          example: Brazil

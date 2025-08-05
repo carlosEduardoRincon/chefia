@@ -9,5 +9,4 @@ public class ChefiaApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(ChefiaApplication.class, args);
 	}
-
 }

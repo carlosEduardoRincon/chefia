@@ -1,0 +1,37 @@
+services:
+  app:
+    container_name: chefia_app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      SPRING_PROFILES_ACTIVE: default
+      POSTGRES_DB: chefia
+      POSTGRES_USER: chefia
+      POSTGRES_PASSWORD: chefia123
+    networks:
+      - rede
+  db:
+    image: postgres:16
+    container_name: chefia_db
+    environment:
+      POSTGRES_DB: chefia
+      POSTGRES_USER: chefia
+      POSTGRES_PASSWORD: chefia123
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - rede
+
+networks:
+  rede:
+    driver: bridge
+
+volumes:
+  pgdata:
