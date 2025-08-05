@@ -39,10 +39,10 @@ Garanta que o token seja incluído corretamente em todas as requisições às ro
 ## 📚 Documentação da API
   - Swagger UI - A documentação interativa da API pode ser acessada diretamente no navegador:
   
-  http://localhost:8080/swagger-ui.html
-  
+  **Documentação da API:** http://localhost:8080/swagger
+
 ## 📂 Documentação Adicional
   No diretório /docs, você encontrará:
   - Arquivos de referência técnica do projeto
-  -  A coleção do Postman contendo os endpoints disponíveis, já prontos para teste
+  - A coleção do Postman contendo os endpoints disponíveis, já prontos para teste
 
