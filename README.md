@@ -37,7 +37,8 @@ Authorization: Bearer <seu_token_jwt>
 ## 📚 Documentação da API
   - Swagger UI - A documentação interativa da API pode ser acessada diretamente no navegador:
   
-  **Documentação da API:** http://localhost:8080/swagger
+  **Documentação da API:** [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
+  - Para visualizar a aba de endereços buscar por '/api/addresses.yaml'
 
 ## 📂 Documentação Adicional
   No diretório /docs, você encontrará:
