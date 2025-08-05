@@ -16,36 +16,6 @@ O sistema de gestão para restaurantes é uma aplicação web desenvolvida para 
 - ✅ Lombok
 - ✅ OpenAPI / Swagger
 
-
-## 🧱 Estrutura do Projeto
-
-📦 chefia
-├── 📁 src
-│ └── 📁 main
-│   ├── 📁 java/com/chefia
-│     ├── 📁 controllers
-│     ├── 📁 dtos
-│     ├── 📁 entities
-│     ├── 📁 exceptions
-│     ├── 📁 infra
-│     ├── 📁 mapper
-│     ├── 📁 repositories
-│     ├── 📁 services
-│     ├── 📁 validation
-│ └── 📁 resources
-│   ├── 📁 api
-|     ├── 📄 addresses.yaml
-|     ├── 📄 users.yaml
-│   ├── 📁 db
-│     ├── 📁 migration
-|   ├── 📄 application.yaml
-|   ├── 📄 application-local.yaml
-│ 
-├── 📄 Dockerfile
-├── 📄 docker-compose.yml
-├── 📄 README.md
-├── 📄 pom.xml
-
 ## 🐳 Como Rodar com Docker Compose
 
 ### Pré-requisitos:
@@ -60,12 +30,21 @@ docker-compose up --build
 
 O sistema estará disponível em: http://localhost:8080
 
-## 🔐 Autenticação
-O sistema utiliza autenticação baseada em JWT. Após o login, será fornecido um token que deverá ser enviado no header Authorization nas próximas requisições protegidas:
+## 🔐 Autenticação com JWT
+Este sistema utiliza autenticação baseada em JWT (JSON Web Token) para proteger seus endpoints. Após realizar login, será gerado um token que deverá ser enviado no cabeçalho das requisições autenticadas:
 
-Authorization: Bearer <token>
+Authorization: Bearer <seu_token_jwt>
+Garanta que o token seja incluído corretamente em todas as requisições às rotas protegidas.
 
 ## 📚 Documentação da API
-Acesse a documentação interativa via Swagger:
+  #🔎 Swagger UI
+  A documentação interativa da API pode ser acessada diretamente no navegador:
+  
+  http://localhost:8080/swagger-ui.html
+  Essa interface permite visualizar e testar os endpoints de forma prática e rápida.
 
-http://localhost:8080/swagger-ui.html
+## 📂 Documentação Adicional
+  No diretório /docs, você encontrará:
+  - Arquivos de referência técnica do projeto
+  -  A coleção do Postman contendo os endpoints disponíveis, já prontos para teste
+
