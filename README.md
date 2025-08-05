@@ -37,12 +37,10 @@ Authorization: Bearer <seu_token_jwt>
 Garanta que o token seja incluído corretamente em todas as requisições às rotas protegidas.
 
 ## 📚 Documentação da API
-  #🔎 Swagger UI
-  A documentação interativa da API pode ser acessada diretamente no navegador:
+  - Swagger UI - A documentação interativa da API pode ser acessada diretamente no navegador:
   
   http://localhost:8080/swagger-ui.html
-  Essa interface permite visualizar e testar os endpoints de forma prática e rápida.
-
+  
 ## 📂 Documentação Adicional
   No diretório /docs, você encontrará:
   - Arquivos de referência técnica do projeto
