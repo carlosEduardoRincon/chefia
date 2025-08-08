@@ -4,7 +4,7 @@ O Chefia é uma microsserviço backend desenvolvido para atender a gestão de re
 
 ## 🚀 Tecnologias Utilizadas
 
-- ✅ Java 21
+- ✅ Java 17
 - ✅ Spring Boot
 - ✅ Spring Security
 - ✅ JPA 
