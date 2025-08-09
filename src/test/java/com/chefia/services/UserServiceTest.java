@@ -48,7 +48,7 @@ class UserServiceTest {
         var expectedDTO = new UserDTO();
 
         when(this.userMapper.toEntity(createUserDTO)).thenReturn(user);
-        when(this.userMapper.toResponseDTO(user)).thenReturn(expectedDTO);
+        when(this.userMapper.toUserResponseDTO(user)).thenReturn(expectedDTO);
 
         var result = this.userService.saveUser(createUserDTO);
 
@@ -63,7 +63,7 @@ class UserServiceTest {
         var expectedDTO = new UserDTO();
 
         when(this.userRepository.findById(id)).thenReturn(Optional.of(user));
-        when(this.userMapper.toResponseDTO(user)).thenReturn(expectedDTO);
+        when(this.userMapper.toUserResponseDTO(user)).thenReturn(expectedDTO);
 
         var result = this.userService.findById(id);
 
@@ -98,12 +98,10 @@ class UserServiceTest {
         var id = 1L;
         var updateDTO = new UpdateUserDTO();
         var existingUser = new User();
-        var updatedUser = new User();
         var expectedDTO = new UserDTO();
 
         when(this.userRepository.findById(id)).thenReturn(Optional.of(existingUser));
-        when(this.userMapper.toUpdateEntity(existingUser, updateDTO)).thenReturn(updatedUser);
-        when(this.userMapper.toResponseDTO(updatedUser)).thenReturn(expectedDTO);
+        when(this.userMapper.toUserResponseDTO(existingUser)).thenReturn(expectedDTO);
 
         var result = this.userService.updateUser(id, updateDTO);
 

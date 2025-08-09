@@ -34,7 +34,7 @@ public class UserMapper {
                 createUserDTO.getProfileType().name());
     }
 
-    public UserDTO toResponseDTO(User user) {
+    public UserDTO toUserResponseDTO(User user) {
         var userDTO = new UserDTO();
 
         userDTO.setId(user.getNrSeqUser());
@@ -52,23 +52,9 @@ public class UserMapper {
     public List<UserDTO> toResponseListDTO(List<User> userList) {
         var usersResponse = new ArrayList<UserDTO>();
         for (var user : userList) {
-            usersResponse.add(this.toResponseDTO(user));
+            usersResponse.add(this.toUserResponseDTO(user));
         }
         return usersResponse;
-    }
-
-    public User toUpdateEntity(User userEntity, UpdateUserDTO updateUserDTO) {
-        return new User(userEntity.getNrSeqUser(),
-                updateUserDTO.getName(),
-                updateUserDTO.getEmail(),
-                updateUserDTO.getLogin(),
-                userEntity.getPassword(),
-                Boolean.TRUE,
-                userEntity.getCreatedAt(),
-                LocalDateTime.now(),
-                userEntity.getProfileType(),
-                userEntity.getAddress()
-        );
     }
 
     public User toUpdatePasswordEntity(User user, String newPassword) {

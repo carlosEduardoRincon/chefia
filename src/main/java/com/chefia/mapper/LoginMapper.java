@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class LoginMapper {
-    public LoginResponseDTO toResponseDTO(String token) {
+    public LoginResponseDTO toUserResponseDTO(String token) {
         var loginResponseDTO = new LoginResponseDTO();
 
         loginResponseDTO.setToken(token);

@@ -52,13 +52,13 @@ class LoginServiceTest {
 
         when(authentication.getPrincipal()).thenReturn(user);
         when(this.tokenService.generateJWT(user)).thenReturn(jwt);
-        when(this.loginMapper.toResponseDTO(jwt)).thenReturn(expectedResponse);
+        when(this.loginMapper.toUserResponseDTO(jwt)).thenReturn(expectedResponse);
 
         var result = this.loginService.login(loginDTO);
 
         assertEquals(expectedResponse, result);
         verify(this.authenticationManager).authenticate(any(UsernamePasswordAuthenticationToken.class));
         verify(this.tokenService).generateJWT(user);
-        verify(this.loginMapper).toResponseDTO(jwt);
+        verify(this.loginMapper).toUserResponseDTO(jwt);
     }
 }

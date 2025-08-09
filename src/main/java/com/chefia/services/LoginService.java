@@ -30,6 +30,6 @@ public class LoginService {
         var authenticationToken = new UsernamePasswordAuthenticationToken(loginDTO.getLogin(), loginDTO.getPassword());
         var authentication = this.authenticationManager.authenticate(authenticationToken);
         var tokenJWT = this.tokenService.generateJWT((User) authentication.getPrincipal());
-        return this.loginMapper.toResponseDTO(tokenJWT);
+        return this.loginMapper.toUserResponseDTO(tokenJWT);
     }
 }
