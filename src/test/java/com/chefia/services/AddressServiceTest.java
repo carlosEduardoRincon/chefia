@@ -95,14 +95,12 @@ class AddressServiceTest {
         var addressId = 1L;
         var existingEntity = new Address();
         var updateDTO = new UpdateAddressDTO();
-        var updatedEntity = new Address();
         var expectedDTO = new AddressDTO();
 
         when(addressRepository.findById(addressId)).thenReturn(Optional.of(existingEntity));
-        when(addressMapper.toUpdateAddressEntity(existingEntity, updateDTO)).thenReturn(updatedEntity);
-        when(addressMapper.toAddressResponseDTO(updatedEntity)).thenReturn(expectedDTO);
+        when(addressMapper.toAddressResponseDTO(existingEntity)).thenReturn(expectedDTO);
 
-        AddressDTO result = addressService.updateAddress(addressId, updateDTO);
+        var result = addressService.updateAddress(addressId, updateDTO);
 
         assertEquals(expectedDTO, result);
         verify(addressRepository).flush();

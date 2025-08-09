@@ -40,7 +40,7 @@ public class AddressMapper {
         return addressDTO;
     }
 
-    public AddressDTO toResponseDTO(Address address) {
+    public AddressDTO toUserResponseDTO(Address address) {
         var addressDTO = new AddressDTO();
         addressDTO.setId(address.getNrSeqAddress());
         addressDTO.setStreet(address.getStreet());
@@ -54,19 +54,8 @@ public class AddressMapper {
     public List<AddressDTO> toDTOList(List<Address> address) {
         var addressDTOList = new ArrayList<AddressDTO>();
         for (var addressEntity : address) {
-            addressDTOList.add(this.toResponseDTO(addressEntity));
+            addressDTOList.add(this.toUserResponseDTO(addressEntity));
         }
         return addressDTOList;
-    }
-
-    public Address toUpdateAddressEntity(Address address, UpdateAddressDTO updateAddressDTO) {
-        return new Address(address.getNrSeqAddress(),
-                updateAddressDTO.getStreet(),
-                updateAddressDTO.getNumber(),
-                updateAddressDTO.getCity(),
-                updateAddressDTO.getState(),
-                updateAddressDTO.getCountry(),
-                address.getUser()
-        );
     }
 }

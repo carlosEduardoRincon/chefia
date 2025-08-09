@@ -56,7 +56,11 @@ public class AddressService {
                 .findById(id)
                 .orElseThrow(() -> new AddressNotFoundException("Address not found with id: " + id));
 
-        addressEntity = this.addressMapper.toUpdateAddressEntity(addressEntity, updateAddressDTO);
+        addressEntity.setStreet(updateAddressDTO.getStreet());
+        addressEntity.setCity(updateAddressDTO.getCity());
+        addressEntity.setState(updateAddressDTO.getState());
+        addressEntity.setCountry(updateAddressDTO.getCountry());
+        addressEntity.setNumber(updateAddressDTO.getNumber());
 
         addressRepository.flush();
         return addressMapper.toAddressResponseDTO(addressEntity);

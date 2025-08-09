@@ -15,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static com.chefia.validation.StrongPasswordValidator.isValid;
@@ -43,7 +44,7 @@ public class UserService {
         handleUserAddress(createUserDTO, userToInsert);
 
         this.userRepository.save(userToInsert);
-        return this.userMapper.toResponseDTO(userToInsert);
+        return this.userMapper.toUserResponseDTO(userToInsert);
     }
 
     public UserDTO findById(Long id) {
@@ -51,7 +52,7 @@ public class UserService {
                 .findById(id)
                 .orElseThrow(() -> new UserNotFoundException("User not found with id: " + id)));
         assert user.isPresent();
-        return this.userMapper.toResponseDTO(user.get());
+        return this.userMapper.toUserResponseDTO(user.get());
     }
 
     public PaginatedUsersDTO findAll(Integer page, Integer perPage) {
@@ -72,10 +73,13 @@ public class UserService {
                 .findById(id)
                 .orElseThrow(() -> new UserNotFoundException("User not found with id: " + id));
 
-        userEntity = this.userMapper.toUpdateEntity(userEntity, updateUserDTO);
+        userEntity.setName(updateUserDTO.getName());
+        userEntity.setEmail(updateUserDTO.getEmail());
+        userEntity.setLogin(updateUserDTO.getLogin());
+        userEntity.setUpdatedAt(LocalDateTime.now());
 
         userRepository.flush();
-        return userMapper.toResponseDTO(userEntity);
+        return userMapper.toUserResponseDTO(userEntity);
     }
 
     public void deleteUser(Long id) {
