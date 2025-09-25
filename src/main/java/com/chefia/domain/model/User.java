@@ -1,9 +1,5 @@
 package com.chefia.domain.model;
 
-import com.chefia.infra.validation.annotation.StrongPassword;
-import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -72,6 +68,47 @@ public abstract class User implements UserDetails {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public Long getNrSeqUser() {
+        return nrSeqUser;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public UserType getUserType() {
+        return userType;
+    }
+
+    public List<Address> getAddress() {
+        return address;
     }
 
     @Override

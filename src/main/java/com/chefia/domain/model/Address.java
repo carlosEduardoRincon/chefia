@@ -46,4 +46,36 @@ public class Address {
     public void setCountry(String country) {
         this.country = country;
     }
+
+    public Long getNrSeqAddress() {
+        return nrSeqAddress;
+    }
+
+    public String getStreet() {
+        return street;
+    }
+
+    public Integer getNumber() {
+        return number;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public Long getRestaurant() {
+        return restaurant;
+    }
 }

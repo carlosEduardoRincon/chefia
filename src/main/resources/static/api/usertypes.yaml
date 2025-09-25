@@ -45,7 +45,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/PaginatedUserTypes"
+                $ref: "#/components/schemas/PaginatedUserType"
     post:
       tags:
         - UserTypes

@@ -22,15 +22,15 @@ public class UserMapper {
         this.addressMapper = addressMapper;
     }
 
-    public User toEntity(CreateUserDTO createUserDTO) {
-        return new User(createUserDTO.getName(),
-                createUserDTO.getEmail(),
-                createUserDTO.getLogin(),
-                passwordEncoder.encode(createUserDTO.getPassword()),
-                Boolean.TRUE,
-                LocalDateTime.now(),
-                createUserDTO.getProfileType().name());
-    }
+//    public User toEntity(CreateUserDTO createUserDTO) {
+//        return new User(createUserDTO.getName(),
+//                createUserDTO.getEmail(),
+//                createUserDTO.getLogin(),
+//                passwordEncoder.encode(createUserDTO.getPassword()),
+//                Boolean.TRUE,
+//                LocalDateTime.now(),
+//                createUserDTO.getProfileType().name());
+//    }
 
     public UserDTO toUserResponseDTO(User user) {
         var userDTO = new UserDTO();
@@ -55,17 +55,17 @@ public class UserMapper {
         return usersResponse;
     }
 
-    public User toUpdatePasswordEntity(User user, String newPassword) {
-        return new User(user.getNrSeqUser(),
-                user.getName(),
-                user.getEmail(),
-                user.getLogin(),
-                newPassword,
-                user.isActive(),
-                user.getCreatedAt(),
-                LocalDateTime.now(),
-                user.getProfileType(),
-                user.getAddress()
-        );
-    }
+//    public User toUpdatePasswordEntity(User user, String newPassword) {
+//        return new User(user.getNrSeqUser(),
+//                user.getName(),
+//                user.getEmail(),
+//                user.getLogin(),
+//                newPassword,
+//                user.isActive(),
+//                user.getCreatedAt(),
+//                LocalDateTime.now(),
+//                user.getProfileType(),
+//                user.getAddress()
+//        );
+//    }
 }
