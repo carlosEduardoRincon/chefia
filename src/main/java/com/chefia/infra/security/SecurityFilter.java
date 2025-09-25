@@ -1,6 +1,6 @@
 package com.chefia.infra.security;
 
-import com.chefia.repositories.UserRepository;
+import com.chefia.core.port.output.user.UserRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

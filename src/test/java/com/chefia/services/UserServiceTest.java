@@ -1,10 +1,13 @@
 package com.chefia.services;
 
-import com.chefia.entities.*;
-import com.chefia.exceptions.*;
-import com.chefia.mapper.AddressMapper;
-import com.chefia.mapper.UserMapper;
-import com.chefia.repositories.UserRepository;
+import com.chefia.infra.exception.PasswordAlreadyUsed;
+import com.chefia.infra.exception.PasswordNotMatch;
+import com.chefia.infra.exception.UserNotFoundException;
+import com.chefia.domain.model.User;
+import com.chefia.core.service.UserService;
+import com.chefia.infra.mapper.AddressMapper;
+import com.chefia.infra.mapper.UserMapper;
+import com.chefia.core.port.output.user.UserRepository;
 
 import com.chefia.users.model.ChangePasswordDTO;
 import com.chefia.users.model.CreateUserDTO;

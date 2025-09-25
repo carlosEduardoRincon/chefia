@@ -1,7 +1,8 @@
 package com.chefia.services;
 
-import com.chefia.entities.User;
-import com.chefia.repositories.UserRepository;
+import com.chefia.domain.model.User;
+import com.chefia.core.service.AuthenticatorService;
+import com.chefia.core.port.output.user.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
