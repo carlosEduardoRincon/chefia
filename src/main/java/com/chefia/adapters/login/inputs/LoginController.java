@@ -1,4 +1,4 @@
-package com.chefia.adapters.login;
+package com.chefia.adapters.login.inputs;
 
 import com.chefia.core.port.input.LoginInputPort;
 import com.chefia.users.api.LoginApi;

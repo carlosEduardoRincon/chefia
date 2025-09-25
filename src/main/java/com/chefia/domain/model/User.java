@@ -16,7 +16,7 @@ public abstract class User implements UserDetails {
     private String login;
     private String password;
     private boolean active;
-    private LocalDateTime createdAt;
+    private final LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private UserType userType;
     private List<Address> address;
