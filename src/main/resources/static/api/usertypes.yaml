@@ -70,7 +70,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/UserType"
-  /user-types/{userTypeId}:
+  /user-type/{userTypeId}:
     get:
       tags:
         - UserTypes
