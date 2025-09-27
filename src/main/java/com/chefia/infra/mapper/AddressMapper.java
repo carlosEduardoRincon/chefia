@@ -1,8 +1,8 @@
 package com.chefia.infra.mapper;
 
+import com.chefia.addresses.model.CreateAddressDTO;
 import com.chefia.domain.model.Address;
 import com.chefia.users.model.AddressDTO;
-import com.chefia.users.model.CreateAddressDTO;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -11,15 +11,6 @@ import java.util.List;
 @Component
 public class AddressMapper {
     public Address toCreateAddressEntity(CreateAddressDTO createAddressDTO) {
-        return new Address(createAddressDTO.getStreet(),
-                createAddressDTO.getNumber(),
-                createAddressDTO.getCity(),
-                createAddressDTO.getState(),
-                createAddressDTO.getCountry()
-        );
-    }
-
-    public Address toCreateAddressEntity(com.chefia.addresses.model.CreateAddressDTO createAddressDTO) {
         return new Address(createAddressDTO.getStreet(),
                 createAddressDTO.getNumber(),
                 createAddressDTO.getCity(),

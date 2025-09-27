@@ -14,6 +14,9 @@ public class Restaurant {
     private User user;
     private Address address;
 
+    public Restaurant() {
+    }
+
     public Restaurant(Long nrSeqRestaurant, String name, boolean active, LocalDateTime createdAt, List<BusinessHours> businessHours, User user, Address address) {
         this.nrSeqRestaurant = nrSeqRestaurant;
         this.name = name;
@@ -22,5 +25,13 @@ public class Restaurant {
         this.businessHours = businessHours;
         this.user = user;
         this.address = address;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setBusinessHours(List<BusinessHours> businessHours) {
+        this.businessHours = businessHours;
     }
 }

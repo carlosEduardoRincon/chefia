@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public abstract class User implements UserDetails {
+public class User implements UserDetails {
 
     private Long nrSeqUser;
     private String name;
@@ -16,9 +16,9 @@ public abstract class User implements UserDetails {
     private String login;
     private String password;
     private boolean active;
-    private final LocalDateTime createdAt;
+    private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    private UserType userType;
+    private Long userTypeId;
     private List<Address> address;
 
     public User(String name,
@@ -27,14 +27,14 @@ public abstract class User implements UserDetails {
                 String password,
                 Boolean active,
                 LocalDateTime createdAt,
-                UserType userType) {
+                Long userTypeId) {
         this.name = name;
         this.email = email;
         this.login = login;
         this.password = password;
         this.active = active;
         this.createdAt = createdAt;
-        this.userType = userType;
+        this.userTypeId = userTypeId;
         this.address = new ArrayList<>();
     }
 
@@ -103,8 +103,8 @@ public abstract class User implements UserDetails {
         return updatedAt;
     }
 
-    public UserType getUserType() {
-        return userType;
+    public Long getUserTypeId() {
+        return userTypeId;
     }
 
     public List<Address> getAddress() {

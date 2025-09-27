@@ -232,7 +232,7 @@ components:
         - login
         - password
         - updatedAt
-        - address
+        - profileTypeId
       type: object
       properties:
         name:
@@ -260,17 +260,12 @@ components:
           minLength: 5
           maxLength: 30
           example: strongPassword123
-        address:
-          type: array
-          items:
-            $ref: "#/components/schemas/CreateAddress"
-        profileType:
-          type: string
-          description: OWNER or CLIENT
-          enum:
-            - CLIENT
-            - DONO
-          example: CLIENT
+        profileTypeId:
+          type: integer
+          format: int64
+          description: Id of the profile type
+          maxLength: 10
+          example: 15
     UpdateUser:
       type: object
       properties:
@@ -351,6 +346,12 @@ components:
           format: date-time
           description: Date and time when the user was updated
           example: 2025-07-17T21:00:00
+        profileTypeId:
+          type: integer
+          format: int64
+          description: Id of the profile type
+          maxLength: 10
+          example: 15
     Address:
       type: object
       properties:
@@ -370,39 +371,6 @@ components:
         number:
           type: integer
           description: Street number of the user
-          maxLength: 5
-          example: 1001
-        city:
-          type: string
-          description: City of the user
-          minLength: 3
-          maxLength: 50
-          example: Jundiaí
-        state:
-          type: string
-          description: State of the user
-          minLength: 2
-          maxLength: 50
-          example: São Paulo
-        country:
-          type: string
-          description: Country of the user
-          minLength: 2
-          maxLength: 50
-          example: Brazil
-    CreateAddress:
-      type: object
-      properties:
-        street:
-          type: string
-          description: Street of the user
-          minLength: 5
-          maxLength: 50
-          example: Street 01
-        number:
-          type: integer
-          description: Street number of the user
-          minLength: 1
           maxLength: 5
           example: 1001
         city:
