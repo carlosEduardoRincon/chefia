@@ -2,21 +2,18 @@ package com.chefia.core.service;
 
 import com.chefia.core.port.input.UserTypeInputPort;
 import com.chefia.core.port.output.UserTypeRepositoryOutputPort;
-import com.chefia.domain.model.MenuItem;
 import com.chefia.domain.model.UserType;
-import com.chefia.infra.exception.MenuItemNotFoundException;
 import com.chefia.infra.exception.UserTypeNotFoundException;
 import com.chefia.infra.mapper.UserTypeMapper;
-import com.chefia.menuitems.model.PaginatedMenuItemDTO;
 import com.chefia.usertypes.model.CreateUserTypeDTO;
 import com.chefia.usertypes.model.PaginatedUserTypeDTO;
 import com.chefia.usertypes.model.UpdateUserTypeDTO;
 import com.chefia.usertypes.model.UserTypeDTO;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -50,14 +47,14 @@ public class UserTypeService implements UserTypeInputPort {
     @Override
     public PaginatedUserTypeDTO findAll(Integer page, Integer perPage) {
         Pageable pageable = PageRequest.of(page, perPage);
-        Page<UserType> userTypePage = this.userTypeRepositoryOutputPort.findAll(pageable);
+        List<UserType> userTypePage = this.userTypeRepositoryOutputPort.findAll(pageable);
 
-        var userTypesDto = this.userTypeMapper.toResponseListDTO(userTypePage.getContent());
+        var userTypesDto = this.userTypeMapper.toResponseListDTO(userTypePage);
 
         return new PaginatedUserTypeDTO()
                 .page(page)
                 .perPage(perPage)
-                .total(userTypePage.getTotalElements())
+                .total((long) userTypePage.size())
                 .items(userTypesDto);
     }
 

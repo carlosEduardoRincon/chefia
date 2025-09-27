@@ -12,6 +12,26 @@ public class UserType {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
     public void setName(String name) {
         this.name = name;
     }

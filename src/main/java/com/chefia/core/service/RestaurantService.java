@@ -10,11 +10,11 @@ import com.chefia.restaurants.model.CreateRestaurantDTO;
 import com.chefia.restaurants.model.PaginatedRestaurantsDTO;
 import com.chefia.restaurants.model.RestaurantDTO;
 import com.chefia.restaurants.model.UpdateRestaurantDTO;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -49,14 +49,14 @@ public class RestaurantService implements RestaurantInputPort {
     @Override
     public PaginatedRestaurantsDTO findAll(Integer page, Integer perPage) {
         Pageable pageable = PageRequest.of(page, perPage);
-        Page<Restaurant> restaurantPage = this.restaurantRepositoryOutputPort.findAll(pageable);
+        List<Restaurant> restaurantPage = this.restaurantRepositoryOutputPort.findAll(pageable);
 
-        var restaurantsDTO = this.restaurantMapper.toResponseListDTO(restaurantPage.getContent());
+        var restaurantsDTO = this.restaurantMapper.toResponseListDTO(restaurantPage);
 
         return new PaginatedRestaurantsDTO()
                 .page(page)
                 .perPage(perPage)
-                .total(restaurantPage.getTotalElements())
+                .total((long) restaurantPage.size())
                 .items(restaurantsDTO);
     }
 

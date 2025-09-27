@@ -6,9 +6,12 @@ import com.chefia.domain.model.Address;
 import java.util.Optional;
 
 public interface AddressRepositoryOutputPort {
-    Optional<Address> findById(Long id);
 
-    void saveAddress(Address addressToInsert);
+    void saveAddressForUser(Address addressToInsert);
+
+    void saveAddressForRestaurant(Address addressToInsert);
+
+    Optional<Address> findById(Long id);
 
     void updateAddress(Long id, UpdateAddressDTO updateAddressDTO);
 

@@ -11,6 +11,30 @@ public class MenuItem {
     private String imagePath;
     private Long restaurantId;
 
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public Boolean getAvailableOnlyOnSite() {
+        return availableOnlyOnSite;
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public Long getRestaurantId() {
+        return restaurantId;
+    }
+
     public void setName(String name) {
         this.name = name;
     }

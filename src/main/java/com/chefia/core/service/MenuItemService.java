@@ -15,6 +15,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -41,7 +42,7 @@ public class MenuItemService implements MenuItemInputPort {
     @Override
     public MenuItemDTO findById(Long menuItemId) {
         var menuItem = Optional.ofNullable(this.menuItemRepositoryOutputPort
-                .findById(menuItemId)
+                .findByMenuItemId(menuItemId)
                 .orElseThrow(() -> new MenuItemNotFoundException("Menu Item not found with id: " + menuItemId)));
         assert menuItem.isPresent();
         return this.menuItemMapper.toMenuItemResponseDTO(menuItem.get());
@@ -50,21 +51,21 @@ public class MenuItemService implements MenuItemInputPort {
     @Override
     public PaginatedMenuItemDTO findAll(Integer page, Integer perPage) {
         Pageable pageable = PageRequest.of(page, perPage);
-        Page<MenuItem> menuItemPage = this.menuItemRepositoryOutputPort.findAll(pageable);
+        List<MenuItem> menuItemPage = this.menuItemRepositoryOutputPort.findAll(pageable);
 
-        var menuItemsDto = this.menuItemMapper.toResponseListDTO(menuItemPage.getContent());
+        var menuItemsDto = this.menuItemMapper.toResponseListDTO(menuItemPage);
 
         return new PaginatedMenuItemDTO()
                 .page(page)
                 .perPage(perPage)
-                .total(menuItemPage.getTotalElements())
+                .total((long) menuItemPage.size())
                 .items(menuItemsDto);
     }
 
     @Override
     public MenuItemDTO updateMenuItem(Long menuItemId, UpdateMenuItemDTO body) {
         var menuItemEntity = this.menuItemRepositoryOutputPort
-                .findById(menuItemId)
+                .findByMenuItemId(menuItemId)
                 .orElseThrow(() -> new MenuItemNotFoundException("Menu Item not found with id: " + menuItemId));
 
         menuItemEntity.setName(body.getName());

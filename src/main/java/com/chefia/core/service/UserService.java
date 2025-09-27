@@ -9,13 +9,13 @@ import com.chefia.infra.exception.UserNotStrongPassword;
 import com.chefia.infra.mapper.UserMapper;
 import com.chefia.infra.exception.UserNotFoundException;
 import com.chefia.users.model.*;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import static com.chefia.infra.validation.StrongPasswordValidator.isValid;
@@ -52,14 +52,14 @@ public class UserService implements UserInputPort {
 
     public PaginatedUsersDTO findAll(Integer page, Integer perPage) {
         Pageable pageable = PageRequest.of(page, perPage);
-        Page<User> userPage = this.userRepositoryOutputPort.findAll(pageable);
+        List<User> userPage = this.userRepositoryOutputPort.findAll(pageable);
 
-        var userDTOs = this.userMapper.toResponseListDTO(userPage.getContent());
+        var userDTOs = this.userMapper.toResponseListDTO(userPage);
 
         return new PaginatedUsersDTO()
                 .page(page)
                 .perPage(perPage)
-                .total(userPage.getTotalElements())
+                .total((long) userPage.size())
                 .items(userDTOs);
     }
 
@@ -89,6 +89,8 @@ public class UserService implements UserInputPort {
 
         userEntity.setActive(status);
         userEntity.updatedAt();
+
+        this.userRepositoryOutputPort.updateUserStatus(userId, userEntity);
     }
 
     public void changePassword(Long userId, ChangePasswordDTO changePasswordDTO) {
@@ -107,6 +109,6 @@ public class UserService implements UserInputPort {
             throw new UserNotStrongPassword("New password not strong");
         }
 
-        this.userRepositoryOutputPort.save(userEntity);
+        this.userRepositoryOutputPort.updateUserPassword(userId, userEntity);
     }
 }

@@ -27,6 +27,34 @@ public class Restaurant {
         this.address = address;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public List<BusinessHours> getBusinessHours() {
+        return businessHours;
+    }
+
+    public RestaurantType getRestaurantType() {
+        return restaurantType;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
     public void setName(String name) {
         this.name = name;
     }

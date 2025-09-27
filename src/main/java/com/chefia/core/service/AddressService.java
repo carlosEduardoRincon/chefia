@@ -37,7 +37,7 @@ public class AddressService implements AddressInputPort {
         var addressToInsert = this.addressMapper.toCreateAddressEntity(createAddressDTO);
         addressToInsert.setUserId(userId);
 
-        this.addressRepositoryOutputPort.saveAddress(addressToInsert);
+        this.addressRepositoryOutputPort.saveAddressForUser(addressToInsert);
 
         return this.addressMapper.toAddressResponseDTO(addressToInsert);
     }

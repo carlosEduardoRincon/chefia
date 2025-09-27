@@ -9,7 +9,7 @@ public class Address {
     private String state;
     private String country;
     private Long userId;
-    private Long restaurant;
+    private Long restaurantId;
 
     public Address(String street,
                    Integer number,
@@ -75,7 +75,7 @@ public class Address {
         return userId;
     }
 
-    public Long getRestaurant() {
-        return restaurant;
+    public Long getRestaurantId() {
+        return restaurantId;
     }
 }

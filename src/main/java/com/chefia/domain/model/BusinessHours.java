@@ -7,5 +7,17 @@ public class BusinessHours {
     private WeekDay weekDay;
     private LocalTime openingTime;
     private LocalTime closingTime;
-    private Restaurant restaurant;
+    private Long restaurantId;
+
+    public WeekDay getWeekDay() {
+        return weekDay;
+    }
+
+    public LocalTime getOpeningTime() {
+        return openingTime;
+    }
+
+    public LocalTime getClosingTime() {
+        return closingTime;
+    }
 }
