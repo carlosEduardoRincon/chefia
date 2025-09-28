@@ -4,12 +4,10 @@ import com.chefia.core.port.output.MenuItemRepositoryOutputPort;
 import com.chefia.domain.model.MenuItem;
 import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.core.simple.JdbcClient;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
-@Repository
 public class JdbcMenuItemRepository implements MenuItemRepositoryOutputPort {
 
     private final JdbcClient jdbcClient;
