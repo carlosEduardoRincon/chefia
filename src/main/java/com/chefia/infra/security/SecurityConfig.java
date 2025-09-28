@@ -32,6 +32,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/user").permitAll()
                         .requestMatchers(HttpMethod.PATCH, "/user/{userId}/password").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/usertype").permitAll()
                         .requestMatchers(
                                 "/api/users.yaml",
                                 "/api/addresses.yaml",

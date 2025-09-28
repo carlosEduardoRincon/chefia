@@ -29,23 +29,20 @@ public class UserMapper {
                 passwordEncoder.encode(createUserDTO.getPassword()),
                 Boolean.TRUE,
                 LocalDateTime.now(),
-                createUserDTO.getProfileTypeId()
+                createUserDTO.getUserTypeId()
         );
     }
 
     public UserDTO toUserResponseDTO(User user) {
-        var userDTO = new UserDTO();
-
-        userDTO.setId(user.getNrSeqUser());
-        userDTO.setName(user.getName());
-        userDTO.setEmail(user.getEmail());
-        userDTO.setLogin(user.getLogin());
-        userDTO.setAddress(this.addressMapper.toDTOList(user.getAddress()));
-        userDTO.setActive(user.isActive());
-        userDTO.setCreatedAt(user.getCreatedAt().atOffset(ZoneOffset.ofHours(-3)));
-        userDTO.setUpdatedAt(user.getUpdatedAt() != null? user.getUpdatedAt().atOffset(ZoneOffset.ofHours(-3)) : null);
-
-        return userDTO;
+        return new UserDTO()
+                .id(user.getNrSeqUser())
+                .name(user.getName())
+                .email(user.getEmail())
+                .login(user.getLogin())
+                .active(user.isActive())
+                .createdAt(user.getCreatedAt().atOffset(ZoneOffset.ofHours(-3)))
+                .updatedAt(user.getUpdatedAt() != null? user.getUpdatedAt().atOffset(ZoneOffset.ofHours(-3)) : null)
+                .userTypeId(user.getUserTypeId());
     }
 
     public List<UserDTO> toResponseListDTO(List<User> userList) {

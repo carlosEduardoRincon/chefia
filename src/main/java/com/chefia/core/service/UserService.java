@@ -1,13 +1,13 @@
 package com.chefia.core.service;
 
-import com.chefia.core.port.input.UserInputPort;
-import com.chefia.core.port.output.UserRepositoryOutputPort;
+import com.chefia.core.port.input.user.UserInputPort;
+import com.chefia.core.port.output.address.AddressRepositoryOutputPort;
+import com.chefia.core.port.output.user.UserRepositoryOutputPort;
+import com.chefia.core.port.output.user.UserValidatorOutputPort;
+import com.chefia.core.port.output.usertype.UserTypeRepositoryOutputPort;
 import com.chefia.domain.model.User;
-import com.chefia.infra.exception.PasswordAlreadyUsed;
-import com.chefia.infra.exception.PasswordNotMatch;
-import com.chefia.infra.exception.UserNotStrongPassword;
+import com.chefia.infra.exception.*;
 import com.chefia.infra.mapper.UserMapper;
-import com.chefia.infra.exception.UserNotFoundException;
 import com.chefia.users.model.*;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -22,24 +22,39 @@ import static com.chefia.infra.validation.StrongPasswordValidator.isValid;
 
 @Service
 public class UserService implements UserInputPort {
+
     private final UserRepositoryOutputPort userRepositoryOutputPort;
+
+    private final List<UserValidatorOutputPort> userValidatorOutputPorts;
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
 
     public UserService(UserRepositoryOutputPort userRepositoryOutputPort,
+                       List<UserValidatorOutputPort> userValidatorOutputPorts,
                        UserMapper userMapper,
                        PasswordEncoder passwordEncoder
     ) {
         this.userRepositoryOutputPort = userRepositoryOutputPort;
+        this.userValidatorOutputPorts = userValidatorOutputPorts;
         this.userMapper = userMapper;
         this.passwordEncoder = passwordEncoder;
     }
 
     public UserDTO saveUser(CreateUserDTO createUserDTO) {
         var userToInsert = this.userMapper.toEntity(createUserDTO);
-        this.userRepositoryOutputPort.save(userToInsert);
+
+        this.validateUser(userToInsert);
+
+        var userId = this.userRepositoryOutputPort.save(userToInsert);
+        userToInsert.setNrSeqUser(userId);
 
         return this.userMapper.toUserResponseDTO(userToInsert);
+    }
+
+    private void validateUser(User user) {
+        for (UserValidatorOutputPort userValidator : userValidatorOutputPorts) {
+            userValidator.validate(user);
+        }
     }
 
     public UserDTO findById(Long userId) {

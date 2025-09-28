@@ -1,4 +1,4 @@
-package com.chefia.core.port.input;
+package com.chefia.core.port.input.menuitem;
 
 import com.chefia.menuitems.model.CreateMenuItemDTO;
 import com.chefia.menuitems.model.MenuItemDTO;

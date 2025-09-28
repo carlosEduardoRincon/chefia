@@ -98,4 +98,16 @@ public class GlobalExceptionHandler {
         var status = HttpStatus.NOT_FOUND;
         return ResponseEntity.status(status.value()).body(new DefaultExceptionDTO(passwordAlreadyUsed.getMessage(), status.value()));
     }
+
+    @ExceptionHandler(UserTypeNotFoundException.class)
+    public ResponseEntity<DefaultExceptionDTO> handlerPasswordAlreadyUsed(UserTypeNotFoundException userTypeNotFoundException) {
+        var status = HttpStatus.NOT_FOUND;
+        return ResponseEntity.status(status.value()).body(new DefaultExceptionDTO(userTypeNotFoundException.getMessage(), status.value()));
+    }
+
+    @ExceptionHandler(UserLoginAlreadyExist.class)
+    public ResponseEntity<DefaultExceptionDTO> handlerUserLoginAlreadyExist(UserLoginAlreadyExist userLoginAlreadyExist) {
+        var status = HttpStatus.NOT_FOUND;
+        return ResponseEntity.status(status.value()).body(new DefaultExceptionDTO(userLoginAlreadyExist.getMessage(), status.value()));
+    }
 }

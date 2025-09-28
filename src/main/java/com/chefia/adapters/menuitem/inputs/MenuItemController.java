@@ -1,7 +1,7 @@
 package com.chefia.adapters.menuitem.inputs;
 
-import com.chefia.core.port.input.MenuItemInputPort;
-import com.chefia.menuitems.api.MenuItemApi;
+import com.chefia.core.port.input.menuitem.MenuItemInputPort;
+import com.chefia.menuitems.api.MenuitemApi;
 import com.chefia.menuitems.model.CreateMenuItemDTO;
 import com.chefia.menuitems.model.MenuItemDTO;
 import com.chefia.menuitems.model.PaginatedMenuItemDTO;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
-public class MenuItemController implements MenuItemApi {
+public class MenuItemController implements MenuitemApi {
 
     private final MenuItemInputPort menuItemInputPort;
 

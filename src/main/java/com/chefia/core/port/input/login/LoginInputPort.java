@@ -1,4 +1,4 @@
-package com.chefia.core.port.input;
+package com.chefia.core.port.input.login;
 
 import com.chefia.users.model.LoginResponseDTO;
 import com.chefia.users.model.LoginUserDTO;

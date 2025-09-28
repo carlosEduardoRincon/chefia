@@ -1,4 +1,4 @@
-package com.chefia.core.port.output;
+package com.chefia.core.port.output.usertype;
 
 import com.chefia.domain.model.UserType;
 import org.springframework.data.domain.Pageable;
@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserTypeRepositoryOutputPort {
-    void save(UserType menuItemToInsert);
+    Long save(UserType menuItemToInsert);
 
     Optional<UserType> findById(Long userTypeId);
 

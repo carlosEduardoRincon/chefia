@@ -1,4 +1,4 @@
-package com.chefia.core.port.output;
+package com.chefia.core.port.output.address;
 
 import com.chefia.addresses.model.UpdateAddressDTO;
 import com.chefia.domain.model.Address;

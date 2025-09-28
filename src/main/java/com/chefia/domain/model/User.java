@@ -1,6 +1,7 @@
 package com.chefia.domain.model;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
@@ -21,6 +22,9 @@ public class User implements UserDetails {
     private Long userTypeId;
     private List<Address> address;
 
+    public User() {
+    }
+
     public User(String name,
                 String email,
                 String login,
@@ -36,6 +40,46 @@ public class User implements UserDetails {
         this.createdAt = createdAt;
         this.userTypeId = userTypeId;
         this.address = new ArrayList<>();
+    }
+
+    public Long getNrSeqUser() {
+        return nrSeqUser;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public Long getUserTypeId() {
+        return userTypeId;
+    }
+
+    public List<Address> getAddress() {
+        return address;
+    }
+
+    public void setNrSeqUser(Long nrSeqUser) {
+        this.nrSeqUser = nrSeqUser;
     }
 
     public void setActive(Boolean status) {
@@ -70,50 +114,14 @@ public class User implements UserDetails {
         this.updatedAt = updatedAt;
     }
 
-    public Long getNrSeqUser() {
-        return nrSeqUser;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
     @Override
     public String getPassword() {
         return password;
     }
 
-    public boolean isActive() {
-        return active;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public Long getUserTypeId() {
-        return userTypeId;
-    }
-
-    public List<Address> getAddress() {
-        return address;
-    }
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
+        return List.of(new SimpleGrantedAuthority("ROLE_" + this.userTypeId));
     }
 
     @Override

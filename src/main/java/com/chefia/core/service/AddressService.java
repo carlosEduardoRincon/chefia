@@ -2,9 +2,9 @@ package com.chefia.core.service;
 
 import com.chefia.addresses.model.AddressDTO;
 import com.chefia.addresses.model.UpdateAddressDTO;
-import com.chefia.core.port.input.AddressInputPort;
-import com.chefia.core.port.output.AddressRepositoryOutputPort;
-import com.chefia.core.port.output.UserRepositoryOutputPort;
+import com.chefia.core.port.input.address.AddressInputPort;
+import com.chefia.core.port.output.address.AddressRepositoryOutputPort;
+import com.chefia.core.port.output.user.UserRepositoryOutputPort;
 import com.chefia.infra.mapper.AddressMapper;
 import com.chefia.infra.exception.AddressNotFoundException;
 import com.chefia.infra.exception.UserNotFoundException;

@@ -4,7 +4,7 @@ import com.chefia.addresses.api.AddressApi;
 import com.chefia.addresses.model.AddressDTO;
 import com.chefia.addresses.model.CreateAddressDTO;
 import com.chefia.addresses.model.UpdateAddressDTO;
-import com.chefia.core.port.input.AddressInputPort;
+import com.chefia.core.port.input.address.AddressInputPort;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;

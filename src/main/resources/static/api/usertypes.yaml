@@ -16,7 +16,7 @@ tags:
   - name: UserTypes
     description: Operations related to user types
 paths:
-  /user-type:
+  /usertype:
     get:
       tags:
         - UserTypes
@@ -70,7 +70,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/UserType"
-  /user-type/{userTypeId}:
+  /usertype/{userTypeId}:
     get:
       tags:
         - UserTypes

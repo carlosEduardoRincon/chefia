@@ -1,7 +1,7 @@
 package com.chefia.infra.bean;
 
 import com.chefia.adapters.restaurant.outputs.JdbcRestaurantRepository;
-import com.chefia.core.port.output.RestaurantRepositoryOutputPort;
+import com.chefia.core.port.output.restaurant.RestaurantRepositoryOutputPort;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.simple.JdbcClient;

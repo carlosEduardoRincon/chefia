@@ -1,6 +1,6 @@
 package com.chefia.adapters.menuitem.outputs;
 
-import com.chefia.core.port.output.MenuItemRepositoryOutputPort;
+import com.chefia.core.port.output.menuitem.MenuItemRepositoryOutputPort;
 import com.chefia.domain.model.MenuItem;
 import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.core.simple.JdbcClient;
@@ -19,7 +19,7 @@ public class JdbcMenuItemRepository implements MenuItemRepositoryOutputPort {
     @Override
     public void save(MenuItem item) {
         jdbcClient.sql("""
-                        INSERT INTO menu_items
+                        INSERT INTO chefia.menu_items
                             (name, description, price, available_only_on_site, image_path, restaurant_id)
                         VALUES
                             (:name, :description, :price, :availableOnlyOnSite, :imagePath, :restaurantId)
@@ -36,7 +36,7 @@ public class JdbcMenuItemRepository implements MenuItemRepositoryOutputPort {
     @Override
     public Optional<MenuItem> findByMenuItemId(Long menuItemId) {
         return jdbcClient.sql("""
-                        SELECT * FROM menu_items
+                        SELECT * FROM chefia.menu_items
                         WHERE nr_seq_menu_item = :id
                         """)
                 .param("id", menuItemId)
@@ -47,7 +47,7 @@ public class JdbcMenuItemRepository implements MenuItemRepositoryOutputPort {
     @Override
     public List<MenuItem> findByRestaurantId(Long restaurantId) {
         return jdbcClient.sql("""
-                        SELECT * FROM menu_items
+                        SELECT * FROM chefia.menu_items
                         WHERE restaurant_id = :restaurantId
                         """)
                 .param("restaurantId", restaurantId)
@@ -58,7 +58,7 @@ public class JdbcMenuItemRepository implements MenuItemRepositoryOutputPort {
     @Override
     public List<MenuItem> findAll(Pageable pageable) {
         return jdbcClient.sql("""
-                         SELECT * FROM menu_items LIMIT :size OFFSET :offset
+                         SELECT * FROM chefia.menu_items LIMIT :size OFFSET :offset
                         """)
                 .param("size", pageable.getPageSize())
                 .param("offset", pageable.getOffset())
@@ -69,7 +69,7 @@ public class JdbcMenuItemRepository implements MenuItemRepositoryOutputPort {
     @Override
     public void update(Long menuItemId, MenuItem item) {
         jdbcClient.sql("""
-                        UPDATE menu_items
+                        UPDATE chefia.menu_items
                         SET name = :name,
                             description = :description,
                             price = :price,
@@ -89,7 +89,7 @@ public class JdbcMenuItemRepository implements MenuItemRepositoryOutputPort {
     @Override
     public void deleteById(Long menuItemId) {
         jdbcClient.sql("""
-                        DELETE FROM menu_items
+                        DELETE FROM chefia.menu_items
                         WHERE nr_seq_menu_item = :id
                         """)
                 .param("id", menuItemId)

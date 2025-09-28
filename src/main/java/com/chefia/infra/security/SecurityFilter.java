@@ -1,6 +1,6 @@
 package com.chefia.infra.security;
 
-import com.chefia.core.port.output.UserRepositoryOutputPort;
+import com.chefia.core.port.output.user.UserRepositoryOutputPort;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -33,8 +33,10 @@ public class SecurityFilter extends OncePerRequestFilter {
             var login = this.tokenService.verifyJWT(tokenJWT);
             var user = this.userRepositoryOutputPort.findByLogin(login);
 
-            var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+            if (user.isPresent()) {
+                var authentication = new UsernamePasswordAuthenticationToken(user, null, user.get().getAuthorities());
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            }
         }
 
         filterChain.doFilter(request, response);

@@ -1,7 +1,7 @@
 package com.chefia.adapters.address.outputs;
 
 import com.chefia.addresses.model.UpdateAddressDTO;
-import com.chefia.core.port.output.AddressRepositoryOutputPort;
+import com.chefia.core.port.output.address.AddressRepositoryOutputPort;
 import com.chefia.domain.model.Address;
 import org.springframework.jdbc.core.simple.JdbcClient;
 
@@ -18,7 +18,7 @@ public class JdbcAddressRepository implements AddressRepositoryOutputPort {
     @Override
     public void saveAddressForUser(Address addressToInsert) {
         jdbcClient.sql("""
-                        INSERT INTO addresses
+                        INSERT INTO chefia.addresses
                             (street, number, city, state, country, nr_seq_user)
                         VALUES
                             (:street, :number, :city, :state, :country, :nr_seq_user);
@@ -35,7 +35,7 @@ public class JdbcAddressRepository implements AddressRepositoryOutputPort {
     @Override
     public void saveAddressForRestaurant(Address addressToInsert) {
         jdbcClient.sql("""
-                        INSERT INTO addresses
+                        INSERT INTO chefia.addresses
                             (street, number, city, state, country, nr_seq_restaurant)
                         VALUES
                             (:street, :number, :city, :state, :country, :nr_seq_restaurant);
@@ -52,8 +52,8 @@ public class JdbcAddressRepository implements AddressRepositoryOutputPort {
     @Override
     public Optional<Address> findById(Long addressId) {
         return jdbcClient.sql("""
-                        SELECT * FROM addresses
-                        WHERE id = :id
+                        SELECT * FROM chefia.addresses
+                        WHERE nr_seq_address = :id
                         """)
                 .param("id", addressId)
                 .query(Address.class)
@@ -63,13 +63,13 @@ public class JdbcAddressRepository implements AddressRepositoryOutputPort {
     @Override
     public void updateAddress(Long addressId, UpdateAddressDTO updateAddressDTO) {
         jdbcClient.sql("""
-                            UPDATE addresses
+                            UPDATE chefia.addresses
                             SET street = :street,
                                 number = :number,
                                 city = :city,
                                 state = :state,
                                 country = :country
-                            WHERE id = :id
+                            WHERE nr_seq_address = :id
                         """)
                 .param("id", addressId)
                 .param("street", updateAddressDTO.getStreet())
@@ -83,8 +83,8 @@ public class JdbcAddressRepository implements AddressRepositoryOutputPort {
     @Override
     public void deleteById(Long addressId) {
         jdbcClient.sql("""
-                            DELETE FROM addresses
-                            WHERE id = :id
+                            DELETE FROM chefia.addresses
+                            WHERE nr_seq_address = :id
                         """)
                 .param("id", addressId)
                 .update();

@@ -1,4 +1,4 @@
-package com.chefia.core.port.output;
+package com.chefia.core.port.output.restaurant;
 
 import com.chefia.domain.model.Restaurant;
 import org.springframework.data.domain.Pageable;

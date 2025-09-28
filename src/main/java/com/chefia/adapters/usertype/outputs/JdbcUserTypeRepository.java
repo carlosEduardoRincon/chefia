@@ -1,15 +1,15 @@
 package com.chefia.adapters.usertype.outputs;
 
-import com.chefia.core.port.output.UserTypeRepositoryOutputPort;
-import com.chefia.domain.model.User;
+import com.chefia.core.port.output.usertype.UserTypeRepositoryOutputPort;
 import com.chefia.domain.model.UserType;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.core.simple.JdbcClient;
-import org.springframework.stereotype.Repository;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public class JdbcUserTypeRepository implements UserTypeRepositoryOutputPort {
@@ -21,9 +21,11 @@ public class JdbcUserTypeRepository implements UserTypeRepositoryOutputPort {
     }
 
     @Override
-    public void save(UserType userType) {
+    public Long save(UserType userType) {
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
         jdbcClient.sql("""
-                INSERT INTO user_types
+                INSERT INTO chefia.user_types
                     (name, description, active, created_at)
                 VALUES
                     (:name, :description, :active, :createdAt)
@@ -31,14 +33,20 @@ public class JdbcUserTypeRepository implements UserTypeRepositoryOutputPort {
                 .param("name", userType.getName())
                 .param("description", userType.getDescription())
                 .param("active", userType.getActive())
-                .param("createdAt", LocalDateTime.now())
-                .update();
+                .param("createdAt", userType.getCreatedAt())
+                .update(keyHolder);
+
+        var keys = keyHolder.getKeys();
+        assert keys != null;
+        var id = keys.get("nr_seq_user_type");
+
+        return id != null? ((Number) id).longValue() : null;
     }
 
     @Override
     public Optional<UserType> findById(Long userTypeId) {
         return jdbcClient.sql("""
-                SELECT * FROM user_types
+                SELECT * FROM chefia.user_types
                 WHERE nr_seq_user_type = :id
                 """)
                 .param("id", userTypeId)
@@ -49,7 +57,7 @@ public class JdbcUserTypeRepository implements UserTypeRepositoryOutputPort {
     @Override
     public List<UserType> findAll(Pageable pageable) {
         return jdbcClient.sql("""
-                SELECT * FROM user_types
+                SELECT * FROM chefia.user_types
                 """)
                 .query(UserType.class)
                 .list();
@@ -58,7 +66,7 @@ public class JdbcUserTypeRepository implements UserTypeRepositoryOutputPort {
     @Override
     public void update(Long userTypeId, UserType userType) {
         jdbcClient.sql("""
-                UPDATE user_types
+                UPDATE chefia.user_types
                 SET name = :name,
                     description = :description,
                     active = :active,
@@ -76,7 +84,7 @@ public class JdbcUserTypeRepository implements UserTypeRepositoryOutputPort {
     @Override
     public void deleteById(Long userTypeId) {
         jdbcClient.sql("""
-                DELETE FROM user_types
+                DELETE FROM chefia.user_types
                 WHERE nr_seq_user_type = :id
                 """)
                 .param("id", userTypeId)

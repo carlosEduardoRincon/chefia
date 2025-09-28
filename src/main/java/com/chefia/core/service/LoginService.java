@@ -1,6 +1,6 @@
 package com.chefia.core.service;
 
-import com.chefia.core.port.input.LoginInputPort;
+import com.chefia.core.port.input.login.LoginInputPort;
 import com.chefia.domain.model.User;
 import com.chefia.infra.security.TokenService;
 import com.chefia.infra.mapper.LoginMapper;

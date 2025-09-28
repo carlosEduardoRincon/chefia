@@ -1,7 +1,7 @@
 package com.chefia.core.service;
 
-import com.chefia.core.port.input.UserTypeInputPort;
-import com.chefia.core.port.output.UserTypeRepositoryOutputPort;
+import com.chefia.core.port.input.usertype.UserTypeInputPort;
+import com.chefia.core.port.output.usertype.UserTypeRepositoryOutputPort;
 import com.chefia.domain.model.UserType;
 import com.chefia.infra.exception.UserTypeNotFoundException;
 import com.chefia.infra.mapper.UserTypeMapper;
@@ -9,6 +9,7 @@ import com.chefia.usertypes.model.CreateUserTypeDTO;
 import com.chefia.usertypes.model.PaginatedUserTypeDTO;
 import com.chefia.usertypes.model.UpdateUserTypeDTO;
 import com.chefia.usertypes.model.UserTypeDTO;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Service
 public class UserTypeService implements UserTypeInputPort {
 
@@ -30,7 +32,9 @@ public class UserTypeService implements UserTypeInputPort {
     @Override
     public UserTypeDTO saveUserType(CreateUserTypeDTO createUserTypeDTO) {
         var userTypeToInsert = this.userTypeMapper.toEntity(createUserTypeDTO);
-        this.userTypeRepositoryOutputPort.save(userTypeToInsert);
+        var userTypeId = this.userTypeRepositoryOutputPort.save(userTypeToInsert);
+
+        userTypeToInsert.setNrSeqUserType(userTypeId);
 
         return this.userTypeMapper.toUserTypeResponseDTO(userTypeToInsert);
     }

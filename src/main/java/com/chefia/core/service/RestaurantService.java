@@ -1,7 +1,7 @@
 package com.chefia.core.service;
 
-import com.chefia.core.port.input.RestaurantInputPort;
-import com.chefia.core.port.output.RestaurantRepositoryOutputPort;
+import com.chefia.core.port.input.restaurant.RestaurantInputPort;
+import com.chefia.core.port.output.restaurant.RestaurantRepositoryOutputPort;
 import com.chefia.domain.model.Restaurant;
 import com.chefia.infra.exception.RestaurantNotFoundException;
 import com.chefia.infra.exception.UserNotFoundException;

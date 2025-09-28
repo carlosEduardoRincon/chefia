@@ -1,7 +1,7 @@
 package com.chefia.core.service;
 
-import com.chefia.core.port.input.MenuItemInputPort;
-import com.chefia.core.port.output.MenuItemRepositoryOutputPort;
+import com.chefia.core.port.input.menuitem.MenuItemInputPort;
+import com.chefia.core.port.output.menuitem.MenuItemRepositoryOutputPort;
 import com.chefia.domain.model.MenuItem;
 import com.chefia.infra.exception.MenuItemNotFoundException;
 import com.chefia.infra.mapper.MenuItemMapper;

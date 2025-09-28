@@ -1,18 +1,18 @@
 package com.chefia.adapters.usertype.inputs;
 
-import com.chefia.core.port.input.UserTypeInputPort;
-import com.chefia.usertypes.api.UserTypeApi;
+import com.chefia.core.port.input.usertype.UserTypeInputPort;
+import com.chefia.usertypes.api.UsertypeApi;
 import com.chefia.usertypes.model.CreateUserTypeDTO;
 import com.chefia.usertypes.model.PaginatedUserTypeDTO;
 import com.chefia.usertypes.model.UpdateUserTypeDTO;
 import com.chefia.usertypes.model.UserTypeDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
-@RequestMapping
-public class UserTypeController implements UserTypeApi {
+@RestController
+public class UserTypeController implements UsertypeApi {
 
     private final UserTypeInputPort userTypeInputPort;
 

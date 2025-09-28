@@ -1,6 +1,6 @@
 package com.chefia.adapters.restaurant.inputs;
 
-import com.chefia.core.port.input.RestaurantInputPort;
+import com.chefia.core.port.input.restaurant.RestaurantInputPort;
 import com.chefia.restaurants.api.RestaurantApi;
 import com.chefia.restaurants.model.CreateRestaurantDTO;
 import com.chefia.restaurants.model.PaginatedRestaurantsDTO;
@@ -8,10 +8,10 @@ import com.chefia.restaurants.model.RestaurantDTO;
 import com.chefia.restaurants.model.UpdateRestaurantDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
-@RequestMapping
+@RestController
 public class RestaurantController implements RestaurantApi {
 
     private final RestaurantInputPort restaurantInputPort;

@@ -1,4 +1,4 @@
-package com.chefia.core.port.input;
+package com.chefia.core.port.input.restaurant;
 
 import com.chefia.restaurants.model.CreateRestaurantDTO;
 import com.chefia.restaurants.model.PaginatedRestaurantsDTO;

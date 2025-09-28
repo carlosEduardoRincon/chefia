@@ -1,6 +1,6 @@
 package com.chefia.adapters.user.inputs;
 
-import com.chefia.core.port.input.UserInputPort;
+import com.chefia.core.port.input.user.UserInputPort;
 import com.chefia.users.api.UserApi;
 import com.chefia.users.model.*;
 import lombok.extern.slf4j.Slf4j;

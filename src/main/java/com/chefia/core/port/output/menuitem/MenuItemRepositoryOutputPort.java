@@ -1,4 +1,4 @@
-package com.chefia.core.port.output;
+package com.chefia.core.port.output.menuitem;
 
 import com.chefia.domain.model.MenuItem;
 import org.springframework.data.domain.Pageable;

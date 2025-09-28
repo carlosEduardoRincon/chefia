@@ -1,6 +1,6 @@
 package com.chefia.adapters.login.inputs;
 
-import com.chefia.core.port.input.LoginInputPort;
+import com.chefia.core.port.input.login.LoginInputPort;
 import com.chefia.users.api.LoginApi;
 import com.chefia.users.model.LoginResponseDTO;
 import com.chefia.users.model.LoginUserDTO;

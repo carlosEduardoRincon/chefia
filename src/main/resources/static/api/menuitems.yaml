@@ -16,7 +16,7 @@ tags:
   - name: MenuItems
     description: Operations related to restaurant menu items
 paths:
-  /menu-item:
+  /menuitem:
     get:
       tags:
         - MenuItems
@@ -70,7 +70,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/MenuItem"
-  /menu-item/{itemId}:
+  /menuitem/{itemId}:
     get:
       tags:
         - MenuItems

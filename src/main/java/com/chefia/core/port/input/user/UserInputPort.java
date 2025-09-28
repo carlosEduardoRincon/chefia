@@ -1,4 +1,4 @@
-package com.chefia.core.port.input;
+package com.chefia.core.port.input.user;
 
 import com.chefia.users.model.*;
 

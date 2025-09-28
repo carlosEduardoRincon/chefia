@@ -1,4 +1,4 @@
-package com.chefia.core.port.input;
+package com.chefia.core.port.input.usertype;
 
 import com.chefia.usertypes.model.CreateUserTypeDTO;
 import com.chefia.usertypes.model.PaginatedUserTypeDTO;

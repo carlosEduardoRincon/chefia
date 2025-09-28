@@ -1,7 +1,7 @@
 package com.chefia.infra.bean;
 
 import com.chefia.adapters.user.outputs.JdbcUserRepository;
-import com.chefia.core.port.output.UserRepositoryOutputPort;
+import com.chefia.core.port.output.user.UserRepositoryOutputPort;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.simple.JdbcClient;

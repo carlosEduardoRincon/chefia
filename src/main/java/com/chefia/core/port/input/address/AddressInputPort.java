@@ -1,4 +1,4 @@
-package com.chefia.core.port.input;
+package com.chefia.core.port.input.address;
 
 import com.chefia.addresses.model.AddressDTO;
 import com.chefia.addresses.model.CreateAddressDTO;
