@@ -55,6 +55,17 @@ public class JdbcUserTypeRepository implements UserTypeRepositoryOutputPort {
     }
 
     @Override
+    public Optional<UserType> findByName(String userTypeName) {
+        return jdbcClient.sql("""
+                SELECT * FROM chefia.user_types
+                WHERE name = :name
+                """)
+                .param("name", userTypeName)
+                .query(UserType.class)
+                .optional();
+    }
+
+    @Override
     public List<UserType> findAll(Pageable pageable) {
         return jdbcClient.sql("""
                 SELECT * FROM chefia.user_types

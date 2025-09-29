@@ -375,7 +375,7 @@ components:
     ChangePassword:
       type: object
       properties:
-        old-password:
+        oldPassword:
           type: string
-        new-password:
+        newPassword:
           type: string

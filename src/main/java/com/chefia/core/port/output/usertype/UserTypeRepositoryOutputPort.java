@@ -4,12 +4,15 @@ import com.chefia.domain.model.UserType;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public interface UserTypeRepositoryOutputPort {
     Long save(UserType menuItemToInsert);
 
     Optional<UserType> findById(Long userTypeId);
+
+    Optional<UserType> findByName(String userTypeName);
 
     List<UserType> findAll(Pageable pageable);
 

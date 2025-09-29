@@ -110,4 +110,10 @@ public class GlobalExceptionHandler {
         var status = HttpStatus.NOT_FOUND;
         return ResponseEntity.status(status.value()).body(new DefaultExceptionDTO(userLoginAlreadyExist.getMessage(), status.value()));
     }
+
+    @ExceptionHandler(UserTypeNameAlreadyExists.class)
+    public ResponseEntity<DefaultExceptionDTO> handlerUserTypeNameAlreadyExists(UserTypeNameAlreadyExists userTypeNameAlreadyExists) {
+        var status = HttpStatus.BAD_REQUEST;
+        return ResponseEntity.status(status.value()).body(new DefaultExceptionDTO(userTypeNameAlreadyExists.getMessage(), status.value()));
+    }
 }

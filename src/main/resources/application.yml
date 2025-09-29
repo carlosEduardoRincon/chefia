@@ -22,9 +22,6 @@ logging:
     org:
       flywaydb: DEBUG
       springframework:
-        jdbc:
-          datasource: DEBUG
-          security: DEBUG
   swagger-ui:
     url: /api/users.yaml
 

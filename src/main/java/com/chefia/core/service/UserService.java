@@ -24,7 +24,6 @@ import static com.chefia.infra.validation.StrongPasswordValidator.isValid;
 public class UserService implements UserInputPort {
 
     private final UserRepositoryOutputPort userRepositoryOutputPort;
-
     private final List<UserValidatorOutputPort> userValidatorOutputPorts;
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;

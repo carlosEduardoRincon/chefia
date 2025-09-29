@@ -2,6 +2,7 @@ package com.chefia.core.service;
 
 import com.chefia.core.port.input.usertype.UserTypeInputPort;
 import com.chefia.core.port.output.usertype.UserTypeRepositoryOutputPort;
+import com.chefia.core.port.output.usertype.UserTypeValidatorOutputPort;
 import com.chefia.domain.model.UserType;
 import com.chefia.infra.exception.UserTypeNotFoundException;
 import com.chefia.infra.mapper.UserTypeMapper;
@@ -22,21 +23,34 @@ import java.util.Optional;
 public class UserTypeService implements UserTypeInputPort {
 
     private final UserTypeRepositoryOutputPort userTypeRepositoryOutputPort;
+    private final List<UserTypeValidatorOutputPort> userTypeValidatorOutputPorts;
     private final UserTypeMapper userTypeMapper;
 
-    public UserTypeService(UserTypeRepositoryOutputPort userTypeRepositoryOutputPort, UserTypeMapper userTypeMapper) {
+    public UserTypeService(UserTypeRepositoryOutputPort userTypeRepositoryOutputPort,
+                           List<UserTypeValidatorOutputPort> userTypeValidatorOutputPorts,
+                           UserTypeMapper userTypeMapper
+    ) {
         this.userTypeRepositoryOutputPort = userTypeRepositoryOutputPort;
+        this.userTypeValidatorOutputPorts = userTypeValidatorOutputPorts;
         this.userTypeMapper = userTypeMapper;
     }
 
     @Override
     public UserTypeDTO saveUserType(CreateUserTypeDTO createUserTypeDTO) {
         var userTypeToInsert = this.userTypeMapper.toEntity(createUserTypeDTO);
+        this.validateUserType(userTypeToInsert);
+
         var userTypeId = this.userTypeRepositoryOutputPort.save(userTypeToInsert);
 
         userTypeToInsert.setNrSeqUserType(userTypeId);
 
         return this.userTypeMapper.toUserTypeResponseDTO(userTypeToInsert);
+    }
+
+    private void validateUserType(UserType userType) {
+        for (UserTypeValidatorOutputPort userValidator : userTypeValidatorOutputPorts) {
+            userValidator.validate(userType);
+        }
     }
 
     @Override
