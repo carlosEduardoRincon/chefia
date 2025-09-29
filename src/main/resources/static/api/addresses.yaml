@@ -49,6 +49,39 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Address"
+  /address/for-restaurant/{restaurantId}:
+    post:
+      tags:
+        - Addresses
+      parameters:
+        - name: restaurantId
+          in: path
+          description: ID of the restaurant to create address
+          required: true
+          schema:
+            type: integer
+            format: int64
+      summary: Create a new address for a restaurant
+      operationId: createAddressForRestaurant
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateAddress"
+      responses:
+        "201":
+          description: Address created
+          headers:
+            Location:
+              schema:
+                type: string
+                format: uri
+                example: /user/123e4567-e89b-12d3-a456-426614174000
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Address"
   /address/{addressId}:
     get:
       tags:

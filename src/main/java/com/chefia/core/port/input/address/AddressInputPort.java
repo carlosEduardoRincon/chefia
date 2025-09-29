@@ -7,6 +7,8 @@ import com.chefia.addresses.model.UpdateAddressDTO;
 public interface AddressInputPort {
     AddressDTO createAddressForUser(Long userId, CreateAddressDTO createAddressDTO);
 
+    AddressDTO createAddressForRestaurant(Long restaurantId, CreateAddressDTO createAddressDTO);
+
     AddressDTO findById(Long addressId);
 
     AddressDTO updateAddress(Long addressId, UpdateAddressDTO body);

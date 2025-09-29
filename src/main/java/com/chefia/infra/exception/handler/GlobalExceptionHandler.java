@@ -116,4 +116,10 @@ public class GlobalExceptionHandler {
         var status = HttpStatus.BAD_REQUEST;
         return ResponseEntity.status(status.value()).body(new DefaultExceptionDTO(userTypeNameAlreadyExists.getMessage(), status.value()));
     }
+
+    @ExceptionHandler(RestaurantNotFoundException.class)
+    public ResponseEntity<DefaultExceptionDTO> handlerRestaurantNotFoundException(RestaurantNotFoundException restaurantNotFoundException) {
+        var status = HttpStatus.NOT_FOUND;
+        return ResponseEntity.status(status.value()).body(new DefaultExceptionDTO(restaurantNotFoundException.getMessage(), status.value()));
+    }
 }

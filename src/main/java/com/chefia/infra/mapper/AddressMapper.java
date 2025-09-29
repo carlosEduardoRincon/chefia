@@ -7,13 +7,26 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class AddressMapper {
-    public Address toCreateAddressEntity(CreateAddressDTO createAddressDTO) {
+
+    public Address toCreateAddressEntityDefault(CreateAddressDTO createAddressDTO) {
         return new Address(createAddressDTO.getStreet(),
                 createAddressDTO.getNumber(),
                 createAddressDTO.getCity(),
                 createAddressDTO.getState(),
                 createAddressDTO.getCountry()
         );
+    }
+
+    public Address toCreateAddressEntityToUser(Long userId, CreateAddressDTO createAddressDTO) {
+        var address = toCreateAddressEntityDefault(createAddressDTO);
+        address.setUserId(userId);
+        return address;
+    }
+
+    public Address toCreateAddressEntityToRestaurant(Long restaurantId, CreateAddressDTO createAddressDTO) {
+        var address = toCreateAddressEntityDefault(createAddressDTO);
+        address.setRestaurantId(restaurantId);
+        return address;
     }
 
     public AddressDTO toAddressResponseDTO(Address address) {

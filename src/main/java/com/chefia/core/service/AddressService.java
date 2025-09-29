@@ -4,7 +4,9 @@ import com.chefia.addresses.model.AddressDTO;
 import com.chefia.addresses.model.UpdateAddressDTO;
 import com.chefia.core.port.input.address.AddressInputPort;
 import com.chefia.core.port.output.address.AddressRepositoryOutputPort;
+import com.chefia.core.port.output.restaurant.RestaurantRepositoryOutputPort;
 import com.chefia.core.port.output.user.UserRepositoryOutputPort;
+import com.chefia.infra.exception.RestaurantNotFoundException;
 import com.chefia.infra.mapper.AddressMapper;
 import com.chefia.infra.exception.AddressNotFoundException;
 import com.chefia.infra.exception.UserNotFoundException;
@@ -18,13 +20,17 @@ public class AddressService implements AddressInputPort {
 
     private final AddressRepositoryOutputPort addressRepositoryOutputPort;
     private final UserRepositoryOutputPort userRepositoryOutputPort;
+    private final RestaurantRepositoryOutputPort restaurantRepositoryOutputPort;
     private final AddressMapper addressMapper;
 
     public AddressService(AddressRepositoryOutputPort addressRepositoryOutputPort,
                           UserRepositoryOutputPort userRepositoryOutputPort,
-                          AddressMapper addressMapper) {
+                          RestaurantRepositoryOutputPort restaurantRepositoryOutputPort,
+                          AddressMapper addressMapper
+    ) {
         this.addressRepositoryOutputPort = addressRepositoryOutputPort;
         this.userRepositoryOutputPort = userRepositoryOutputPort;
+        this.restaurantRepositoryOutputPort = restaurantRepositoryOutputPort;
         this.addressMapper = addressMapper;
     }
 
@@ -34,10 +40,24 @@ public class AddressService implements AddressInputPort {
                 .orElseThrow(() -> new UserNotFoundException("User not found with id: " + userId)));
         assert user.isPresent();
 
-        var addressToInsert = this.addressMapper.toCreateAddressEntity(createAddressDTO);
-        addressToInsert.setUserId(userId);
+        var addressToInsert = this.addressMapper.toCreateAddressEntityToUser(userId, createAddressDTO);
 
-        this.addressRepositoryOutputPort.saveAddressForUser(addressToInsert);
+        var addressId = this.addressRepositoryOutputPort.saveAddressForUser(addressToInsert);
+        addressToInsert.setNrSeqAddress(addressId);
+
+        return this.addressMapper.toAddressResponseDTO(addressToInsert);
+    }
+
+    public AddressDTO createAddressForRestaurant(Long restaurantId, CreateAddressDTO createAddressDTO) {
+        var restaurant = Optional.ofNullable(this.restaurantRepositoryOutputPort
+                .findById(restaurantId)
+                .orElseThrow(() -> new RestaurantNotFoundException("Restaurant not found with id: " + restaurantId)));
+        assert restaurant.isPresent();
+
+        var addressToInsert = this.addressMapper.toCreateAddressEntityToRestaurant(restaurantId, createAddressDTO);
+
+        var addressId = this.addressRepositoryOutputPort.saveAddressForUser(addressToInsert);
+        addressToInsert.setNrSeqAddress(addressId);
 
         return this.addressMapper.toAddressResponseDTO(addressToInsert);
     }

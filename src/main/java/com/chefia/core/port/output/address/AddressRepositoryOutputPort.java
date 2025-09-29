@@ -7,9 +7,9 @@ import java.util.Optional;
 
 public interface AddressRepositoryOutputPort {
 
-    void saveAddressForUser(Address addressToInsert);
+    long saveAddressForUser(Address addressToInsert);
 
-    void saveAddressForRestaurant(Address addressToInsert);
+    long saveAddressForRestaurant(Address addressToInsert);
 
     Optional<Address> findById(Long id);
 

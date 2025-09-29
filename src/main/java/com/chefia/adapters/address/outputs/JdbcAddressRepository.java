@@ -4,6 +4,8 @@ import com.chefia.addresses.model.UpdateAddressDTO;
 import com.chefia.core.port.output.address.AddressRepositoryOutputPort;
 import com.chefia.domain.model.Address;
 import org.springframework.jdbc.core.simple.JdbcClient;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 
 import java.util.Optional;
 
@@ -16,7 +18,9 @@ public class JdbcAddressRepository implements AddressRepositoryOutputPort {
     }
 
     @Override
-    public void saveAddressForUser(Address addressToInsert) {
+    public long saveAddressForUser(Address addressToInsert) {
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
         jdbcClient.sql("""
                         INSERT INTO chefia.addresses
                             (street, number, city, state, country, nr_seq_user)
@@ -29,11 +33,19 @@ public class JdbcAddressRepository implements AddressRepositoryOutputPort {
                 .param("state", addressToInsert.getState())
                 .param("country", addressToInsert.getCountry())
                 .param("nr_seq_user", addressToInsert.getUserId())
-                .update();
+                .update(keyHolder);
+
+        var keys = keyHolder.getKeys();
+        assert keys != null;
+        var id = keys.get("nr_seq_address");
+
+        return id != null? ((Number) id).longValue() : null;
     }
 
     @Override
-    public void saveAddressForRestaurant(Address addressToInsert) {
+    public long saveAddressForRestaurant(Address addressToInsert) {
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
         jdbcClient.sql("""
                         INSERT INTO chefia.addresses
                             (street, number, city, state, country, nr_seq_restaurant)
@@ -46,7 +58,13 @@ public class JdbcAddressRepository implements AddressRepositoryOutputPort {
                 .param("state", addressToInsert.getState())
                 .param("country", addressToInsert.getCountry())
                 .param("nr_seq_restaurant", addressToInsert.getRestaurantId())
-                .update();
+                .update(keyHolder);
+
+        var keys = keyHolder.getKeys();
+        assert keys != null;
+        var id = keys.get("nr_seq_address");
+
+        return id != null? ((Number) id).longValue() : null;
     }
 
     @Override

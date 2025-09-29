@@ -23,30 +23,6 @@ public class Address {
         this.country = country;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public void setStreet(String street) {
-        this.street = street;
-    }
-
-    public void setNumber(Integer number) {
-        this.number = number;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public void setState(String state) {
-        this.state = state;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
     public Long getNrSeqAddress() {
         return nrSeqAddress;
     }
@@ -77,5 +53,37 @@ public class Address {
 
     public Long getRestaurantId() {
         return restaurantId;
+    }
+
+    public void setNrSeqAddress(Long nrSeqAddress) {
+        this.nrSeqAddress = nrSeqAddress;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public void setRestaurantId(Long restaurantId) {
+        this.restaurantId = restaurantId;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
+    }
+
+    public void setNumber(Integer number) {
+        this.number = number;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
     }
 }

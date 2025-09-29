@@ -15,11 +15,9 @@ import java.util.List;
 public class UserMapper {
 
     private final PasswordEncoder passwordEncoder;
-    private final AddressMapper addressMapper;
 
-    public UserMapper(PasswordEncoder passwordEncoder, AddressMapper addressMapper) {
+    public UserMapper(PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
-        this.addressMapper = addressMapper;
     }
 
     public User toEntity(CreateUserDTO createUserDTO) {

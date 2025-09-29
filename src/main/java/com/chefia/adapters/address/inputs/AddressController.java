@@ -22,8 +22,16 @@ public class AddressController implements AddressApi {
     @Override
     public ResponseEntity<AddressDTO> createAddressForUser(Long userId, CreateAddressDTO createAddressDTO)
     {
-        log.info("[POST] - Create Address");
+        log.info("[POST] - Create Address for User");
         var createdAddress = this.addressInputPort.createAddressForUser(userId, createAddressDTO);
+        return ResponseEntity.status(201).body(createdAddress);
+    }
+
+    @Override
+    public ResponseEntity<AddressDTO> createAddressForRestaurant(Long restaurantId, CreateAddressDTO createAddressDTO)
+    {
+        log.info("[POST] - Create Address for Restaurant");
+        var createdAddress = this.addressInputPort.createAddressForRestaurant(restaurantId, createAddressDTO);
         return ResponseEntity.status(201).body(createdAddress);
     }
 
