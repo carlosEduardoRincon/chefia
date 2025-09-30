@@ -54,9 +54,9 @@ CREATE TABLE chefia.business_hours (
     week_day VARCHAR(20) NOT NULL,
     opening_time TIME NOT NULL,
     closing_time TIME NOT NULL,
-    restaurant_id BIGINT NOT NULL,
+    nr_seq_restaurant BIGINT NOT NULL,
 
-    CONSTRAINT fk_business_hours_restaurant FOREIGN KEY (restaurant_id) REFERENCES restaurants(nr_seq_restaurant)
+    CONSTRAINT fk_business_hours_restaurant FOREIGN KEY (nr_seq_restaurant) REFERENCES restaurants(nr_seq_restaurant)
 );
 
 CREATE TABLE chefia.menu_items (
@@ -66,7 +66,7 @@ CREATE TABLE chefia.menu_items (
     price DECIMAL(10,2) NOT NULL,
     available_only_on_site BOOLEAN DEFAULT FALSE,
     image_path VARCHAR(255),
-    restaurant_id BIGINT NOT NULL,
+    nr_seq_restaurant BIGINT NOT NULL,
 
-    CONSTRAINT fk_menu_item_restaurant FOREIGN KEY (restaurant_id) REFERENCES restaurants(nr_seq_restaurant)
+    CONSTRAINT fk_menu_item_restaurant FOREIGN KEY (nr_seq_restaurant) REFERENCES restaurants(nr_seq_restaurant)
 );

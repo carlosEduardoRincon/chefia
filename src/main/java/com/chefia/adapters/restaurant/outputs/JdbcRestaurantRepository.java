@@ -5,6 +5,8 @@ import com.chefia.domain.model.BusinessHours;
 import com.chefia.domain.model.Restaurant;
 import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.core.simple.JdbcClient;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,33 +20,27 @@ public class JdbcRestaurantRepository implements RestaurantRepositoryOutputPort 
     }
 
     @Override
-    public void save(Restaurant restaurantToInsert) {
+    public long save(Restaurant restaurantToInsert) {
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
         jdbcClient.sql("""
-                        INSERT INTO chefia.restaurant
-                            (name, active, created_at, restaurant_type, user_id, address_id)
+                        INSERT INTO chefia.restaurants
+                            (name, active, created_at, restaurant_type, user_id)
                         VALUES
-                            (:name, :active, :createdAt, :restaurantType, :userId, :addressId)
+                            (:name, :active, :createdAt, :restaurantType, :userId)
                         """)
                 .param("name", restaurantToInsert.getName())
                 .param("active", restaurantToInsert.isActive())
                 .param("createdAt", restaurantToInsert.getCreatedAt())
                 .param("restaurantType", restaurantToInsert.getRestaurantType().name())
-                .param("userId", restaurantToInsert.getUser().getNrSeqUser())
-                .param("addressId", restaurantToInsert.getAddress().getRestaurantId())
-                .update();
+                .param("userId", restaurantToInsert.getUserId())
+                .update(keyHolder);
 
-        for (BusinessHours hours : restaurantToInsert.getBusinessHours()) {
-            jdbcClient.sql("""
-                            INSERT INTO chefia.business_hours
-                                (week_day, opening_time, closing_time, restaurant_id)
-                            VALUES
-                                (:weekDay, :openingTime, :closingTime, LAST_INSERT_ID())
-                            """)
-                    .param("weekDay", hours.getWeekDay().name())
-                    .param("openingTime", hours.getOpeningTime())
-                    .param("closingTime", hours.getClosingTime())
-                    .update();
-        }
+        var keys = keyHolder.getKeys();
+        assert keys != null;
+        var restaurantId = keys.get("nr_seq_restaurant");
+
+        return restaurantId != null? ((Number) restaurantId).longValue() : null;
     }
 
     @Override
@@ -61,7 +57,7 @@ public class JdbcRestaurantRepository implements RestaurantRepositoryOutputPort 
     @Override
     public List<Restaurant> findAll(Pageable pageable) {
         return jdbcClient.sql("""
-                         SELECT * FROM chefia.users LIMIT :size OFFSET :offset
+                         SELECT * FROM chefia.restaurants LIMIT :size OFFSET :offset
                         """)
                 .param("size", pageable.getPageSize())
                 .param("offset", pageable.getOffset())
@@ -88,14 +84,7 @@ public class JdbcRestaurantRepository implements RestaurantRepositoryOutputPort 
     @Override
     public void deleteById(Long restaurantId) {
         jdbcClient.sql("""
-                        DELETE FROM chefia.business_hours
-                        WHERE restaurant_id = :id
-                        """)
-                .param("id", restaurantId)
-                .update();
-
-        jdbcClient.sql("""
-                        DELETE FROM chefia.restaurant
+                        DELETE FROM chefia.restaurants
                         WHERE nr_seq_restaurant = :id
                         """)
                 .param("id", restaurantId)

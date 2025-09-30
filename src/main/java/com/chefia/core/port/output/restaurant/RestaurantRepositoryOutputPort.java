@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface RestaurantRepositoryOutputPort {
 
-    void save(Restaurant restaurantToInsert);
+    long save(Restaurant restaurantToInsert);
 
     Optional<Restaurant> findById(Long restaurantId);
 

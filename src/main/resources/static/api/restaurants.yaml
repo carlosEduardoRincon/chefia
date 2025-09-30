@@ -149,7 +149,6 @@ components:
         - businessHours
         - restaurantType
         - userId
-        - addressId
       type: object
       properties:
         name:
@@ -179,15 +178,14 @@ components:
           type: integer
           format: int64
           description: Id of the user
-          maxLength: 10
-          example: 15
-        addressId:
-          type: integer
-          format: int64
-          description: Id of the address
           maxLength: 10
           example: 15
     UpdateRestaurant:
+      required:
+        - name
+        - businessHours
+        - restaurantType
+        - active
       type: object
       properties:
         name:
@@ -213,18 +211,10 @@ components:
             - VEGETARIAN
             - ITALIAN
           example: BRAZILIAN
-        userId:
-          type: integer
-          format: int64
-          description: Id of the user
-          maxLength: 10
-          example: 15
-        addressId:
-          type: integer
-          format: int64
-          description: Id of the address
-          maxLength: 10
-          example: 15
+        active:
+          type: boolean
+          description: Indicates if the restaurant is active
+          example: true
     PaginatedRestaurants:
       type: object
       properties:
@@ -257,35 +247,29 @@ components:
           minLength: 5
           maxLength: 100
           example: Fast Hamburger
-          businessHours:
-            type: array
-            items:
-              $ref: "#/components/schemas/CreateBusinessHours"
-          restaurantType:
-            type: string
-            description: Type of restaurant
-            enum:
-              - JAPANESE
-              - FAST_FOOD
-              - ARABIAN
-              - MEXICAN
-              - CHINESE
-              - BRAZILIAN
-              - VEGETARIAN
-              - ITALIAN
-            example: BRAZILIAN
-          userId:
-            type: integer
-            format: int64
-            description: Id of the user
-            maxLength: 10
-            example: 15
-          addressId:
-            type: integer
-            format: int64
-            description: Id of the address
-            maxLength: 10
-            example: 15
+        businessHours:
+          type: array
+          items:
+            $ref: "#/components/schemas/CreateBusinessHours"
+        restaurantType:
+          type: string
+          description: Type of restaurant
+          enum:
+            - JAPANESE
+            - FAST_FOOD
+            - ARABIAN
+            - MEXICAN
+            - CHINESE
+            - BRAZILIAN
+            - VEGETARIAN
+            - ITALIAN
+          example: BRAZILIAN
+        userId:
+          type: integer
+          format: int64
+          description: Id of the user
+          maxLength: 10
+          example: 15
         active:
           type: boolean
           description: Indicates if the restaurant is active
