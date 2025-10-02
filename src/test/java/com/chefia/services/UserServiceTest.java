@@ -1,9 +1,9 @@
 //package com.chefia.services;
 //
-//import com.chefia.infra.exception.PasswordAlreadyUsed;
-//import com.chefia.infra.exception.PasswordNotMatch;
-//import com.chefia.infra.exception.UserNotFoundException;
-//import com.chefia.domain.model.User;
+//import com.chefia.core.exceptions.PasswordAlreadyUsed;
+//import com.chefia.core.exceptions.PasswordNotMatch;
+//import com.chefia.core.exceptions.UserNotFoundException;
+//import com.chefia.clean.entities.User;
 //import com.chefia.core.service.UserService;
 //import com.chefia.infra.mapper.AddressMapper;
 //import com.chefia.infra.mapper.UserMapper;

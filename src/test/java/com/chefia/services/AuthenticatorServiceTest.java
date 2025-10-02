@@ -1,6 +1,6 @@
 //package com.chefia.services;
 //
-//import com.chefia.domain.model.User;
+//import com.chefia.clean.entities.User;
 //import com.chefia.core.service.AuthenticatorService;
 //import com.chefia.core.port.output.user.UserRepository;
 //import org.junit.jupiter.api.BeforeEach;

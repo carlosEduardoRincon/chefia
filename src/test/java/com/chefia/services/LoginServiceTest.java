@@ -1,6 +1,6 @@
 //package com.chefia.services;
 //
-//import com.chefia.domain.model.User;
+//import com.chefia.clean.entities.User;
 //import com.chefia.core.service.LoginService;
 //import com.chefia.infra.security.TokenService;
 //import com.chefia.infra.mapper.LoginMapper;

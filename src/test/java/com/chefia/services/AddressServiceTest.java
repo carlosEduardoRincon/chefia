@@ -3,10 +3,10 @@
 //import com.chefia.addresses.model.AddressDTO;
 //import com.chefia.addresses.model.CreateAddressDTO;
 //import com.chefia.addresses.model.UpdateAddressDTO;
-//import com.chefia.domain.model.Address;
-//import com.chefia.domain.model.User;
-//import com.chefia.infra.exception.AddressNotFoundException;
-//import com.chefia.infra.exception.UserNotFoundException;
+//import com.chefia.clean.entities.Address;
+//import com.chefia.clean.entities.User;
+//import com.chefia.core.exceptions.AddressNotFoundException;
+//import com.chefia.core.exceptions.UserNotFoundException;
 //import com.chefia.core.service.AddressService;
 //import com.chefia.infra.mapper.AddressMapper;
 //import com.chefia.core.port.output.address.AddressRepository;

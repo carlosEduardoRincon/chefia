@@ -1,6 +1,5 @@
 package com.chefia.infra.validation.annotation;
 
-import com.chefia.infra.validation.StrongPasswordValidator;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 
