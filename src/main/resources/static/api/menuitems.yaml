@@ -101,7 +101,7 @@ paths:
       summary: Update a menu item
       operationId: updateMenuItem
       parameters:
-        - name: menuItemId
+        - name: itemId
           in: path
           description: ID of the menu item to update
           required: true
@@ -129,7 +129,7 @@ paths:
       summary: Delete a menu item
       operationId: deleteMenuItem
       parameters:
-        - name: menuItemId
+        - name: itemId
           in: path
           description: ID of the menu item to delete
           required: true
@@ -181,7 +181,8 @@ components:
           example: https://meusite.com/imagens/restaurantes/123/foto.jpg
         restaurantId:
           type: integer
-          example: 1
+          format: int64
+          example: 5
     UpdateMenuItem:
       type: object
       properties:
@@ -264,6 +265,6 @@ components:
           maxLength: 200
           example: https://meusite.com/imagens/restaurantes/123/foto.jpg
         restaurantId:
-          type: number
-          description: Id of the restaurant
+          type: integer
+          format: int64
           example: 5

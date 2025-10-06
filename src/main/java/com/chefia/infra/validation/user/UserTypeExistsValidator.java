@@ -18,7 +18,7 @@ public class UserTypeExistsValidator implements UserValidatorGateway {
     @Override
     public void validate(User user) {
         if (userTypeGateway.findById(user.getUserTypeId()).isEmpty()) {
-            throw new UserTypeNotFoundException("User Type does nos exist");
+            throw new UserTypeNotFoundException("User Type does not exist");
         }
     }
 }

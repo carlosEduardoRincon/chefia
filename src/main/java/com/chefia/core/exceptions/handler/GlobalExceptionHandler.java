@@ -122,4 +122,10 @@ public class GlobalExceptionHandler {
         var status = HttpStatus.NOT_FOUND;
         return ResponseEntity.status(status.value()).body(new DefaultExceptionDTO(restaurantNotFoundException.getMessage(), status.value()));
     }
+
+    @ExceptionHandler(MenuItemNotFoundException.class)
+    public ResponseEntity<DefaultExceptionDTO> handlerMenuItemNotFoundException(MenuItemNotFoundException menuItemNotFoundException) {
+        var status = HttpStatus.NOT_FOUND;
+        return ResponseEntity.status(status.value()).body(new DefaultExceptionDTO(menuItemNotFoundException.getMessage(), status.value()));
+    }
 }

@@ -17,7 +17,7 @@ public class UserTypeNameValidator implements UserTypeValidatorGateway {
 
     @Override
     public void validate(UserType userType) {
-        if (!userTypeGateway.findByName(userType.getName()).isEmpty()) {
+        if (userTypeGateway.findByName(userType.getName()).isPresent()) {
             throw new UserTypeNotFoundException("User Type already exist");
         }
     }

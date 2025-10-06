@@ -4,6 +4,8 @@ import com.chefia.core.gateway.MenuItemGateway;
 import com.chefia.core.entities.MenuItem;
 import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.core.simple.JdbcClient;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,10 +19,11 @@ public class JdbcMenuItemRepository implements MenuItemGateway {
     }
 
     @Override
-    public void save(MenuItem item) {
+    public long save(MenuItem item) {
+        KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcClient.sql("""
                         INSERT INTO chefia.menu_items
-                            (name, description, price, available_only_on_site, image_path, restaurant_id)
+                            (name, description, price, available_only_on_site, image_path, nr_seq_restaurant)
                         VALUES
                             (:name, :description, :price, :availableOnlyOnSite, :imagePath, :restaurantId)
                         """)
@@ -30,13 +33,27 @@ public class JdbcMenuItemRepository implements MenuItemGateway {
                 .param("availableOnlyOnSite", item.getAvailableOnlyOnSite())
                 .param("imagePath", item.getImagePath())
                 .param("restaurantId", item.getRestaurantId())
-                .update();
+                .update(keyHolder);
+
+        var keys = keyHolder.getKeys();
+        assert keys != null;
+        var restaurantId = keys.get("nr_seq_menu_item");
+
+        return restaurantId != null ? ((Number) restaurantId).longValue() : null;
     }
 
     @Override
     public Optional<MenuItem> findByMenuItemId(Long menuItemId) {
         return jdbcClient.sql("""
-                        SELECT * FROM chefia.menu_items
+                        SELECT
+                         nr_seq_menu_item,
+                         name,
+                         description,
+                         price,
+                         available_only_on_site,
+                         image_path,
+                        nr_seq_restaurant AS restaurant_id
+                        FROM chefia.menu_items
                         WHERE nr_seq_menu_item = :id
                         """)
                 .param("id", menuItemId)
@@ -48,7 +65,7 @@ public class JdbcMenuItemRepository implements MenuItemGateway {
     public List<MenuItem> findByRestaurantId(Long restaurantId) {
         return jdbcClient.sql("""
                         SELECT * FROM chefia.menu_items
-                        WHERE restaurant_id = :restaurantId
+                        WHERE nr_seq_restaurant = :restaurantId
                         """)
                 .param("restaurantId", restaurantId)
                 .query(MenuItem.class)
@@ -58,7 +75,16 @@ public class JdbcMenuItemRepository implements MenuItemGateway {
     @Override
     public List<MenuItem> findAll(Pageable pageable) {
         return jdbcClient.sql("""
-                         SELECT * FROM chefia.menu_items LIMIT :size OFFSET :offset
+                        SELECT
+                         nr_seq_menu_item,
+                         name,
+                         description,
+                         price,
+                         available_only_on_site,
+                         image_path,
+                         nr_seq_restaurant AS restaurant_id
+                        FROM chefia.menu_items
+                        LIMIT :size OFFSET :offset
                         """)
                 .param("size", pageable.getPageSize())
                 .param("offset", pageable.getOffset())

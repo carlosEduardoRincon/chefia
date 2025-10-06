@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface MenuItemGateway {
 
-    void save(MenuItem menuItemToInsert);
+    long save(MenuItem menuItemToInsert);
 
     Optional<MenuItem> findByMenuItemId(Long menuItemId);
 

@@ -9,6 +9,19 @@ public class MenuItem {
     private String imagePath;
     private Long restaurantId;
 
+    public MenuItem(String name, String description, Double price, Boolean availableOnlyOnSite, String imagePath, Long restaurantId) {
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.availableOnlyOnSite = availableOnlyOnSite;
+        this.imagePath = imagePath;
+        this.restaurantId = restaurantId;
+    }
+
+    public Long getNrSeqMenuItem() {
+        return nrSeqMenuItem;
+    }
+
     public String getName() {
         return name;
     }
@@ -33,6 +46,10 @@ public class MenuItem {
         return restaurantId;
     }
 
+    public void setNrSeqMenuItem(Long nrSeqMenuItem) {
+        this.nrSeqMenuItem = nrSeqMenuItem;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -51,5 +68,9 @@ public class MenuItem {
 
     public void setImagePath(String imagePath) {
         this.imagePath = imagePath;
+    }
+
+    public void setRestaurantId(Long restaurantId) {
+        this.restaurantId = restaurantId;
     }
 }
