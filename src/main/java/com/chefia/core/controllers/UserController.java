@@ -1,87 +1,56 @@
 package com.chefia.core.controllers;
 
-import com.chefia.core.usecases.interfaces.user.UserInputPort;
-import com.chefia.users.api.UserApi;
+import com.chefia.core.usecases.interfaces.user.*;
 import com.chefia.users.model.*;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Component;
 
 @Slf4j
-@RestController
-public class UserController implements UserApi {
+@AllArgsConstructor
+@Component
+public class UserController {
 
-    private final UserInputPort userInputPort;
+    private final CreateUserUsecase createUserUsecase;
+    private final ReadAllUserUsecase readAllUserUsecase;
+    private final ReadUserUsecase readUserUsecase;
+    private final UpdateUserUsecase updateUserUsecase;
+    private final UpdateUserStatusUsecase updateUserStatusUsecase;
+    private final UpdateUserPasswordUsecase updateUserPasswordUsecase;
+    private final DeleteUserUsecase deleteUserUsecase;
 
-    public UserController(UserInputPort userInputPort) {
-        this.userInputPort = userInputPort;
+    public UserDTO saveUser(CreateUserDTO createUserDTO)
+    {
+        return this.createUserUsecase.execute(createUserDTO);
     }
 
-    @Override
-    public ResponseEntity<UserDTO> createUser(CreateUserDTO createUserDTO)
+    public UserDTO findById(Long userId)
     {
-        log.info("[POST] - Create User");
-        var createdUser = this.userInputPort.saveUser(createUserDTO);
-        return ResponseEntity.status(201).body(createdUser);
+        return this.readUserUsecase.execute(userId);
     }
 
-    @Override
-    public ResponseEntity<UserDTO> getUser(Long userId)
+    public PaginatedUsersDTO findAll(Integer page, Integer perPage)
     {
-        log.info("[GET] - List User");
-        var getUser = this.userInputPort.findById(userId);
-        return ResponseEntity.ok(getUser);
+        return this.readAllUserUsecase.execute(page, perPage);
     }
 
-    @Override
-    public ResponseEntity<PaginatedUsersDTO> listUsers(Integer page, Integer perPage)
+    public UserDTO updateUser(Long userId, UpdateUserDTO updateUserDTO)
     {
-        log.info("[GET] - List All Users");
-        var listAllUsers = this.userInputPort.findAll(page, perPage);
-        return ResponseEntity.ok(listAllUsers);
+        return this.updateUserUsecase.execute(userId, updateUserDTO);
     }
 
-    @Override
-    public ResponseEntity<UserDTO> updateUser(Long userId, UpdateUserDTO body)
+    public void changeUserStatus(Long userId, Boolean status)
     {
-        log.info("[PUT] - Update User");
-        var updatedUser = this.userInputPort.updateUser(userId, body);
-        return ResponseEntity.ok().body(updatedUser);
+        this.updateUserStatusUsecase.execute(userId, status);
     }
 
-    @Override
-    public ResponseEntity<Void> deleteUser(Long userId)
+    public void changePassword(Long userId, ChangePasswordDTO changePasswordDTO)
     {
-        log.info("[DELETE] - Remove User");
-        this.userInputPort.deleteUser(userId);
-        return ResponseEntity.noContent().build();
+        this.updateUserPasswordUsecase.execute(userId, changePasswordDTO);
     }
 
-    @Override
-    public ResponseEntity<Void> enableUser(Long userId)
+    public void deleteUser(Long userId)
     {
-        log.info("[PATCH] - Enable User");
-        this.userInputPort.changeUserStatus(userId, Boolean.TRUE);
-        var status = HttpStatus.NO_CONTENT;
-        return ResponseEntity.status(status).build();
-    }
-
-    @Override
-    public ResponseEntity<Void> disableUser(Long userId)
-    {
-        log.info("[PATCH] - Disable User");
-        this.userInputPort.changeUserStatus(userId, Boolean.FALSE);
-        var status = HttpStatus.NO_CONTENT;
-        return ResponseEntity.status(status).build();
-    }
-
-    @Override
-    public ResponseEntity<Void> changePassword(Long userId, ChangePasswordDTO changePasswordDTO)
-    {
-        log.info("[PATCH] - Change Password");
-        this.userInputPort.changePassword(userId, changePasswordDTO);
-        var status = HttpStatus.NO_CONTENT;
-        return ResponseEntity.status(status).build();
+        this.deleteUserUsecase.execute(userId);
     }
 }

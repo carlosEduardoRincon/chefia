@@ -1,62 +1,47 @@
 package com.chefia.core.controllers;
 
-import com.chefia.core.usecases.interfaces.menuitem.MenuItemInputPort;
-import com.chefia.menuitems.api.MenuitemApi;
+import com.chefia.core.usecases.interfaces.menuitem.*;
 import com.chefia.menuitems.model.CreateMenuItemDTO;
 import com.chefia.menuitems.model.MenuItemDTO;
 import com.chefia.menuitems.model.PaginatedMenuItemDTO;
 import com.chefia.menuitems.model.UpdateMenuItemDTO;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Component;
 
 @Slf4j
-@RestController
-public class MenuItemController implements MenuitemApi {
+@AllArgsConstructor
+@Component
+public class MenuItemController {
 
-    private final MenuItemInputPort menuItemInputPort;
+    private final CreateMenuItemUsecase createMenuItemUsecase;
+    private final ReadMenuItemUsecase readMenuItemUsecase;
+    private final ReadAllMenuItemUsecase readAllMenuItemUsecase;
+    private final UpdateMenuItemUsecase updateMenuItemUsecase;
+    private final DeleteMenuItemUsecase deleteMenuItemUsecase;
 
-    public MenuItemController(MenuItemInputPort menuItemInputPort) {
-        this.menuItemInputPort = menuItemInputPort;
+    public MenuItemDTO createMenuItem(CreateMenuItemDTO createMenuItemDTO)
+    {
+        return this.createMenuItemUsecase.execute(createMenuItemDTO);
     }
 
-    @Override
-    public ResponseEntity<MenuItemDTO> createMenuItem(CreateMenuItemDTO body)
+    public MenuItemDTO findById(Long menuItemId)
     {
-        log.info("[POST] - Create Menu Item");
-        var createdMenuItem = this.menuItemInputPort.createMenuItem(body);
-        return ResponseEntity.status(201).body(createdMenuItem);
+        return this.readMenuItemUsecase.execute(menuItemId);
     }
 
-    @Override
-    public ResponseEntity<MenuItemDTO> getMenuItem(Long menuItemId)
+    public PaginatedMenuItemDTO findAll(Integer page, Integer perPage)
     {
-        log.info("[GET] - List Menu Item");
-        var getMenuItem = this.menuItemInputPort.findById(menuItemId);
-        return ResponseEntity.ok(getMenuItem);
+        return this.readAllMenuItemUsecase.execute(page, perPage);
     }
 
-    @Override
-    public ResponseEntity<PaginatedMenuItemDTO> listMenuItems(Integer page, Integer perPage)
+    public MenuItemDTO updateMenuItem(Long menuItemId, UpdateMenuItemDTO updateMenuItemDTO)
     {
-        log.info("[GET] - List Menu Items");
-        var listAllMenuItems = this.menuItemInputPort.findAll(page, perPage);
-        return ResponseEntity.ok(listAllMenuItems);
+        return this.updateMenuItemUsecase.execute(menuItemId, updateMenuItemDTO);
     }
 
-    @Override
-    public ResponseEntity<MenuItemDTO> updateMenuItem(Long menuItemId, UpdateMenuItemDTO body)
+    public void deleteMenuItem(Long menuItemId)
     {
-        log.info("[PUT] - Update Address");
-        var updatedMenuItem = this.menuItemInputPort.updateMenuItem(menuItemId, body);
-        return ResponseEntity.ok().body(updatedMenuItem);
-    }
-
-    @Override
-    public ResponseEntity<Void> deleteMenuItem(Long menuItemId)
-    {
-        log.info("[DELETE] - Remove Menu Item");
-        this.menuItemInputPort.deleteMenuItem(menuItemId);
-        return ResponseEntity.ok().build();
+        this.deleteMenuItemUsecase.execute(menuItemId);
     }
 }

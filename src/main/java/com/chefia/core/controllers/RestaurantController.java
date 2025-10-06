@@ -1,62 +1,48 @@
 package com.chefia.core.controllers;
 
-import com.chefia.core.usecases.interfaces.restaurant.RestaurantInputPort;
-import com.chefia.restaurants.api.RestaurantApi;
+import com.chefia.core.usecases.interfaces.restaurant.*;
 import com.chefia.restaurants.model.CreateRestaurantDTO;
 import com.chefia.restaurants.model.PaginatedRestaurantsDTO;
 import com.chefia.restaurants.model.RestaurantDTO;
 import com.chefia.restaurants.model.UpdateRestaurantDTO;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
-@RestController
-public class RestaurantController implements RestaurantApi {
+@AllArgsConstructor
+@Component
+public class RestaurantController {
 
-    private final RestaurantInputPort restaurantInputPort;
+    private final CreateRestaurantUsecase createRestaurantUsecase;
+    private final ReadAllRestauranteUsecase readAllRestauranteUsecase;
+    private final ReadRestauranteUsecase readRestauranteUsecase;
+    private final UpdateRestaurantUsecase updateRestaurantUsecase;
+    private final DeleteRestaurantUsecase deleteRestaurantUsecase;
 
-    public RestaurantController(RestaurantInputPort restaurantInputPort) {
-        this.restaurantInputPort = restaurantInputPort;
+    public RestaurantDTO createRestaurant(CreateRestaurantDTO createRestaurantDTO)
+    {
+        return this.createRestaurantUsecase.execute(createRestaurantDTO);
     }
 
-    @Override
-    public ResponseEntity<RestaurantDTO> createRestaurant(CreateRestaurantDTO body)
+    public RestaurantDTO getRestaurant(Long restaurantId)
     {
-        log.info("[POST] - Create Restaurant");
-        var createdUser = this.restaurantInputPort.saveRestaurant(body);
-        return ResponseEntity.status(201).body(createdUser);
+        return this.readRestauranteUsecase.execute(restaurantId);
     }
 
-    @Override
-    public ResponseEntity<RestaurantDTO> getRestaurant(Long restaurantId)
+    public PaginatedRestaurantsDTO listRestaurants(Integer page, Integer perPage)
     {
-        log.info("[GET] - List Restaurant");
-        var getUser = this.restaurantInputPort.findById(restaurantId);
-        return ResponseEntity.ok(getUser);
+        return this.readAllRestauranteUsecase.execute(page, perPage);
     }
 
-    @Override
-    public ResponseEntity<PaginatedRestaurantsDTO> listRestaurants(Integer page, Integer perPage)
+    public RestaurantDTO updateRestaurant(Long restaurantId, UpdateRestaurantDTO updateRestaurantDTO)
     {
-        log.info("[GET] - List All Restaurant");
-        var listAllUsers = this.restaurantInputPort.findAll(page, perPage);
-        return ResponseEntity.ok(listAllUsers);
+        return this.updateRestaurantUsecase.execute(restaurantId, updateRestaurantDTO);
     }
 
-    @Override
-    public ResponseEntity<RestaurantDTO> updateRestaurant(Long restaurantId, UpdateRestaurantDTO body)
+    public void deleteRestaurant(Long restaurantId)
     {
-        log.info("[PUT] - Update Restaurant");
-        var updatedUser = this.restaurantInputPort.updateRestaurant(restaurantId, body);
-        return ResponseEntity.ok().body(updatedUser);
-    }
-
-    @Override
-    public ResponseEntity<Void> deleteRestaurant(Long restaurantId)
-    {
-        log.info("[DELETE] - Remove Restaurant");
-        this.restaurantInputPort.deleteRestaurant(restaurantId);
-        return ResponseEntity.noContent().build();
+        this.deleteRestaurantUsecase.execute(restaurantId);
     }
 }

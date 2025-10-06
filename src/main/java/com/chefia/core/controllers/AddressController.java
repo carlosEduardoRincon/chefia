@@ -1,61 +1,46 @@
 package com.chefia.core.controllers;
 
-import com.chefia.addresses.api.AddressApi;
 import com.chefia.addresses.model.AddressDTO;
 import com.chefia.addresses.model.CreateAddressDTO;
 import com.chefia.addresses.model.UpdateAddressDTO;
-import com.chefia.core.usecases.interfaces.address.AddressInputPort;
+import com.chefia.core.usecases.interfaces.address.*;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Component;
 
 @Slf4j
-@RestController
-public class AddressController implements AddressApi {
+@AllArgsConstructor
+@Component
+public class AddressController {
 
-    private final AddressInputPort addressInputPort;
-
-    public AddressController(AddressInputPort addressInputPort) {
-        this.addressInputPort = addressInputPort;
+    private final CreateAddressForUserUsecase createAddressForUserUsecase;
+    private final CreateAddressForRestaurantUsecase createAddressForRestaurantUsecase;
+    private final ReadAddressUsecase readAddressUsecase;
+    private final UpdateAddressUsecase updateAddressUsecase;
+    private final DeleteAddressUsecase deleteAddressUsecase;
+    
+    public AddressDTO createAddressForUser(Long userId, CreateAddressDTO createAddressDTO)
+    {
+        return this.createAddressForUserUsecase.execute(userId, createAddressDTO);
     }
 
-    @Override
-    public ResponseEntity<AddressDTO> createAddressForUser(Long userId, CreateAddressDTO createAddressDTO)
+    public AddressDTO createAddressForRestaurant(Long restaurantId, CreateAddressDTO createAddressDTO)
     {
-        log.info("[POST] - Create Address for User");
-        var createdAddress = this.addressInputPort.createAddressForUser(userId, createAddressDTO);
-        return ResponseEntity.status(201).body(createdAddress);
+        return this.createAddressForRestaurantUsecase.execute(restaurantId, createAddressDTO);
     }
 
-    @Override
-    public ResponseEntity<AddressDTO> createAddressForRestaurant(Long restaurantId, CreateAddressDTO createAddressDTO)
+    public AddressDTO findById(Long addressId)
     {
-        log.info("[POST] - Create Address for Restaurant");
-        var createdAddress = this.addressInputPort.createAddressForRestaurant(restaurantId, createAddressDTO);
-        return ResponseEntity.status(201).body(createdAddress);
+        return this.readAddressUsecase.execute(addressId);
     }
 
-    @Override
-    public ResponseEntity<AddressDTO> getAddress(Long addressId)
+    public AddressDTO updateAddress(Long addressId, UpdateAddressDTO body)
     {
-        log.info("[GET] - List Address");
-        var getAddress = this.addressInputPort.findById(addressId);
-        return ResponseEntity.ok(getAddress);
+        return this.updateAddressUsecase.execute(addressId, body);
     }
 
-    @Override
-    public ResponseEntity<AddressDTO> updateAddress(Long addressId, UpdateAddressDTO body)
+    public void deleteAddress(Long addressId)
     {
-        log.info("[PUT] - Update Address");
-        var updatedAddress = this.addressInputPort.updateAddress(addressId, body);
-        return ResponseEntity.ok().body(updatedAddress);
-    }
-
-    @Override
-    public ResponseEntity<Void> deleteAddress(Long addressId)
-    {
-        log.info("[DELETE] - Remove Address");
-        this.addressInputPort.deleteAddress(addressId);
-        return ResponseEntity.ok().build();
+        this.deleteAddressUsecase.execute(addressId);
     }
 }

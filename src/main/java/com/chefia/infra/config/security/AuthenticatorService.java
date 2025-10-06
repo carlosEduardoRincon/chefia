@@ -1,4 +1,4 @@
-package com.chefia.core.usecases.impl.login;
+package com.chefia.infra.config.security;
 
 import com.chefia.core.gateway.UserGateway;
 import org.springframework.security.core.userdetails.UserDetails;

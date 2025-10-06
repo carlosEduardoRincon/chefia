@@ -1,62 +1,47 @@
 package com.chefia.core.controllers;
 
-import com.chefia.core.usecases.interfaces.usertype.UserTypeInputPort;
-import com.chefia.usertypes.api.UsertypeApi;
+import com.chefia.core.usecases.interfaces.usertype.*;
 import com.chefia.usertypes.model.CreateUserTypeDTO;
 import com.chefia.usertypes.model.PaginatedUserTypeDTO;
 import com.chefia.usertypes.model.UpdateUserTypeDTO;
 import com.chefia.usertypes.model.UserTypeDTO;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Component;
 
 @Slf4j
-@RestController
-public class UserTypeController implements UsertypeApi {
+@AllArgsConstructor
+@Component
+public class UserTypeController {
 
-    private final UserTypeInputPort userTypeInputPort;
+    private final CreateUserTypeUsecase createUserTypeUsecase;
+    private final ReadUserTypeUsecase readUserTypeUsecase;
+    private final ReadAllUserTypeUsecase readAllUserTypeUsecase;
+    private final UpdateUserTypeUsecase updateUserTypeUsecase;
+    private final DeleteUserTypeUsecase deleteUserTypeUsecase;
 
-    public UserTypeController(UserTypeInputPort userTypeInputPort) {
-        this.userTypeInputPort = userTypeInputPort;
+    public UserTypeDTO saveUserType(CreateUserTypeDTO createUserTypeDTO)
+    {
+        return this.createUserTypeUsecase.execute(createUserTypeDTO);
     }
 
-    @Override
-    public ResponseEntity<UserTypeDTO> createUserType(CreateUserTypeDTO body)
+    public UserTypeDTO findById(Long userTypeId)
     {
-        log.info("[POST] - Create UserType");
-        var createdUser = this.userTypeInputPort.saveUserType(body);
-        return ResponseEntity.status(201).body(createdUser);
+        return this.readUserTypeUsecase.execute(userTypeId);
     }
 
-    @Override
-    public ResponseEntity<UserTypeDTO> getUserType(Long userTypeId)
+    public PaginatedUserTypeDTO findAll(Integer page, Integer perPage)
     {
-        log.info("[GET] - List UserType");
-        var getUser = this.userTypeInputPort.findById(userTypeId);
-        return ResponseEntity.ok(getUser);
+        return this.readAllUserTypeUsecase.execute(page, perPage);
     }
 
-    @Override
-    public ResponseEntity<PaginatedUserTypeDTO> listUserTypes(Integer page, Integer perPage)
+    public UserTypeDTO updateUserType(Long userTypeId, UpdateUserTypeDTO updateUserTypeDTO)
     {
-        log.info("[GET] - List All UserType");
-        var listAllUsers = this.userTypeInputPort.findAll(page, perPage);
-        return ResponseEntity.ok(listAllUsers);
+        return this.updateUserTypeUsecase.execute(userTypeId, updateUserTypeDTO);
     }
 
-    @Override
-    public ResponseEntity<UserTypeDTO> updateUserType(Long userTypeId, UpdateUserTypeDTO body)
+    public void deleteUserType(Long userTypeId)
     {
-        log.info("[PUT] - Update UserType");
-        var updatedUser = this.userTypeInputPort.updateUserType(userTypeId, body);
-        return ResponseEntity.ok().body(updatedUser);
-    }
-
-    @Override
-    public ResponseEntity<Void> deleteUserType(Long userTypeId)
-    {
-        log.info("[DELETE] - Remove UserType");
-        this.userTypeInputPort.deleteUserType(userTypeId);
-        return ResponseEntity.noContent().build();
+        this.deleteUserTypeUsecase.execute(userTypeId);
     }
 }

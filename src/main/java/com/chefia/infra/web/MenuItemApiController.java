@@ -1,30 +1,28 @@
 package com.chefia.infra.web;
 
-import com.chefia.core.usecases.interfaces.menuitem.MenuItemInputPort;
+import com.chefia.core.controllers.MenuItemController;
 import com.chefia.menuitems.api.MenuitemApi;
 import com.chefia.menuitems.model.CreateMenuItemDTO;
 import com.chefia.menuitems.model.MenuItemDTO;
 import com.chefia.menuitems.model.PaginatedMenuItemDTO;
 import com.chefia.menuitems.model.UpdateMenuItemDTO;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
+@AllArgsConstructor
 public class MenuItemApiController implements MenuitemApi {
 
-    private final MenuItemInputPort menuItemInputPort;
-
-    public MenuItemApiController(MenuItemInputPort menuItemInputPort) {
-        this.menuItemInputPort = menuItemInputPort;
-    }
+    private final MenuItemController menuItemController;
 
     @Override
     public ResponseEntity<MenuItemDTO> createMenuItem(CreateMenuItemDTO body)
     {
         log.info("[POST] - Create Menu Item");
-        var createdMenuItem = this.menuItemInputPort.createMenuItem(body);
+        var createdMenuItem = this.menuItemController.createMenuItem(body);
         return ResponseEntity.status(201).body(createdMenuItem);
     }
 
@@ -32,7 +30,7 @@ public class MenuItemApiController implements MenuitemApi {
     public ResponseEntity<MenuItemDTO> getMenuItem(Long menuItemId)
     {
         log.info("[GET] - List Menu Item");
-        var getMenuItem = this.menuItemInputPort.findById(menuItemId);
+        var getMenuItem = this.menuItemController.findById(menuItemId);
         return ResponseEntity.ok(getMenuItem);
     }
 
@@ -40,7 +38,7 @@ public class MenuItemApiController implements MenuitemApi {
     public ResponseEntity<PaginatedMenuItemDTO> listMenuItems(Integer page, Integer perPage)
     {
         log.info("[GET] - List Menu Items");
-        var listAllMenuItems = this.menuItemInputPort.findAll(page, perPage);
+        var listAllMenuItems = this.menuItemController.findAll(page, perPage);
         return ResponseEntity.ok(listAllMenuItems);
     }
 
@@ -48,7 +46,7 @@ public class MenuItemApiController implements MenuitemApi {
     public ResponseEntity<MenuItemDTO> updateMenuItem(Long menuItemId, UpdateMenuItemDTO body)
     {
         log.info("[PUT] - Update Address");
-        var updatedMenuItem = this.menuItemInputPort.updateMenuItem(menuItemId, body);
+        var updatedMenuItem = this.menuItemController.updateMenuItem(menuItemId, body);
         return ResponseEntity.ok().body(updatedMenuItem);
     }
 
@@ -56,7 +54,7 @@ public class MenuItemApiController implements MenuitemApi {
     public ResponseEntity<Void> deleteMenuItem(Long menuItemId)
     {
         log.info("[DELETE] - Remove Menu Item");
-        this.menuItemInputPort.deleteMenuItem(menuItemId);
+        this.menuItemController.deleteMenuItem(menuItemId);
         return ResponseEntity.ok().build();
     }
 }
