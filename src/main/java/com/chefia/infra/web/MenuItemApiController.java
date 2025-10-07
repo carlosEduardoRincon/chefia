@@ -11,6 +11,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @Slf4j
 @RestController
 @AllArgsConstructor
@@ -31,6 +33,14 @@ public class MenuItemApiController implements MenuitemApi {
     {
         log.info("[GET] - List Menu Item");
         var getMenuItem = this.menuItemController.findById(menuItemId);
+        return ResponseEntity.ok(getMenuItem);
+    }
+
+    @Override
+    public ResponseEntity<List<MenuItemDTO>> getMenuItemsByRestaurant(Long restaurantId)
+    {
+        log.info("[GET] - List Menu Items for Restaurant ID");
+        var getMenuItem = this.menuItemController.findByRestaurantId(restaurantId);
         return ResponseEntity.ok(getMenuItem);
     }
 

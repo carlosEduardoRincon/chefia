@@ -16,6 +16,33 @@ tags:
   - name: MenuItems
     description: Operations related to restaurant menu items
 paths:
+  /menuitem/restaurant/{restaurantId}:
+    get:
+      tags:
+        - MenuItems
+      summary: Get menu items by restaurant ID
+      operationId: getMenuItemsByRestaurant
+      parameters:
+        - name: restaurantId
+          in: path
+          description: ID of the restaurant to get menu items for
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: Menu items found for the restaurant
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/MenuItem"
+        "400":
+          description: Bad request
+        "404":
+          description: Restaurant not found
   /menuitem:
     get:
       tags:

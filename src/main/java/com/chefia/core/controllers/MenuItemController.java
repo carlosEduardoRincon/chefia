@@ -9,6 +9,8 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Slf4j
 @AllArgsConstructor
 @Component
@@ -17,6 +19,7 @@ public class MenuItemController {
     private final CreateMenuItemUsecase createMenuItemUsecase;
     private final ReadMenuItemUsecase readMenuItemUsecase;
     private final ReadAllMenuItemUsecase readAllMenuItemUsecase;
+    private final ReadMenuItemsByRestaurantUsecase readMenuItemsByRestaurantUsecase;
     private final UpdateMenuItemUsecase updateMenuItemUsecase;
     private final DeleteMenuItemUsecase deleteMenuItemUsecase;
 
@@ -33,6 +36,11 @@ public class MenuItemController {
     public PaginatedMenuItemDTO findAll(Integer page, Integer perPage)
     {
         return this.readAllMenuItemUsecase.execute(page, perPage);
+    }
+
+    public List<MenuItemDTO> findByRestaurantId(Long restaurantId)
+    {
+        return this.readMenuItemsByRestaurantUsecase.execute(restaurantId);
     }
 
     public MenuItemDTO updateMenuItem(Long menuItemId, UpdateMenuItemDTO updateMenuItemDTO)
