@@ -12,6 +12,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Arrays;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -31,6 +34,9 @@ class MenuItemControllerTest {
     private ReadAllMenuItemUsecase readAllMenuItemUsecase;
 
     @Mock
+    private ReadMenuItemsByRestaurantUsecase readMenuItemsByRestaurantUsecase;
+
+    @Mock
     private UpdateMenuItemUsecase updateMenuItemUsecase;
 
     @Mock
@@ -43,6 +49,7 @@ class MenuItemControllerTest {
     private UpdateMenuItemDTO updateMenuItemDTO;
     private MenuItemDTO menuItemDTO;
     private PaginatedMenuItemDTO paginatedMenuItemDTO;
+    private List<MenuItemDTO> menuItemList;
 
     @BeforeEach
     void setUp() {
@@ -50,11 +57,13 @@ class MenuItemControllerTest {
         updateMenuItemDTO = new UpdateMenuItemDTO();
         menuItemDTO = new MenuItemDTO();
         paginatedMenuItemDTO = new PaginatedMenuItemDTO();
+        menuItemList = Arrays.asList(menuItemDTO, new MenuItemDTO());
 
         menuItemController = new MenuItemController(
             createMenuItemUsecase,
             readMenuItemUsecase,
             readAllMenuItemUsecase,
+            readMenuItemsByRestaurantUsecase,
             updateMenuItemUsecase,
             deleteMenuItemUsecase
         );
@@ -173,5 +182,49 @@ class MenuItemControllerTest {
 
         // Assert
         verify(updateMenuItemUsecase).execute(menuItemId, specificDTO);
+    }
+
+    @Test
+    void findByRestaurantId_ShouldReturnListOfMenuItemDTO_WhenValidRestaurantId() {
+        // Arrange
+        var restaurantId = 1L;
+        when(readMenuItemsByRestaurantUsecase.execute(anyLong())).thenReturn(menuItemList);
+
+        // Act
+        var result = menuItemController.findByRestaurantId(restaurantId);
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(menuItemList, result);
+        verify(readMenuItemsByRestaurantUsecase, times(1)).execute(restaurantId);
+    }
+
+    @Test
+    void findByRestaurantId_ShouldReturnEmptyList_WhenRestaurantHasNoMenuItems() {
+        // Arrange
+        var restaurantId = 2L;
+        List<MenuItemDTO> emptyList = List.of();
+        when(readMenuItemsByRestaurantUsecase.execute(anyLong())).thenReturn(emptyList);
+
+        // Act
+        var result = menuItemController.findByRestaurantId(restaurantId);
+
+        // Assert
+        assertNotNull(result);
+        assertTrue(result.isEmpty());
+        verify(readMenuItemsByRestaurantUsecase, times(1)).execute(restaurantId);
+    }
+
+    @Test
+    void findByRestaurantId_ShouldCallUsecaseWithCorrectParameter_WhenCalled() {
+        // Arrange
+        var restaurantId = 5L;
+        when(readMenuItemsByRestaurantUsecase.execute(restaurantId)).thenReturn(menuItemList);
+
+        // Act
+        menuItemController.findByRestaurantId(restaurantId);
+
+        // Assert
+        verify(readMenuItemsByRestaurantUsecase).execute(restaurantId);
     }
 }

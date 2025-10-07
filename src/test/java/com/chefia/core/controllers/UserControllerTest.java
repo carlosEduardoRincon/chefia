@@ -1,10 +1,7 @@
 package com.chefia.core.controllers;
 
 import com.chefia.core.usecases.interfaces.user.*;
-import com.chefia.users.model.CreateUserDTO;
-import com.chefia.users.model.PaginatedUsersDTO;
-import com.chefia.users.model.UpdateUserDTO;
-import com.chefia.users.model.UserDTO;
+import com.chefia.users.model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -37,6 +34,9 @@ class UserControllerTest {
     private UpdateUserStatusUsecase updateUserStatusUsecase;
 
     @Mock
+    private UpdateUserPasswordUsecase updateUserPasswordUsecase;
+
+    @Mock
     private DeleteUserUsecase deleteUserUsecase;
 
     @InjectMocks
@@ -46,6 +46,7 @@ class UserControllerTest {
     private UpdateUserDTO updateUserDTO;
     private UserDTO userDTO;
     private PaginatedUsersDTO paginatedUsersDTO;
+    private ChangePasswordDTO changePasswordDTO;
 
     @BeforeEach
     void setUp() {
@@ -53,6 +54,7 @@ class UserControllerTest {
         updateUserDTO = new UpdateUserDTO();
         userDTO = new UserDTO();
         paginatedUsersDTO = new PaginatedUsersDTO();
+        changePasswordDTO = new ChangePasswordDTO();
     }
 
     @Test
@@ -149,6 +151,24 @@ class UserControllerTest {
 
         // Act & Assert
         assertDoesNotThrow(() -> updateUserStatusUsecase.execute(userId, Boolean.TRUE));
+    }
+
+    @Test
+    void changePassword_ShouldCallUsecase_WhenValidId() {
+        // Arrange
+        var userId = 1L;
+
+        // Act & Assert
+        assertDoesNotThrow(() -> userController.changePassword(userId, changePasswordDTO));
+    }
+
+    @Test
+    void changeUserStatus_ShouldCallUsecase_WhenValidId() {
+        // Arrange
+        var userId = 1L;
+
+        // Act & Assert
+        assertDoesNotThrow(() -> userController.changeUserStatus(userId, Boolean.TRUE));
     }
 
     @Test
