@@ -9,7 +9,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
@@ -203,28 +202,16 @@ class RestaurantApiControllerTest {
     }
 
     @Test
-    void updateRestaurant_ShouldReturnOkStatus_WhenExecuted() {
+    void updateRestaurant_ShouldCallControllerOnceAndReturnOkStatus_WhenExecuted() {
         // Arrange
         var restaurantId = 1L;
-        when(restaurantController.updateRestaurant(anyLong(), any(UpdateRestaurantDTO.class))).thenReturn(restaurantDTO);
+        when(restaurantController.updateRestaurant(restaurantId, updateRestaurantDTO)).thenReturn(restaurantDTO);
 
         // Act
         var result = restaurantApiController.updateRestaurant(restaurantId, updateRestaurantDTO);
 
         // Assert
         assertEquals(HttpStatus.OK, result.getStatusCode());
-    }
-
-    @Test
-    void updateRestaurant_ShouldCallControllerOnce_WhenExecuted() {
-        // Arrange
-        var restaurantId = 1L;
-        when(restaurantController.updateRestaurant(restaurantId, updateRestaurantDTO)).thenReturn(restaurantDTO);
-
-        // Act
-        restaurantApiController.updateRestaurant(restaurantId, updateRestaurantDTO);
-
-        // Assert
         verify(restaurantController, times(1)).updateRestaurant(restaurantId, updateRestaurantDTO);
     }
 

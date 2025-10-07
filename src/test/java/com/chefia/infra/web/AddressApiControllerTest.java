@@ -1,8 +1,6 @@
 package com.chefia.infra.web;
 
 import com.chefia.addresses.model.AddressDTO;
-import com.chefia.addresses.model.CreateAddressDTO;
-import com.chefia.addresses.model.UpdateAddressDTO;
 import com.chefia.core.controllers.AddressController;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,11 +9,17 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
+
+import com.chefia.addresses.model.CreateAddressDTO;
+import com.chefia.addresses.model.UpdateAddressDTO;
+
+import static org.mockito.ArgumentMatchers.any;
 
 @ExtendWith(MockitoExtension.class)
 class AddressApiControllerTest {
@@ -26,24 +30,152 @@ class AddressApiControllerTest {
     @InjectMocks
     private AddressApiController addressApiController;
 
+    private AddressDTO addressDTO;
     private CreateAddressDTO createAddressDTO;
     private UpdateAddressDTO updateAddressDTO;
-    private AddressDTO addressDTO;
+    private List<AddressDTO> addressList;
 
     @BeforeEach
     void setUp() {
-        createAddressDTO = new CreateAddressDTO();
-        createAddressDTO.setStreet("Test Street");
-        createAddressDTO.setNumber(123);
-        createAddressDTO.setCity("Test City");
-
-        updateAddressDTO = new UpdateAddressDTO();
-        updateAddressDTO.setStreet("Updated Street");
-
         addressDTO = new AddressDTO();
+        addressDTO.setId(1L);
         addressDTO.setStreet("Test Street");
         addressDTO.setNumber(123);
         addressDTO.setCity("Test City");
+        addressDTO.setState("Test State");
+        addressDTO.setCountry("Test Country");
+
+        createAddressDTO = new CreateAddressDTO();
+        createAddressDTO.setStreet("New Street");
+        createAddressDTO.setNumber(456);
+        createAddressDTO.setCity("New City");
+        createAddressDTO.setState("New State");
+        createAddressDTO.setCountry("New Country");
+
+        updateAddressDTO = new UpdateAddressDTO();
+        updateAddressDTO.setStreet("Updated Street");
+        updateAddressDTO.setNumber(789);
+        updateAddressDTO.setCity("Updated City");
+        updateAddressDTO.setState("Updated State");
+        updateAddressDTO.setCountry("Updated Country");
+
+        addressList = List.of(addressDTO);
+    }
+
+    @Test
+    void getAddressesByUser_ShouldReturnAddressList_WhenValidUserId() {
+        // Arrange
+        var userId = 1L;
+        when(addressController.findByUserId(anyLong())).thenReturn(addressList);
+
+        // Act
+        var response = addressApiController.getAddressesByUser(userId);
+
+        // Assert
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals(addressList, response.getBody());
+        verify(addressController).findByUserId(userId);
+    }
+
+    @Test
+    void getAddressesByUser_ShouldReturnEmptyList_WhenUserHasNoAddresses() {
+        // Arrange
+        var userId = 2L;
+        when(addressController.findByUserId(userId)).thenReturn(List.of());
+
+        // Act
+        var response = addressApiController.getAddressesByUser(userId);
+
+        // Assert
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertTrue(response.getBody().isEmpty());
+        verify(addressController).findByUserId(userId);
+    }
+
+    @Test
+    void getAddressesByRestaurant_ShouldReturnAddressList_WhenValidRestaurantId() {
+        // Arrange
+        var restaurantId = 1L;
+        when(addressController.findByRestaurantId(anyLong())).thenReturn(addressList);
+
+        // Act
+        var response = addressApiController.getAddressesByRestaurant(restaurantId);
+
+        // Assert
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals(addressList, response.getBody());
+        verify(addressController).findByRestaurantId(restaurantId);
+    }
+
+    @Test
+    void getAddressesByRestaurant_ShouldReturnEmptyList_WhenRestaurantHasNoAddresses() {
+        // Arrange
+        var restaurantId = 3L;
+        when(addressController.findByRestaurantId(restaurantId)).thenReturn(List.of());
+
+        // Act
+        var response = addressApiController.getAddressesByRestaurant(restaurantId);
+
+        // Assert
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertTrue(response.getBody().isEmpty());
+        verify(addressController).findByRestaurantId(restaurantId);
+    }
+
+    @Test
+    void getAddressesByUser_ShouldCallControllerWithCorrectParameter_WhenCalled() {
+        // Arrange
+        var userId = 5L;
+        when(addressController.findByUserId(userId)).thenReturn(addressList);
+
+        // Act
+        addressApiController.getAddressesByUser(userId);
+
+        // Assert
+        verify(addressController).findByUserId(userId);
+    }
+
+    @Test
+    void getAddressesByRestaurant_ShouldCallControllerWithCorrectParameter_WhenCalled() {
+        // Arrange
+        var restaurantId = 7L;
+        when(addressController.findByRestaurantId(restaurantId)).thenReturn(addressList);
+
+        // Act
+        addressApiController.getAddressesByRestaurant(restaurantId);
+
+        // Assert
+        verify(addressController).findByRestaurantId(restaurantId);
+    }
+
+    @Test
+    void getAddressesByUser_ShouldReturnOkStatus_WhenServiceExecutesSuccessfully() {
+        // Arrange
+        var userId = 1L;
+        when(addressController.findByUserId(userId)).thenReturn(addressList);
+
+        // Act
+        var response = addressApiController.getAddressesByUser(userId);
+
+        // Assert
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+    }
+
+    @Test
+    void getAddressesByRestaurant_ShouldReturnOkStatus_WhenServiceExecutesSuccessfully() {
+        // Arrange
+        var restaurantId = 1L;
+        when(addressController.findByRestaurantId(restaurantId)).thenReturn(addressList);
+
+        // Act
+        var response = addressApiController.getAddressesByRestaurant(restaurantId);
+
+        // Assert
+        assertEquals(HttpStatus.OK, response.getStatusCode());
     }
 
     @Test
@@ -236,7 +368,7 @@ class AddressApiControllerTest {
     }
 
     @Test
-    void deleteAddress_ShouldReturnOkStatus_WhenExecuted() {
+    void deleteAddress_ShouldReturnNoContentStatus_WhenExecuted() {
         // Arrange
         var addressId = 1L;
         doNothing().when(addressController).deleteAddress(anyLong());
@@ -245,7 +377,7 @@ class AddressApiControllerTest {
         var result = addressApiController.deleteAddress(addressId);
 
         // Assert
-        assertEquals(HttpStatus.OK, result.getStatusCode());
+        assertEquals(HttpStatus.NO_CONTENT, result.getStatusCode());
         assertNull(result.getBody());
         verify(addressController).deleteAddress(addressId);
     }

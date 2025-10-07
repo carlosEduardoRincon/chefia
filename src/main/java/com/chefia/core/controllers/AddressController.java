@@ -8,6 +8,8 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Slf4j
 @AllArgsConstructor
 @Component
@@ -18,7 +20,9 @@ public class AddressController {
     private final ReadAddressUsecase readAddressUsecase;
     private final UpdateAddressUsecase updateAddressUsecase;
     private final DeleteAddressUsecase deleteAddressUsecase;
-    
+    private final ReadAddressesByUserUsecase readAddressesByUserUsecase;
+    private final ReadAddressesByRestaurantUsecase readAddressesByRestaurantUsecase;
+
     public AddressDTO createAddressForUser(Long userId, CreateAddressDTO createAddressDTO)
     {
         return this.createAddressForUserUsecase.execute(userId, createAddressDTO);
@@ -32,6 +36,16 @@ public class AddressController {
     public AddressDTO findById(Long addressId)
     {
         return this.readAddressUsecase.execute(addressId);
+    }
+
+    public List<AddressDTO> findByUserId(Long userId)
+    {
+        return this.readAddressesByUserUsecase.execute(userId);
+    }
+
+    public List<AddressDTO> findByRestaurantId(Long restaurantId)
+    {
+        return this.readAddressesByRestaurantUsecase.execute(restaurantId);
     }
 
     public AddressDTO updateAddress(Long addressId, UpdateAddressDTO body)

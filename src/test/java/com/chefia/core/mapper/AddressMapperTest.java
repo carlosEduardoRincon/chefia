@@ -1,6 +1,5 @@
 package com.chefia.core.mapper;
 
-import com.chefia.addresses.model.AddressDTO;
 import com.chefia.addresses.model.CreateAddressDTO;
 import com.chefia.core.entities.Address;
 import org.junit.jupiter.api.BeforeEach;
@@ -8,6 +7,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -45,9 +46,9 @@ class AddressMapperTest {
     }
 
     @Test
-    void toCreateAddressEntityDefault_ShouldReturnAddress_WhenValidCreateAddressDTO() {
+    void toEntity_ShouldReturnAddress_WhenValidCreateAddressDTO() {
         // Act
-        var result = addressMapper.toCreateAddressEntityDefault(createAddressDTO);
+        var result = addressMapper.toEntity(createAddressDTO);
 
         // Assert
         assertNotNull(result);
@@ -62,9 +63,9 @@ class AddressMapperTest {
     }
 
     @Test
-    void toCreateAddressEntityDefault_ShouldMapAllFields_WhenCalled() {
+    void toEntity_ShouldMapAllFields_WhenCalled() {
         // Act
-        var result = addressMapper.toCreateAddressEntityDefault(createAddressDTO);
+        var result = addressMapper.toEntity(createAddressDTO);
 
         // Assert
         assertEquals("Test Street", result.getStreet());
@@ -75,9 +76,9 @@ class AddressMapperTest {
     }
 
     @Test
-    void toCreateAddressEntityToUser_ShouldReturnAddressWithUserId_WhenValidParameters() {
+    void toUserAddressEntity_ShouldReturnAddressWithUserId_WhenValidParameters() {
         // Act
-        var result = addressMapper.toCreateAddressEntityToUser(userId, createAddressDTO);
+        var result = addressMapper.toUserAddressEntity(userId, createAddressDTO);
 
         // Assert
         assertNotNull(result);
@@ -91,9 +92,9 @@ class AddressMapperTest {
     }
 
     @Test
-    void toCreateAddressEntityToUser_ShouldSetUserId_WhenCalled() {
+    void toUserAddressEntity_ShouldSetUserId_WhenCalled() {
         // Act
-        var result = addressMapper.toCreateAddressEntityToUser(userId, createAddressDTO);
+        var result = addressMapper.toUserAddressEntity(userId, createAddressDTO);
 
         // Assert
         assertEquals(userId, result.getUserId());
@@ -102,9 +103,9 @@ class AddressMapperTest {
     }
 
     @Test
-    void toCreateAddressEntityToRestaurant_ShouldReturnAddressWithRestaurantId_WhenValidParameters() {
+    void toRestaurantAddressEntity_ShouldReturnAddressWithRestaurantId_WhenValidParameters() {
         // Act
-        var result = addressMapper.toCreateAddressEntityToRestaurant(restaurantId, createAddressDTO);
+        var result = addressMapper.toRestaurantAddressEntity(restaurantId, createAddressDTO);
 
         // Assert
         assertNotNull(result);
@@ -118,9 +119,9 @@ class AddressMapperTest {
     }
 
     @Test
-    void toCreateAddressEntityToRestaurant_ShouldSetRestaurantId_WhenCalled() {
+    void toRestaurantAddressEntity_ShouldSetRestaurantId_WhenCalled() {
         // Act
-        var result = addressMapper.toCreateAddressEntityToRestaurant(restaurantId, createAddressDTO);
+        var result = addressMapper.toRestaurantAddressEntity(restaurantId, createAddressDTO);
 
         // Assert
         assertEquals(restaurantId, result.getRestaurantId());
@@ -158,12 +159,12 @@ class AddressMapperTest {
     }
 
     @Test
-    void toCreateAddressEntityToUser_ShouldWorkWithDifferentUserIds_WhenCalled() {
+    void toUserAddressEntity_ShouldWorkWithDifferentUserIds_WhenCalled() {
         // Arrange
         Long differentUserId = 999L;
 
         // Act
-        var result = addressMapper.toCreateAddressEntityToUser(differentUserId, createAddressDTO);
+        var result = addressMapper.toUserAddressEntity(differentUserId, createAddressDTO);
 
         // Assert
         assertEquals(differentUserId, result.getUserId());
@@ -171,12 +172,12 @@ class AddressMapperTest {
     }
 
     @Test
-    void toCreateAddressEntityToRestaurant_ShouldWorkWithDifferentRestaurantIds_WhenCalled() {
+    void toRestaurantAddressEntity_ShouldWorkWithDifferentRestaurantIds_WhenCalled() {
         // Arrange
         Long differentRestaurantId = 888L;
 
         // Act
-        var result = addressMapper.toCreateAddressEntityToRestaurant(differentRestaurantId, createAddressDTO);
+        var result = addressMapper.toRestaurantAddressEntity(differentRestaurantId, createAddressDTO);
 
         // Assert
         assertEquals(differentRestaurantId, result.getRestaurantId());
@@ -198,10 +199,153 @@ class AddressMapperTest {
     }
 
     @Test
+    void toEntity_ShouldMapCorrectly_WhenValidDTO() {
+        // Act
+        var result = addressMapper.toEntity(createAddressDTO);
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(createAddressDTO.getStreet(), result.getStreet());
+        assertEquals(createAddressDTO.getNumber(), result.getNumber());
+        assertEquals(createAddressDTO.getCity(), result.getCity());
+        assertEquals(createAddressDTO.getState(), result.getState());
+        assertEquals(createAddressDTO.getCountry(), result.getCountry());
+        assertNull(result.getUserId());
+        assertNull(result.getRestaurantId());
+    }
+
+    @Test
+    void toUserAddressEntity_ShouldMapWithUserId_WhenValidParams() {
+        // Arrange
+        var userId = 1L;
+
+        // Act
+        var result = addressMapper.toUserAddressEntity(userId, createAddressDTO);
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(createAddressDTO.getStreet(), result.getStreet());
+        assertEquals(createAddressDTO.getNumber(), result.getNumber());
+        assertEquals(createAddressDTO.getCity(), result.getCity());
+        assertEquals(createAddressDTO.getState(), result.getState());
+        assertEquals(createAddressDTO.getCountry(), result.getCountry());
+        assertEquals(userId, result.getUserId());
+        assertNull(result.getRestaurantId());
+    }
+
+    @Test
+    void toRestaurantAddressEntity_ShouldMapWithRestaurantId_WhenValidParams() {
+        // Arrange
+        var restaurantId = 2L;
+
+        // Act
+        var result = addressMapper.toRestaurantAddressEntity(restaurantId, createAddressDTO);
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(createAddressDTO.getStreet(), result.getStreet());
+        assertEquals(createAddressDTO.getNumber(), result.getNumber());
+        assertEquals(createAddressDTO.getCity(), result.getCity());
+        assertEquals(createAddressDTO.getState(), result.getState());
+        assertEquals(createAddressDTO.getCountry(), result.getCountry());
+        assertNull(result.getUserId());
+        assertEquals(restaurantId, result.getRestaurantId());
+    }
+
+    @Test
+    void toAddressResponseDTO_ShouldMapCorrectly_WhenValidAddress() {
+        // Act
+        var result = addressMapper.toAddressResponseDTO(address);
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(address.getNrSeqAddress(), result.getId());
+        assertEquals(address.getStreet(), result.getStreet());
+        assertEquals(address.getNumber(), result.getNumber());
+        assertEquals(address.getCity(), result.getCity());
+        assertEquals(address.getState(), result.getState());
+        assertEquals(address.getCountry(), result.getCountry());
+    }
+
+    @Test
+    void toAddressResponseDTO_ShouldHandleNullId_WhenAddressIdIsNull() {
+        // Arrange
+        address.setNrSeqAddress(null);
+
+        // Act
+        var result = addressMapper.toAddressResponseDTO(address);
+
+        // Assert
+        assertNotNull(result);
+        assertNull(result.getId());
+        assertEquals(address.getStreet(), result.getStreet());
+        assertEquals(address.getNumber(), result.getNumber());
+        assertEquals(address.getCity(), result.getCity());
+        assertEquals(address.getState(), result.getState());
+        assertEquals(address.getCountry(), result.getCountry());
+    }
+
+    @Test
+    void toResponseListDTO_ShouldMapList_WhenValidAddressList() {
+        // Arrange
+        var address2 = new Address();
+        address2.setNrSeqAddress(2L);
+        address2.setStreet("Street 2");
+        var addressList = List.of(address, address2);
+
+        // Act
+        var result = addressMapper.toResponseListDTO(addressList);
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(2, result.size());
+        assertEquals(address.getNrSeqAddress(), result.get(0).getId());
+        assertEquals(address2.getNrSeqAddress(), result.get(1).getId());
+    }
+
+    @Test
+    void toResponseListDTO_ShouldReturnEmptyList_WhenEmptyAddressList() {
+        // Arrange
+        var emptyList = List.<Address>of();
+
+        // Act
+        var result = addressMapper.toResponseListDTO(emptyList);
+
+        // Assert
+        assertNotNull(result);
+        assertTrue(result.isEmpty());
+    }
+
+        @Test
+        void toResponseListDTO_ShouldMapMultipleAddresses_WhenAddressListProvided() {
+            // Arrange
+            var address1 = new Address();
+            address1.setNrSeqAddress(1L);
+            address1.setStreet("Street 1");
+
+            var address2 = new Address();
+            address2.setNrSeqAddress(2L);
+            address2.setStreet("Street 2");
+
+            var addressList = List.of(address1, address2);
+
+            // Act
+            var result = addressMapper.toResponseListDTO(addressList);
+
+            // Assert
+            assertNotNull(result);
+            assertEquals(2, result.size());
+            assertEquals(1L, result.get(0).getId());
+            assertEquals("Street 1", result.get(0).getStreet());
+            assertEquals(2L, result.get(1).getId());
+            assertEquals("Street 2", result.get(1).getStreet());
+        }
+
+    @Test
     void mappers_ShouldCreateDistinctObjects_WhenCalled() {
         // Act
-        var userAddress = addressMapper.toCreateAddressEntityToUser(userId, createAddressDTO);
-        var restaurantAddress = addressMapper.toCreateAddressEntityToRestaurant(restaurantId, createAddressDTO);
+        var userAddress = addressMapper.toUserAddressEntity(userId, createAddressDTO);
+        var restaurantAddress = addressMapper.toRestaurantAddressEntity(restaurantId, createAddressDTO);
 
         // Assert
         assertNotSame(userAddress, restaurantAddress);

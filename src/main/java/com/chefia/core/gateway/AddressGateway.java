@@ -3,17 +3,22 @@ package com.chefia.core.gateway;
 import com.chefia.addresses.model.UpdateAddressDTO;
 import com.chefia.core.entities.Address;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface AddressGateway {
 
-    long saveAddressForUser(Address addressToInsert);
+    long saveUserAddress(Address addressToInsert);
 
-    long saveAddressForRestaurant(Address addressToInsert);
+    long saveRestaurantAddress(Address addressToInsert);
 
-    Optional<Address> findById(Long id);
+    Optional<Address> findById(Long addressId);
 
-    void updateAddress(Long id, UpdateAddressDTO updateAddressDTO);
+    List<Address> findByUserId(Long userId);
 
-    void deleteById(Long id);
+    List<Address> findByRestaurantId(Long restaurantId);
+
+    void updateAddress(Long addressId, UpdateAddressDTO updateAddressDTO);
+
+    void deleteById(Long addressId);
 }

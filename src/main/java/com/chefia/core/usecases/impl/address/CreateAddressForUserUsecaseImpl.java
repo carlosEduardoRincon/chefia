@@ -27,9 +27,9 @@ public class CreateAddressForUserUsecaseImpl implements CreateAddressForUserUsec
                 .orElseThrow(() -> new UserNotFoundException("User not found with id: " + userId)));
         assert user.isPresent();
 
-        var addressToInsert = this.addressMapper.toCreateAddressEntityToUser(userId, createAddressDTO);
+        var addressToInsert = this.addressMapper.toUserAddressEntity(userId, createAddressDTO);
 
-        var addressId = this.addressGateway.saveAddressForUser(addressToInsert);
+        var addressId = this.addressGateway.saveUserAddress(addressToInsert);
         addressToInsert.setNrSeqAddress(addressId);
 
         return this.addressMapper.toAddressResponseDTO(addressToInsert);

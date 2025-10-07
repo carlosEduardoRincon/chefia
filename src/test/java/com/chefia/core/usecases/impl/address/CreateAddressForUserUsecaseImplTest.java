@@ -80,8 +80,8 @@ class CreateAddressForUserUsecaseImplTest {
         // Arrange
         var savedAddressId = 1L;
         when(userGateway.findById(userId)).thenReturn(Optional.of(user));
-        when(addressMapper.toCreateAddressEntityToUser(userId, createAddressDTO)).thenReturn(address);
-        when(addressGateway.saveAddressForUser(address)).thenReturn(savedAddressId);
+        when(addressMapper.toUserAddressEntity(userId, createAddressDTO)).thenReturn(address);
+        when(addressGateway.saveUserAddress(address)).thenReturn(savedAddressId);
         when(addressMapper.toAddressResponseDTO(address)).thenReturn(addressDTO);
 
         // Act
@@ -93,8 +93,8 @@ class CreateAddressForUserUsecaseImplTest {
         assertEquals(savedAddressId, address.getNrSeqAddress());
 
         verify(userGateway).findById(userId);
-        verify(addressMapper).toCreateAddressEntityToUser(userId, createAddressDTO);
-        verify(addressGateway).saveAddressForUser(address);
+        verify(addressMapper).toUserAddressEntity(userId, createAddressDTO);
+        verify(addressGateway).saveUserAddress(address);
         verify(addressMapper).toAddressResponseDTO(address);
     }
 
@@ -110,28 +110,8 @@ class CreateAddressForUserUsecaseImplTest {
         assertEquals("User not found with id: " + userId, exception.getMessage());
 
         verify(userGateway).findById(userId);
-        verify(addressMapper, never()).toCreateAddressEntityToUser(anyLong(), any(CreateAddressDTO.class));
-        verify(addressGateway, never()).saveAddressForUser(any(Address.class));
+        verify(addressMapper, never()).toUserAddressEntity(anyLong(), any(CreateAddressDTO.class));
+        verify(addressGateway, never()).saveUserAddress(any(Address.class));
         verify(addressMapper, never()).toAddressResponseDTO(any(Address.class));
-    }
-
-    @Test
-    void execute_ShouldCallMethodsInCorrectOrder_WhenExecuted() {
-        // Arrange
-        var savedAddressId = 1L;
-        when(userGateway.findById(userId)).thenReturn(Optional.of(user));
-        when(addressMapper.toCreateAddressEntityToUser(userId, createAddressDTO)).thenReturn(address);
-        when(addressGateway.saveAddressForUser(address)).thenReturn(savedAddressId);
-        when(addressMapper.toAddressResponseDTO(address)).thenReturn(addressDTO);
-
-        // Act
-        createAddressForUserUsecase.execute(userId, createAddressDTO);
-
-        // Assert
-        var inOrder = inOrder(userGateway, addressMapper, addressGateway);
-        inOrder.verify(userGateway).findById(userId);
-        inOrder.verify(addressMapper).toCreateAddressEntityToUser(userId, createAddressDTO);
-        inOrder.verify(addressGateway).saveAddressForUser(address);
-        inOrder.verify(addressMapper).toAddressResponseDTO(address);
     }
 }

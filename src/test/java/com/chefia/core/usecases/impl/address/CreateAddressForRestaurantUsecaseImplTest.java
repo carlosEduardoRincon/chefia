@@ -80,8 +80,8 @@ class CreateAddressForRestaurantUsecaseImplTest {
         // Arrange
         var savedAddressId = 1L;
         when(restaurantGateway.findById(restaurantId)).thenReturn(Optional.of(restaurant));
-        when(addressMapper.toCreateAddressEntityToRestaurant(restaurantId, createAddressDTO)).thenReturn(address);
-        when(addressGateway.saveAddressForUser(address)).thenReturn(savedAddressId);
+        when(addressMapper.toRestaurantAddressEntity(restaurantId, createAddressDTO)).thenReturn(address);
+        when(addressGateway.saveRestaurantAddress(address)).thenReturn(savedAddressId);
         when(addressMapper.toAddressResponseDTO(address)).thenReturn(addressDTO);
 
         // Act
@@ -93,8 +93,8 @@ class CreateAddressForRestaurantUsecaseImplTest {
         assertEquals(savedAddressId, address.getNrSeqAddress());
 
         verify(restaurantGateway).findById(restaurantId);
-        verify(addressMapper).toCreateAddressEntityToRestaurant(restaurantId, createAddressDTO);
-        verify(addressGateway).saveAddressForUser(address);
+        verify(addressMapper).toRestaurantAddressEntity(restaurantId, createAddressDTO);
+        verify(addressGateway).saveRestaurantAddress(address);
         verify(addressMapper).toAddressResponseDTO(address);
     }
 
@@ -110,8 +110,8 @@ class CreateAddressForRestaurantUsecaseImplTest {
         assertEquals("Restaurant not found with id: " + restaurantId, exception.getMessage());
 
         verify(restaurantGateway).findById(restaurantId);
-        verify(addressMapper, never()).toCreateAddressEntityToRestaurant(anyLong(), any(CreateAddressDTO.class));
-        verify(addressGateway, never()).saveAddressForUser(any(Address.class));
+        verify(addressMapper, never()).toRestaurantAddressEntity(anyLong(), any(CreateAddressDTO.class));
+        verify(addressGateway, never()).saveRestaurantAddress(any(Address.class));
         verify(addressMapper, never()).toAddressResponseDTO(any(Address.class));
     }
 
@@ -120,8 +120,8 @@ class CreateAddressForRestaurantUsecaseImplTest {
         // Arrange
         var savedAddressId = 1L;
         when(restaurantGateway.findById(restaurantId)).thenReturn(Optional.of(restaurant));
-        when(addressMapper.toCreateAddressEntityToRestaurant(restaurantId, createAddressDTO)).thenReturn(address);
-        when(addressGateway.saveAddressForUser(address)).thenReturn(savedAddressId);
+        when(addressMapper.toRestaurantAddressEntity(restaurantId, createAddressDTO)).thenReturn(address);
+        when(addressGateway.saveRestaurantAddress(address)).thenReturn(savedAddressId);
         when(addressMapper.toAddressResponseDTO(address)).thenReturn(addressDTO);
 
         // Act
@@ -130,8 +130,8 @@ class CreateAddressForRestaurantUsecaseImplTest {
         // Assert
         var inOrder = inOrder(restaurantGateway, addressMapper, addressGateway);
         inOrder.verify(restaurantGateway).findById(restaurantId);
-        inOrder.verify(addressMapper).toCreateAddressEntityToRestaurant(restaurantId, createAddressDTO);
-        inOrder.verify(addressGateway).saveAddressForUser(address);
+        inOrder.verify(addressMapper).toRestaurantAddressEntity(restaurantId, createAddressDTO);
+        inOrder.verify(addressGateway).saveRestaurantAddress(address);
         inOrder.verify(addressMapper).toAddressResponseDTO(address);
     }
 }

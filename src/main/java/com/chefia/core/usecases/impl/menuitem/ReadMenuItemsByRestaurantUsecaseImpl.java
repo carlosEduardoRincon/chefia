@@ -20,8 +20,6 @@ public class ReadMenuItemsByRestaurantUsecaseImpl implements ReadMenuItemsByRest
 
     @Override
     public List<MenuItemDTO> execute(Long restaurantId) {
-        log.info("Fetching menu items for restaurant with id: {}", restaurantId);
-
         return this.menuItemGateway.findByRestaurantId(restaurantId)
                 .stream()
                 .map(this.menuItemMapper::toMenuItemResponseDTO)

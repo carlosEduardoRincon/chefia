@@ -11,6 +11,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -18,6 +19,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
+
+import java.util.Arrays;
 
 @ExtendWith(MockitoExtension.class)
 class JdbcAddressRepositoryTest {
@@ -69,7 +72,7 @@ class JdbcAddressRepositoryTest {
         }).when(statementSpec).update(any(GeneratedKeyHolder.class));
 
         // Act
-        var result = addressRepository.saveAddressForUser(address);
+        var result = addressRepository.saveUserAddress(address);
 
         // Assert
         assertEquals(1L, result);
@@ -91,7 +94,7 @@ class JdbcAddressRepositoryTest {
         }).when(statementSpec).update(any(GeneratedKeyHolder.class));
 
         // Act
-        addressRepository.saveAddressForUser(address);
+        addressRepository.saveUserAddress(address);
 
         // Assert
         verify(statementSpec).param("street", address.getStreet());
@@ -116,7 +119,7 @@ class JdbcAddressRepositoryTest {
         }).when(statementSpec).update(any(GeneratedKeyHolder.class));
 
         // Act
-        var result = addressRepository.saveAddressForRestaurant(address);
+        var result = addressRepository.saveRestaurantAddress(address);
 
         // Assert
         assertEquals(2L, result);
@@ -139,7 +142,7 @@ class JdbcAddressRepositoryTest {
         }).when(statementSpec).update(any(GeneratedKeyHolder.class));
 
         // Act
-        addressRepository.saveAddressForRestaurant(address);
+        addressRepository.saveRestaurantAddress(address);
 
         // Assert
         verify(statementSpec).param("street", address.getStreet());
@@ -242,7 +245,7 @@ class JdbcAddressRepositoryTest {
         }).when(statementSpec).update(any(GeneratedKeyHolder.class));
 
         // Act
-        addressRepository.saveAddressForUser(address);
+        addressRepository.saveUserAddress(address);
 
         // Assert
         verify(statementSpec).param("nr_seq_user", 10L);
@@ -262,7 +265,7 @@ class JdbcAddressRepositoryTest {
         }).when(statementSpec).update(any(GeneratedKeyHolder.class));
 
         // Act
-        addressRepository.saveAddressForRestaurant(address);
+        addressRepository.saveRestaurantAddress(address);
 
         // Assert
         verify(statementSpec).param("nr_seq_restaurant", 25L);
@@ -300,5 +303,182 @@ class JdbcAddressRepositoryTest {
         verify(jdbcClient, times(1)).sql(anyString());
         verify(statementSpec, times(1)).param("id", addressId);
         verify(statementSpec, times(1)).update();
+    }
+
+    @Test
+    void findByUserId_ShouldReturnAddressList_WhenUserHasAddresses() {
+        // Arrange
+        var userId = 1L;
+        var addressList = Arrays.asList(address, createSecondAddress());
+        when(jdbcClient.sql(anyString())).thenReturn(statementSpec);
+        when(statementSpec.param(anyString(), any())).thenReturn(statementSpec);
+        when(statementSpec.query(Address.class)).thenReturn(mappedQuerySpec);
+        when(mappedQuerySpec.list()).thenReturn(addressList);
+
+        // Act
+        var result = addressRepository.findByUserId(userId);
+
+        // Assert
+        assertEquals(2, result.size());
+        assertEquals(addressList, result);
+        verify(jdbcClient).sql(anyString());
+        verify(statementSpec).param("userId", userId);
+        verify(mappedQuerySpec).list();
+    }
+
+    @Test
+    void findByUserId_ShouldReturnEmptyList_WhenUserHasNoAddresses() {
+        // Arrange
+        var userId = 999L;
+        when(jdbcClient.sql(anyString())).thenReturn(statementSpec);
+        when(statementSpec.param(anyString(), any())).thenReturn(statementSpec);
+        when(statementSpec.query(Address.class)).thenReturn(mappedQuerySpec);
+        when(mappedQuerySpec.list()).thenReturn(List.of());
+
+        // Act
+        var result = addressRepository.findByUserId(userId);
+
+        // Assert
+        assertTrue(result.isEmpty());
+        verify(jdbcClient).sql(anyString());
+        verify(statementSpec).param("userId", userId);
+        verify(mappedQuerySpec).list();
+    }
+
+    @Test
+    void findByUserId_ShouldCallCorrectQuery_WhenSearchingByUserId() {
+        // Arrange
+        var userId = 5L;
+        when(jdbcClient.sql(anyString())).thenReturn(statementSpec);
+        when(statementSpec.param(anyString(), any())).thenReturn(statementSpec);
+        when(statementSpec.query(Address.class)).thenReturn(mappedQuerySpec);
+        when(mappedQuerySpec.list()).thenReturn(List.of());
+
+        // Act
+        addressRepository.findByUserId(userId);
+
+        // Assert
+        verify(jdbcClient).sql(contains("WHERE nr_seq_user = :userId"));
+        verify(statementSpec).param("userId", userId);
+    }
+
+    @Test
+    void findByRestaurantId_ShouldReturnAddressList_WhenRestaurantHasAddresses() {
+        // Arrange
+        var restaurantId = 2L;
+        address.setRestaurantId(restaurantId);
+        var addressList = Arrays.asList(address, createRestaurantAddress());
+        when(jdbcClient.sql(anyString())).thenReturn(statementSpec);
+        when(statementSpec.param(anyString(), any())).thenReturn(statementSpec);
+        when(statementSpec.query(Address.class)).thenReturn(mappedQuerySpec);
+        when(mappedQuerySpec.list()).thenReturn(addressList);
+
+        // Act
+        var result = addressRepository.findByRestaurantId(restaurantId);
+
+        // Assert
+        assertEquals(2, result.size());
+        assertEquals(addressList, result);
+        verify(jdbcClient).sql(anyString());
+        verify(statementSpec).param("restaurantId", restaurantId);
+        verify(mappedQuerySpec).list();
+    }
+
+    @Test
+    void findByRestaurantId_ShouldReturnEmptyList_WhenRestaurantHasNoAddresses() {
+        // Arrange
+        var restaurantId = 888L;
+        when(jdbcClient.sql(anyString())).thenReturn(statementSpec);
+        when(statementSpec.param(anyString(), any())).thenReturn(statementSpec);
+        when(statementSpec.query(Address.class)).thenReturn(mappedQuerySpec);
+        when(mappedQuerySpec.list()).thenReturn(List.of());
+
+        // Act
+        var result = addressRepository.findByRestaurantId(restaurantId);
+
+        // Assert
+        assertTrue(result.isEmpty());
+        verify(jdbcClient).sql(anyString());
+        verify(statementSpec).param("restaurantId", restaurantId);
+        verify(mappedQuerySpec).list();
+    }
+
+    @Test
+    void findByRestaurantId_ShouldCallCorrectQuery_WhenSearchingByRestaurantId() {
+        // Arrange
+        var restaurantId = 7L;
+        when(jdbcClient.sql(anyString())).thenReturn(statementSpec);
+        when(statementSpec.param(anyString(), any())).thenReturn(statementSpec);
+        when(statementSpec.query(Address.class)).thenReturn(mappedQuerySpec);
+        when(mappedQuerySpec.list()).thenReturn(List.of());
+
+        // Act
+        addressRepository.findByRestaurantId(restaurantId);
+
+        // Assert
+        verify(jdbcClient).sql(contains("WHERE nr_seq_restaurant = :restaurantId"));
+        verify(statementSpec).param("restaurantId", restaurantId);
+    }
+
+    @Test
+    void findByUserId_ShouldHandleNullResult_WhenDatabaseReturnsNull() {
+        // Arrange
+        var userId = 1L;
+        when(jdbcClient.sql(anyString())).thenReturn(statementSpec);
+        when(statementSpec.param(anyString(), any())).thenReturn(statementSpec);
+        when(statementSpec.query(Address.class)).thenReturn(mappedQuerySpec);
+        when(mappedQuerySpec.list()).thenReturn(null);
+
+        // Act
+        var result = addressRepository.findByUserId(userId);
+
+        // Assert
+        assertNull(result);
+        verify(jdbcClient).sql(anyString());
+        verify(statementSpec).param("userId", userId);
+        verify(mappedQuerySpec).list();
+    }
+
+    @Test
+    void findByRestaurantId_ShouldHandleNullResult_WhenDatabaseReturnsNull() {
+        // Arrange
+        var restaurantId = 1L;
+        when(jdbcClient.sql(anyString())).thenReturn(statementSpec);
+        when(statementSpec.param(anyString(), any())).thenReturn(statementSpec);
+        when(statementSpec.query(Address.class)).thenReturn(mappedQuerySpec);
+        when(mappedQuerySpec.list()).thenReturn(null);
+
+        // Act
+        var result = addressRepository.findByRestaurantId(restaurantId);
+
+        // Assert
+        assertNull(result);
+        verify(jdbcClient).sql(anyString());
+        verify(statementSpec).param("restaurantId", restaurantId);
+        verify(mappedQuerySpec).list();
+    }
+
+    private Address createSecondAddress() {
+        Address secondAddress = new Address();
+        secondAddress.setNrSeqAddress(2L);
+        secondAddress.setStreet("Second Street");
+        secondAddress.setNumber(456);
+        secondAddress.setCity("Rio de Janeiro");
+        secondAddress.setState("RJ");
+        secondAddress.setCountry("Brazil");
+        secondAddress.setUserId(1L);
+        return secondAddress;
+    }
+
+    private Address createRestaurantAddress() {
+        Address restaurantAddress = new Address();
+        restaurantAddress.setNrSeqAddress(3L);
+        restaurantAddress.setStreet("Restaurant Street");
+        restaurantAddress.setNumber(789);
+        restaurantAddress.setCity("Belo Horizonte");
+        restaurantAddress.setState("MG");
+        restaurantAddress.setCountry("Brazil");
+        restaurantAddress.setRestaurantId(2L);
+        return restaurantAddress;
     }
 }

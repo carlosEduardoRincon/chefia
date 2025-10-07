@@ -1,9 +1,8 @@
 package com.chefia.core.controllers;
 
 import com.chefia.addresses.model.AddressDTO;
-import com.chefia.addresses.model.CreateAddressDTO;
-import com.chefia.addresses.model.UpdateAddressDTO;
-import com.chefia.core.usecases.interfaces.address.*;
+import com.chefia.core.usecases.interfaces.address.ReadAddressesByRestaurantUsecase;
+import com.chefia.core.usecases.interfaces.address.ReadAddressesByUserUsecase;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -11,8 +10,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 
@@ -20,237 +20,108 @@ import static org.mockito.Mockito.*;
 class AddressControllerTest {
 
     @Mock
-    private CreateAddressForUserUsecase createAddressForUserUsecase;
+    private ReadAddressesByUserUsecase readAddressesByUserUsecase;
 
     @Mock
-    private CreateAddressForRestaurantUsecase createAddressForRestaurantUsecase;
-
-    @Mock
-    private ReadAddressUsecase readAddressUsecase;
-
-    @Mock
-    private UpdateAddressUsecase updateAddressUsecase;
-
-    @Mock
-    private DeleteAddressUsecase deleteAddressUsecase;
+    private ReadAddressesByRestaurantUsecase readAddressesByRestaurantUsecase;
 
     @InjectMocks
     private AddressController addressController;
 
-    private CreateAddressDTO createAddressDTO;
-    private UpdateAddressDTO updateAddressDTO;
-    private AddressDTO addressDTO;
-    private Long userId;
-    private Long restaurantId;
-    private Long addressId;
+    private List<AddressDTO> addressList;
 
     @BeforeEach
     void setUp() {
-        userId = 1L;
-        restaurantId = 2L;
-        addressId = 3L;
-
-        createAddressDTO = new CreateAddressDTO();
-        createAddressDTO.setStreet("Test Street");
-        createAddressDTO.setNumber(123);
-        createAddressDTO.setCity("Test City");
-        createAddressDTO.setState("Test State");
-        createAddressDTO.setCountry("Test Country");
-
-        updateAddressDTO = new UpdateAddressDTO();
-        updateAddressDTO.setStreet("Updated Street");
-        updateAddressDTO.setNumber(456);
-        updateAddressDTO.setCity("Updated City");
-        updateAddressDTO.setState("Updated State");
-        updateAddressDTO.setCountry("Updated Country");
-
-        addressDTO = new AddressDTO();
-        addressDTO.setId(addressId);
+        AddressDTO addressDTO = new AddressDTO();
+        addressDTO.setId(1L);
         addressDTO.setStreet("Test Street");
         addressDTO.setNumber(123);
-        addressDTO.setCity("Test City");
-        addressDTO.setState("Test State");
-        addressDTO.setCountry("Test Country");
+        addressList = List.of(addressDTO);
     }
 
     @Test
-    void createAddressForUser_ShouldReturnAddressDTO_WhenValidParameters() {
+    void findByUserId_ShouldReturnAddressList_WhenValidUserId() {
         // Arrange
-        when(createAddressForUserUsecase.execute(userId, createAddressDTO)).thenReturn(addressDTO);
+        var userId = 1L;
+        when(readAddressesByUserUsecase.execute(anyLong())).thenReturn(addressList);
 
         // Act
-        var result = addressController.createAddressForUser(userId, createAddressDTO);
+        var result = addressController.findByUserId(userId);
 
         // Assert
         assertNotNull(result);
-        assertEquals(addressDTO, result);
-        verify(createAddressForUserUsecase).execute(userId, createAddressDTO);
+        assertEquals(addressList, result);
+        verify(readAddressesByUserUsecase).execute(userId);
     }
 
     @Test
-    void createAddressForUser_ShouldCallUsecaseOnce_WhenCalled() {
+    void findByUserId_ShouldReturnEmptyList_WhenUserHasNoAddresses() {
         // Arrange
-        when(createAddressForUserUsecase.execute(anyLong(), any(CreateAddressDTO.class))).thenReturn(addressDTO);
+        var userId = 2L;
+        when(readAddressesByUserUsecase.execute(userId)).thenReturn(List.of());
 
         // Act
-        addressController.createAddressForUser(userId, createAddressDTO);
-
-        // Assert
-        verify(createAddressForUserUsecase, times(1)).execute(userId, createAddressDTO);
-    }
-
-    @Test
-    void createAddressForRestaurant_ShouldReturnAddressDTO_WhenValidParameters() {
-        // Arrange
-        when(createAddressForRestaurantUsecase.execute(restaurantId, createAddressDTO)).thenReturn(addressDTO);
-
-        // Act
-        var result = addressController.createAddressForRestaurant(restaurantId, createAddressDTO);
+        var result = addressController.findByUserId(userId);
 
         // Assert
         assertNotNull(result);
-        assertEquals(addressDTO, result);
-        verify(createAddressForRestaurantUsecase).execute(restaurantId, createAddressDTO);
+        assertTrue(result.isEmpty());
+        verify(readAddressesByUserUsecase).execute(userId);
     }
 
     @Test
-    void createAddressForRestaurant_ShouldCallUsecaseOnce_WhenCalled() {
+    void findByRestaurantId_ShouldReturnAddressList_WhenValidRestaurantId() {
         // Arrange
-        when(createAddressForRestaurantUsecase.execute(anyLong(), any(CreateAddressDTO.class))).thenReturn(addressDTO);
+        var restaurantId = 1L;
+        when(readAddressesByRestaurantUsecase.execute(anyLong())).thenReturn(addressList);
 
         // Act
-        addressController.createAddressForRestaurant(restaurantId, createAddressDTO);
-
-        // Assert
-        verify(createAddressForRestaurantUsecase, times(1)).execute(restaurantId, createAddressDTO);
-    }
-
-    @Test
-    void findById_ShouldReturnAddressDTO_WhenValidAddressId() {
-        // Arrange
-        when(readAddressUsecase.execute(addressId)).thenReturn(addressDTO);
-
-        // Act
-        var result = addressController.findById(addressId);
+        var result = addressController.findByRestaurantId(restaurantId);
 
         // Assert
         assertNotNull(result);
-        assertEquals(addressDTO, result);
-        verify(readAddressUsecase).execute(addressId);
+        assertEquals(addressList, result);
+        verify(readAddressesByRestaurantUsecase).execute(restaurantId);
     }
 
     @Test
-    void findById_ShouldCallUsecaseOnce_WhenCalled() {
+    void findByRestaurantId_ShouldReturnEmptyList_WhenRestaurantHasNoAddresses() {
         // Arrange
-        when(readAddressUsecase.execute(anyLong())).thenReturn(addressDTO);
+        var restaurantId = 3L;
+        when(readAddressesByRestaurantUsecase.execute(restaurantId)).thenReturn(List.of());
 
         // Act
-        addressController.findById(addressId);
-
-        // Assert
-        verify(readAddressUsecase, times(1)).execute(addressId);
-    }
-
-    @Test
-    void updateAddress_ShouldReturnAddressDTO_WhenValidParameters() {
-        // Arrange
-        when(updateAddressUsecase.execute(addressId, updateAddressDTO)).thenReturn(addressDTO);
-
-        // Act
-        var result = addressController.updateAddress(addressId, updateAddressDTO);
+        var result = addressController.findByRestaurantId(restaurantId);
 
         // Assert
         assertNotNull(result);
-        assertEquals(addressDTO, result);
-        verify(updateAddressUsecase).execute(addressId, updateAddressDTO);
+        assertTrue(result.isEmpty());
+        verify(readAddressesByRestaurantUsecase).execute(restaurantId);
     }
 
     @Test
-    void updateAddress_ShouldCallUsecaseOnce_WhenCalled() {
+    void findByUserId_ShouldCallUsecaseWithCorrectParameter_WhenCalled() {
         // Arrange
-        when(updateAddressUsecase.execute(anyLong(), any(UpdateAddressDTO.class))).thenReturn(addressDTO);
+        var userId = 5L;
+        when(readAddressesByUserUsecase.execute(userId)).thenReturn(addressList);
 
         // Act
-        addressController.updateAddress(addressId, updateAddressDTO);
+        addressController.findByUserId(userId);
 
         // Assert
-        verify(updateAddressUsecase, times(1)).execute(addressId, updateAddressDTO);
+        verify(readAddressesByUserUsecase).execute(userId);
     }
 
     @Test
-    void deleteAddress_ShouldCallUsecase_WhenValidAddressId() {
+    void findByRestaurantId_ShouldCallUsecaseWithCorrectParameter_WhenCalled() {
         // Arrange
-        doNothing().when(deleteAddressUsecase).execute(addressId);
+        var restaurantId = 7L;
+        when(readAddressesByRestaurantUsecase.execute(restaurantId)).thenReturn(addressList);
 
         // Act
-        assertDoesNotThrow(() -> addressController.deleteAddress(addressId));
+        addressController.findByRestaurantId(restaurantId);
 
         // Assert
-        verify(deleteAddressUsecase).execute(addressId);
-    }
-
-    @Test
-    void deleteAddress_ShouldCallUsecaseOnce_WhenCalled() {
-        // Arrange
-        doNothing().when(deleteAddressUsecase).execute(anyLong());
-
-        // Act
-        addressController.deleteAddress(addressId);
-
-        // Assert
-        verify(deleteAddressUsecase, times(1)).execute(addressId);
-    }
-
-    @Test
-    void deleteAddress_ShouldCallUsecaseWithDifferentIds_WhenCalledMultipleTimes() {
-        // Arrange
-        Long addressId1 = 1L;
-        Long addressId2 = 2L;
-        doNothing().when(deleteAddressUsecase).execute(any(Long.class));
-
-        // Act
-        addressController.deleteAddress(addressId1);
-        addressController.deleteAddress(addressId2);
-
-        // Assert
-        verify(deleteAddressUsecase).execute(addressId1);
-        verify(deleteAddressUsecase).execute(addressId2);
-        verify(deleteAddressUsecase, times(2)).execute(any(Long.class));
-    }
-
-    @Test
-    void createAddressForUser_ShouldPassCorrectParameters_WhenCalled() {
-        // Arrange
-        when(createAddressForUserUsecase.execute(userId, createAddressDTO)).thenReturn(addressDTO);
-
-        // Act
-        addressController.createAddressForUser(userId, createAddressDTO);
-
-        // Assert
-        verify(createAddressForUserUsecase).execute(eq(userId), eq(createAddressDTO));
-    }
-
-    @Test
-    void createAddressForRestaurant_ShouldPassCorrectParameters_WhenCalled() {
-        // Arrange
-        when(createAddressForRestaurantUsecase.execute(restaurantId, createAddressDTO)).thenReturn(addressDTO);
-
-        // Act
-        addressController.createAddressForRestaurant(restaurantId, createAddressDTO);
-
-        // Assert
-        verify(createAddressForRestaurantUsecase).execute(eq(restaurantId), eq(createAddressDTO));
-    }
-
-    @Test
-    void updateAddress_ShouldPassCorrectParameters_WhenCalled() {
-        // Arrange
-        when(updateAddressUsecase.execute(addressId, updateAddressDTO)).thenReturn(addressDTO);
-
-        // Act
-        addressController.updateAddress(addressId, updateAddressDTO);
-
-        // Assert
-        verify(updateAddressUsecase).execute(eq(addressId), eq(updateAddressDTO));
+        verify(readAddressesByRestaurantUsecase).execute(restaurantId);
     }
 }

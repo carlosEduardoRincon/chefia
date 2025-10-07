@@ -27,9 +27,9 @@ public class CreateAddressForRestaurantUsecaseImpl implements CreateAddressForRe
                 .orElseThrow(() -> new RestaurantNotFoundException("Restaurant not found with id: " + restaurantId)));
         assert restaurant.isPresent();
 
-        var addressToInsert = this.addressMapper.toCreateAddressEntityToRestaurant(restaurantId, createAddressDTO);
+        var addressToInsert = this.addressMapper.toRestaurantAddressEntity(restaurantId, createAddressDTO);
 
-        var addressId = this.addressGateway.saveAddressForUser(addressToInsert);
+        var addressId = this.addressGateway.saveRestaurantAddress(addressToInsert);
         addressToInsert.setNrSeqAddress(addressId);
 
         return this.addressMapper.toAddressResponseDTO(addressToInsert);

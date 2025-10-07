@@ -10,6 +10,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @Slf4j
 @RestController
 @AllArgsConstructor
@@ -20,7 +22,7 @@ public class AddressApiController implements AddressApi {
     @Override
     public ResponseEntity<AddressDTO> createAddressForUser(Long userId, CreateAddressDTO createAddressDTO)
     {
-        log.info("[POST] - Create Address for User");
+        log.info("[POST] - Create Address for User with ID: {}", userId);
         var createdAddress = this.addressController.createAddressForUser(userId, createAddressDTO);
         return ResponseEntity.status(201).body(createdAddress);
     }
@@ -28,7 +30,7 @@ public class AddressApiController implements AddressApi {
     @Override
     public ResponseEntity<AddressDTO> createAddressForRestaurant(Long restaurantId, CreateAddressDTO createAddressDTO)
     {
-        log.info("[POST] - Create Address for Restaurant");
+        log.info("[POST] - Create Address for Restaurant with ID: {}", restaurantId);
         var createdAddress = this.addressController.createAddressForRestaurant(restaurantId, createAddressDTO);
         return ResponseEntity.status(201).body(createdAddress);
     }
@@ -36,15 +38,29 @@ public class AddressApiController implements AddressApi {
     @Override
     public ResponseEntity<AddressDTO> getAddress(Long addressId)
     {
-        log.info("[GET] - List Address");
+        log.info("[GET] - Get Address with ID: {}", addressId);
         var getAddress = this.addressController.findById(addressId);
         return ResponseEntity.ok(getAddress);
     }
 
     @Override
+    public ResponseEntity<List<AddressDTO>> getAddressesByUser(Long userId) {
+        log.info("[GET] - List Addresses for User ID: {}", userId);
+        var addresses = this.addressController.findByUserId(userId);
+        return ResponseEntity.ok(addresses);
+    }
+
+    @Override
+    public ResponseEntity<List<AddressDTO>> getAddressesByRestaurant(Long restaurantId) {
+        log.info("[GET] - List Addresses for Restaurant ID: {}", restaurantId);
+        var addresses = this.addressController.findByRestaurantId(restaurantId);
+        return ResponseEntity.ok(addresses);
+    }
+
+    @Override
     public ResponseEntity<AddressDTO> updateAddress(Long addressId, UpdateAddressDTO body)
     {
-        log.info("[PUT] - Update Address");
+        log.info("[PUT] - Update Address with ID: {}", addressId);
         var updatedAddress = this.addressController.updateAddress(addressId, body);
         return ResponseEntity.ok().body(updatedAddress);
     }
@@ -52,8 +68,8 @@ public class AddressApiController implements AddressApi {
     @Override
     public ResponseEntity<Void> deleteAddress(Long addressId)
     {
-        log.info("[DELETE] - Remove Address");
+        log.info("[DELETE] - Remove Address with ID: {}", addressId);
         this.addressController.deleteAddress(addressId);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 }
