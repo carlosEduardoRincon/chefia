@@ -11,6 +11,9 @@ public class Address {
     private Long userId;
     private Long restaurantId;
 
+    public Address() {
+    }
+
     public Address(String street,
                    Integer number,
                    String city,

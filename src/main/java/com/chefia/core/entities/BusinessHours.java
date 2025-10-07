@@ -11,6 +11,9 @@ public class BusinessHours {
     private LocalDateTime closingTime;
     private Long restaurantId;
 
+    public BusinessHours() {
+    }
+
     public BusinessHours(CreateBusinessHoursDTO.WeekDayEnum weekDay,
                          LocalDateTime openingTime,
                          LocalDateTime closingTime

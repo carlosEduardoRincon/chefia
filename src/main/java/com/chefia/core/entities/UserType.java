@@ -11,6 +11,9 @@ public class UserType {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
+    public UserType() {
+    }
+
     public UserType(String name, String description, boolean active, LocalDateTime createdAt) {
         this.name = name;
         this.description = description;
@@ -56,6 +59,14 @@ public class UserType {
 
     public void setActive(Boolean active) {
         this.active = active;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     @Override

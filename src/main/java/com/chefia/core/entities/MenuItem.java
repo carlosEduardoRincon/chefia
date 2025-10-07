@@ -9,6 +9,9 @@ public class MenuItem {
     private String imagePath;
     private Long restaurantId;
 
+    public MenuItem() {
+    }
+
     public MenuItem(String name, String description, Double price, Boolean availableOnlyOnSite, String imagePath, Long restaurantId) {
         this.name = name;
         this.description = description;

@@ -85,4 +85,16 @@ public class Restaurant {
     public void setRestaurantType(RestaurantDTO.RestaurantTypeEnum restaurantType) {
         this.restaurantType = restaurantType;
     }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
 }

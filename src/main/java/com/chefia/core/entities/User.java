@@ -114,6 +114,14 @@ public class User implements UserDetails {
         this.updatedAt = updatedAt;
     }
 
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public void setUserTypeId(Long userTypeId) {
+        this.userTypeId = userTypeId;
+    }
+
     @Override
     public String getPassword() {
         return password;
