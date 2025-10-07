@@ -31,7 +31,7 @@ public class MenuItemApiController implements MenuitemApi {
     @Override
     public ResponseEntity<MenuItemDTO> getMenuItem(Long menuItemId)
     {
-        log.info("[GET] - List Menu Item");
+        log.info("[GET] - Get Menu Item with ID: {}", menuItemId);
         var getMenuItem = this.menuItemController.findById(menuItemId);
         return ResponseEntity.ok(getMenuItem);
     }
@@ -39,7 +39,7 @@ public class MenuItemApiController implements MenuitemApi {
     @Override
     public ResponseEntity<List<MenuItemDTO>> getMenuItemsByRestaurant(Long restaurantId)
     {
-        log.info("[GET] - List Menu Items for Restaurant ID");
+        log.info("[GET] - List Menu Items for Restaurant ID: {}", restaurantId);
         var getMenuItem = this.menuItemController.findByRestaurantId(restaurantId);
         return ResponseEntity.ok(getMenuItem);
     }
@@ -55,7 +55,7 @@ public class MenuItemApiController implements MenuitemApi {
     @Override
     public ResponseEntity<MenuItemDTO> updateMenuItem(Long menuItemId, UpdateMenuItemDTO body)
     {
-        log.info("[PUT] - Update Address");
+        log.info("[PUT] - Update Menu Item");
         var updatedMenuItem = this.menuItemController.updateMenuItem(menuItemId, body);
         return ResponseEntity.ok().body(updatedMenuItem);
     }
@@ -63,8 +63,8 @@ public class MenuItemApiController implements MenuitemApi {
     @Override
     public ResponseEntity<Void> deleteMenuItem(Long menuItemId)
     {
-        log.info("[DELETE] - Remove Menu Item");
+        log.info("[DELETE] - Remove Menu Item with ID: {}", menuItemId);
         this.menuItemController.deleteMenuItem(menuItemId);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 }

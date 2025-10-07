@@ -51,7 +51,7 @@ public class UserApiController implements UserApi {
     @Override
     public ResponseEntity<Void> deleteUser(Long userId)
     {
-        log.info("[DELETE] - Remove User");
+        log.info("[DELETE] - Remove User with ID: {}", userId);
         this.userController.deleteUser(userId);
         return ResponseEntity.noContent().build();
     }
@@ -59,27 +59,24 @@ public class UserApiController implements UserApi {
     @Override
     public ResponseEntity<Void> enableUser(Long userId)
     {
-        log.info("[PATCH] - Enable User");
+        log.info("[PATCH] - Enable User with ID: {}", userId);
         this.userController.changeUserStatus(userId, Boolean.TRUE);
-        var status = HttpStatus.NO_CONTENT;
-        return ResponseEntity.status(status).build();
+        return ResponseEntity.noContent().build();
     }
 
     @Override
     public ResponseEntity<Void> disableUser(Long userId)
     {
-        log.info("[PATCH] - Disable User");
+        log.info("[PATCH] - Disable User with ID: {}", userId);
         this.userController.changeUserStatus(userId, Boolean.FALSE);
-        var status = HttpStatus.NO_CONTENT;
-        return ResponseEntity.status(status).build();
+        return ResponseEntity.noContent().build();
     }
 
     @Override
     public ResponseEntity<Void> changePassword(Long userId, ChangePasswordDTO changePasswordDTO)
     {
-        log.info("[PATCH] - Change Password");
+        log.info("[PATCH] - Change Password for User with ID: {}", userId);
         this.userController.changePassword(userId, changePasswordDTO);
-        var status = HttpStatus.NO_CONTENT;
-        return ResponseEntity.status(status).build();
+        return ResponseEntity.noContent().build();
     }
 }

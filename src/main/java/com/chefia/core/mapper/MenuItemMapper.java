@@ -21,21 +21,19 @@ public class MenuItemMapper {
         );
     }
 
-    public MenuItemDTO toMenuItemResponseDTO(MenuItem menuItemToInsert) {
-        return new MenuItemDTO().id(menuItemToInsert.getNrSeqMenuItem())
-                .name(menuItemToInsert.getName())
-                .description(menuItemToInsert.getDescription())
-                .price(menuItemToInsert.getPrice())
-                .imagePath(menuItemToInsert.getImagePath())
-                .availableOnlyOnSite(menuItemToInsert.getAvailableOnlyOnSite())
-                .restaurantId(menuItemToInsert.getRestaurantId());
+    public MenuItemDTO toMenuItemResponseDTO(MenuItem menuItem) {
+        return new MenuItemDTO().id(menuItem.getNrSeqMenuItem())
+                .name(menuItem.getName())
+                .description(menuItem.getDescription())
+                .price(menuItem.getPrice())
+                .imagePath(menuItem.getImagePath())
+                .availableOnlyOnSite(menuItem.getAvailableOnlyOnSite())
+                .restaurantId(menuItem.getRestaurantId());
     }
 
     public List<MenuItemDTO> toResponseListDTO(List<MenuItem> menuItemList) {
-        var menuItemResponse = new ArrayList<MenuItemDTO>();
-        for (var menuItem : menuItemList) {
-            menuItemResponse.add(this.toMenuItemResponseDTO(menuItem));
-        }
-        return menuItemResponse;
+        return menuItemList.stream()
+                .map(this::toMenuItemResponseDTO)
+                .toList();
     }
 }

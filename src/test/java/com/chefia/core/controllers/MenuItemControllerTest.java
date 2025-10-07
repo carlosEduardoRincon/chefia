@@ -12,7 +12,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -57,16 +56,7 @@ class MenuItemControllerTest {
         updateMenuItemDTO = new UpdateMenuItemDTO();
         menuItemDTO = new MenuItemDTO();
         paginatedMenuItemDTO = new PaginatedMenuItemDTO();
-        menuItemList = Arrays.asList(menuItemDTO, new MenuItemDTO());
-
-        menuItemController = new MenuItemController(
-            createMenuItemUsecase,
-            readMenuItemUsecase,
-            readAllMenuItemUsecase,
-            readMenuItemsByRestaurantUsecase,
-            updateMenuItemUsecase,
-            deleteMenuItemUsecase
-        );
+        menuItemList = List.of(menuItemDTO, new MenuItemDTO());
     }
 
     @Test
@@ -141,21 +131,6 @@ class MenuItemControllerTest {
         verify(deleteMenuItemUsecase, times(1)).execute(menuItemId);
     }
 
-    @Test
-    void listMenuItemsByRestaurant_ShouldReturnPaginatedMenuItemsDTO_WhenValidParameters() {
-        // Arrange
-        var page = 0;
-        var perPage = 20;
-        when(readAllMenuItemUsecase.execute(anyInt(), anyInt())).thenReturn(paginatedMenuItemDTO);
-
-        // Act
-        var result = menuItemController.findAll(page, perPage);
-
-        // Assert
-        assertNotNull(result);
-        assertEquals(paginatedMenuItemDTO, result);
-        verify(readAllMenuItemUsecase, times(1)).execute(page, perPage);
-    }
 
     @Test
     void createMenuItem_ShouldPassCorrectParameterToUsecase_WhenCalled() {

@@ -19,10 +19,10 @@ public class ReadMenuItemUsecaseImpl implements ReadMenuItemUsecase {
 
     @Override
     public MenuItemDTO execute(Long menuItemId) {
-        var menuItem = Optional.ofNullable(this.menuItemGateway
+        var menuItem = this.menuItemGateway
                 .findByMenuItemId(menuItemId)
-                .orElseThrow(() -> new MenuItemNotFoundException("Menu Item not found with id: " + menuItemId)));
-        assert menuItem.isPresent();
-        return this.menuItemMapper.toMenuItemResponseDTO(menuItem.get());
+                .orElseThrow(() -> new MenuItemNotFoundException("Menu Item not found with id: " + menuItemId));
+
+        return this.menuItemMapper.toMenuItemResponseDTO(menuItem);
     }
 }
