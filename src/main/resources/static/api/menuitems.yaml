@@ -1,0 +1,297 @@
+openapi: 3.0.3
+info:
+  title: Menu Items API
+  version: 1.0.0
+  description: API for managing menu items
+  contact:
+    name: Carlos Eduardo Rincon Junior
+    email: carlos.rincon.junior@aluno.ifsp.edu.br
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+servers:
+  - url: http://localhost:8080/
+    description: Local server
+tags:
+  - name: MenuItems
+    description: Operations related to restaurant menu items
+paths:
+  /menuitem/restaurant/{restaurantId}:
+    get:
+      tags:
+        - MenuItems
+      summary: Get menu items by restaurant ID
+      operationId: getMenuItemsByRestaurant
+      parameters:
+        - name: restaurantId
+          in: path
+          description: ID of the restaurant to get menu items for
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: Menu items found for the restaurant
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/MenuItem"
+        "400":
+          description: Bad request
+        "404":
+          description: Restaurant not found
+  /menuitem:
+    get:
+      tags:
+        - MenuItems
+      summary: List all MenuItems
+      operationId: listMenuItems
+      parameters:
+        - name: page
+          in: query
+          description: Page number
+          required: false
+          schema:
+            type: integer
+            default: 0
+            example: 1
+        - name: perPage
+          in: query
+          description: Number of items per page
+          required: false
+          schema:
+            type: integer
+            default: 10
+            example: 10
+      responses:
+        "200":
+          description: A list of menu items
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaginatedMenuItem"
+    post:
+      tags:
+        - MenuItems
+      summary: Create a new menu item
+      operationId: createMenuItem
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateMenuItem"
+      responses:
+        "201":
+          description: Menu item created
+          headers:
+            Location:
+              schema:
+                type: string
+                format: uri
+                example: /menu-item/123e4567-e89b-12d3-a456-426614174000
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MenuItem"
+  /menuitem/{itemId}:
+    get:
+      tags:
+        - MenuItems
+      summary: Get a menu item by ID
+      operationId: getMenuItem
+      parameters:
+        - name: itemId
+          in: path
+          description: ID of the menu item to return
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: Menu Item found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MenuItem"
+        "400":
+          description: Bad request
+        "404":
+          description: Menu Item not found
+    put:
+      tags:
+        - MenuItems
+      summary: Update a menu item
+      operationId: updateMenuItem
+      parameters:
+        - name: itemId
+          in: path
+          description: ID of the menu item to update
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateMenuItem"
+      responses:
+        "200":
+          description: Menu Item updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MenuItem"
+        "404":
+          description: Menu Item not found
+    delete:
+      tags:
+        - MenuItems
+      summary: Delete a menu item
+      operationId: deleteMenuItem
+      parameters:
+        - name: itemId
+          in: path
+          description: ID of the menu item to delete
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "204":
+          description: Menu Item deleted
+        "400":
+          description: Bad request
+components:
+  schemas:
+    CreateMenuItem:
+      required:
+        - name
+        - description
+        - price
+        - availableOnlyOnSite
+        - imagePath
+        - restaurantId
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the menu item
+          minLength: 5
+          maxLength: 100
+          example: Hamburger
+        description:
+          type: string
+          description: Description of the menu item
+          minLength: 5
+          maxLength: 100
+          example: Hamburger with potato fries
+        price:
+          type: double
+          description: Price of menu item
+          example: 10,00
+        availableOnlyOnSite:
+          type: boolean
+          description: If the menu item is only available on site
+          example: true
+        imagePath:
+          type: string
+          description: Path of the image
+          minLength: 5
+          maxLength: 200
+          example: https://meusite.com/imagens/restaurantes/123/foto.jpg
+        restaurantId:
+          type: integer
+          format: int64
+          example: 5
+    UpdateMenuItem:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the menu item
+          minLength: 5
+          maxLength: 100
+          example: Hamburger
+        description:
+          type: string
+          description: Description of the menu item
+          minLength: 5
+          maxLength: 100
+          example: Hamburger with potato fries
+        price:
+          type: double
+          description: Price of menu item
+          example: 10,00
+        availableOnlyOnSite:
+          type: boolean
+          description: If the menu item is only available on site
+          example: true
+        imagePath:
+          type: string
+          description: Path of the image
+          minLength: 5
+          maxLength: 200
+          example: https://meusite.com/imagens/restaurantes/123/foto.jpg
+    PaginatedMenuItem:
+      type: object
+      properties:
+        page:
+          type: integer
+          example: 1
+        perPage:
+          type: integer
+          example: 10
+        total:
+          type: integer
+          format: int64
+          example: 100
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/MenuItem"
+    MenuItem:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: Id of the menu item
+          maxLength: 10
+          example: 15
+        name:
+          type: string
+          description: Name of the menu item
+          minLength: 5
+          maxLength: 100
+          example: Hamburger
+        description:
+          type: string
+          description: Description of the menu item
+          minLength: 5
+          maxLength: 100
+          example: Hamburger with potato fries
+        price:
+          type: double
+          description: Price of menu item
+          example: 10,00
+        availableOnlyOnSite:
+          type: boolean
+          description: If the menu item is only available on site
+          example: true
+        imagePath:
+          type: string
+          description: Path of the image
+          minLength: 5
+          maxLength: 200
+          example: https://meusite.com/imagens/restaurantes/123/foto.jpg
+        restaurantId:
+          type: integer
+          format: int64
+          example: 5

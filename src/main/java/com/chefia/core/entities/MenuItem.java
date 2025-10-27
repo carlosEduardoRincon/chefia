@@ -1,0 +1,79 @@
+package com.chefia.core.entities;
+
+public class MenuItem {
+    private Long nrSeqMenuItem;
+    private String name;
+    private String description;
+    private Double price;
+    private Boolean availableOnlyOnSite;
+    private String imagePath;
+    private Long restaurantId;
+
+    public MenuItem() {
+    }
+
+    public MenuItem(String name, String description, Double price, Boolean availableOnlyOnSite, String imagePath, Long restaurantId) {
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.availableOnlyOnSite = availableOnlyOnSite;
+        this.imagePath = imagePath;
+        this.restaurantId = restaurantId;
+    }
+
+    public Long getNrSeqMenuItem() {
+        return nrSeqMenuItem;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public Boolean getAvailableOnlyOnSite() {
+        return availableOnlyOnSite;
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public Long getRestaurantId() {
+        return restaurantId;
+    }
+
+    public void setNrSeqMenuItem(Long nrSeqMenuItem) {
+        this.nrSeqMenuItem = nrSeqMenuItem;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
+    public void setAvailableOnlyOnSite(Boolean availableOnlyOnSite) {
+        this.availableOnlyOnSite = availableOnlyOnSite;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
+
+    public void setRestaurantId(Long restaurantId) {
+        this.restaurantId = restaurantId;
+    }
+}

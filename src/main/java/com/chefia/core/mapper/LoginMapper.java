@@ -1,0 +1,15 @@
+package com.chefia.core.mapper;
+
+import com.chefia.users.model.LoginResponseDTO;
+import org.springframework.stereotype.Component;
+
+@Component
+public class LoginMapper {
+    public LoginResponseDTO toUserResponseDTO(String token) {
+        var loginResponseDTO = new LoginResponseDTO();
+
+        loginResponseDTO.setToken(token);
+
+        return loginResponseDTO;
+    }
+}

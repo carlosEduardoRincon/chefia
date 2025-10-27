@@ -1,8 +1,8 @@
 openapi: 3.0.3
 info:
-  title: Users API
+  title: Addresses API
   version: 1.0.0
-  description: API for managing restaurant addresses
+  description: API for managing user and restaurant addresses
   contact:
     name: Carlos Eduardo Rincon Junior
     email: carlos.rincon.junior@aluno.ifsp.edu.br
@@ -16,6 +16,60 @@ tags:
   - name: Addresses
     description: Operations related to restaurant addresses
 paths:
+  /address/user/{userId}:
+    get:
+      tags:
+        - Addresses
+      summary: Get addresses by user ID
+      operationId: getAddressesByUser
+      parameters:
+        - name: userId
+          in: path
+          description: ID of the user to get addresses for
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: Addresses found for the user
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Address"
+        "400":
+          description: Bad request
+        "404":
+          description: User not found
+  /address/restaurant/{restaurantId}:
+    get:
+      tags:
+        - Addresses
+      summary: Get addresses by restaurant ID
+      operationId: getAddressesByRestaurant
+      parameters:
+        - name: restaurantId
+          in: path
+          description: ID of the restaurant to get addresses for
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: Addresses found for the restaurant
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Address"
+        "400":
+          description: Bad request
+        "404":
+          description: Restaurant not found
   /address/for-user/{userId}:
     post:
       tags:
@@ -30,6 +84,39 @@ paths:
             format: int64
       summary: Create a new address for a user
       operationId: createAddressForUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateAddress"
+      responses:
+        "201":
+          description: Address created
+          headers:
+            Location:
+              schema:
+                type: string
+                format: uri
+                example: /user/123e4567-e89b-12d3-a456-426614174000
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Address"
+  /address/for-restaurant/{restaurantId}:
+    post:
+      tags:
+        - Addresses
+      parameters:
+        - name: restaurantId
+          in: path
+          description: ID of the restaurant to create address
+          required: true
+          schema:
+            type: integer
+            format: int64
+      summary: Create a new address for a restaurant
+      operationId: createAddressForRestaurant
       requestBody:
         required: true
         content:
@@ -117,7 +204,9 @@ paths:
             format: int64
       responses:
         "204":
-          description: Address deleted
+          description: Address deleted successfully
+        "404":
+          description: Address not found
         "400":
           description: Bad request
 components:

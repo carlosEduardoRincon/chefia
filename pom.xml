@@ -56,6 +56,16 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-junit-jupiter</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
 			<groupId>io.swagger.core.v3</groupId>
 			<artifactId>swagger-annotations</artifactId>
 			<version>2.2.22</version>
@@ -140,6 +150,63 @@
 							<generateSupportingFiles>false</generateSupportingFiles>
 							<apiPackage>com.chefia.addresses.api</apiPackage>
 							<modelPackage>com.chefia.addresses.model</modelPackage>
+							<modelNameSuffix>DTO</modelNameSuffix>
+							<configOptions>
+								<interfaceOnly>true</interfaceOnly>
+								<jakarta>true</jakarta>
+								<java8>true</java8>
+							</configOptions>
+						</configuration>
+					</execution>
+					<execution>
+						<id>menuitems</id>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<inputSpec>${project.basedir}/src/main/resources/static/api/menuitems.yaml</inputSpec>
+							<language>spring</language>
+							<generateSupportingFiles>false</generateSupportingFiles>
+							<apiPackage>com.chefia.menuitems.api</apiPackage>
+							<modelPackage>com.chefia.menuitems.model</modelPackage>
+							<modelNameSuffix>DTO</modelNameSuffix>
+							<configOptions>
+								<interfaceOnly>true</interfaceOnly>
+								<jakarta>true</jakarta>
+								<java8>true</java8>
+							</configOptions>
+						</configuration>
+					</execution>
+					<execution>
+						<id>restaurants</id>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<inputSpec>${project.basedir}/src/main/resources/static/api/restaurants.yaml</inputSpec>
+							<language>spring</language>
+							<generateSupportingFiles>false</generateSupportingFiles>
+							<apiPackage>com.chefia.restaurants.api</apiPackage>
+							<modelPackage>com.chefia.restaurants.model</modelPackage>
+							<modelNameSuffix>DTO</modelNameSuffix>
+							<configOptions>
+								<interfaceOnly>true</interfaceOnly>
+								<jakarta>true</jakarta>
+								<java8>true</java8>
+							</configOptions>
+						</configuration>
+					</execution>
+					<execution>
+						<id>usertypes</id>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<inputSpec>${project.basedir}/src/main/resources/static/api/usertypes.yaml</inputSpec>
+							<language>spring</language>
+							<generateSupportingFiles>false</generateSupportingFiles>
+							<apiPackage>com.chefia.usertypes.api</apiPackage>
+							<modelPackage>com.chefia.usertypes.model</modelPackage>
 							<modelNameSuffix>DTO</modelNameSuffix>
 							<configOptions>
 								<interfaceOnly>true</interfaceOnly>
